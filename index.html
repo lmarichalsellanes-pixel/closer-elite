@@ -4020,16 +4020,11 @@ function getResponse(option){
         conversation[option.next];
 
 
-    if(
-        !next ||
-        next.end
-    ){
+    if(!next){
+    return "";
+}
 
-        return "";
-    }
-
-
-    return next.prospect;
+ return next.prospect;
 
 }
 
