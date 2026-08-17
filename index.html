@@ -3731,21 +3731,24 @@ function loadNode(){
             chat.appendChild(you);
 
 
-            let prospect =
-                document.createElement("div");
+if(callHistory.length === 0){
 
-            prospect.className =
-                "chat-message prospect";
+    let prospect =
+        document.createElement("div");
 
-            prospect.innerHTML =
-                `
-                <div class="speaker">PROSPECTO</div>
-                <div class="bubble">
-                    ${item.response}
-                </div>
-                `;
+    prospect.className =
+        "chat-message prospect";
 
-            chat.appendChild(prospect);
+    prospect.innerHTML =
+        `
+        <div class="speaker">PROSPECTO</div>
+        <div class="bubble">
+            ${node.prospect}
+        </div>
+        `;
+
+    chat.appendChild(prospect);
+}
 
         }
     );
@@ -3774,28 +3777,34 @@ function loadNode(){
     options.innerHTML = "";
 
 
-    node.options.forEach(
-        (option,index) => {
+let shuffledOptions = node.options
+    .map((option, index) => ({
+        option,
+        originalIndex: index
+    }))
+    .sort(() => Math.random() - 0.5);
 
-            let button =
-                document.createElement("button");
+shuffledOptions.forEach(
+    (item, displayIndex) => {
 
-            button.className =
-                "option";
+        let button =
+            document.createElement("button");
 
-            button.innerHTML =
-                `
-                ${String.fromCharCode(65 + index)}.
-                ${option.text}
-                `;
+        button.className =
+            "option";
 
-            button.onclick =
-                () => chooseOption(index);
+        button.innerHTML =
+            `
+            ${String.fromCharCode(65 + displayIndex)}.
+            ${item.option.text}
+            `;
 
-            options.appendChild(button);
+        button.onclick =
+            () => chooseOption(item.originalIndex);
 
-        }
-    );
+        options.appendChild(button);
+    }
+);
 
 
     let feedback =
