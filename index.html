@@ -625,9 +625,7 @@ h1{
 
 </header>
 
-
 <main>
-
 
 <!-- DASHBOARD -->
 
@@ -651,7 +649,6 @@ h1{
         </p>
 
     </div>
-
 
     <div class="dashboard-grid">
 
@@ -686,7 +683,6 @@ h1{
 
             </div>
 
-
             <div class="stats">
 
                 <div class="mini-stat">
@@ -703,7 +699,6 @@ h1{
 
                 </div>
 
-
                 <div class="mini-stat">
 
                     <div
@@ -717,7 +712,6 @@ h1{
                     </div>
 
                 </div>
-
 
                 <div class="mini-stat">
 
@@ -735,7 +729,6 @@ h1{
 
             </div>
 
-
             <button
                 class="main-button"
                 onclick="startLevel()">
@@ -745,7 +738,6 @@ h1{
             </button>
 
         </div>
-
 
         <div class="card">
 
@@ -767,7 +759,6 @@ h1{
 
             </p>
 
-
             <button
                 class="secondary-button"
                 onclick="showScreen('levels')">
@@ -775,7 +766,6 @@ h1{
                 🏆 VER NIVELES
 
             </button>
-
 
             <button
                 class="secondary-button"
@@ -790,8 +780,6 @@ h1{
     </div>
 
 </section>
-
-
 <!-- LEVELS -->
 
 <section id="levels" class="screen">
@@ -803,7 +791,6 @@ h1{
         ← Volver
 
     </button>
-
 
     <div
         class="section-title"
@@ -818,7 +805,6 @@ h1{
         </p>
 
     </div>
-
 
     <div class="level-list">
 
@@ -1137,14 +1123,12 @@ h1{
         <div
             class="context"
             id="context">
-
         </div>
 
 
         <div
             class="chat"
             id="chat">
-
         </div>
 
 
@@ -1158,7 +1142,6 @@ h1{
         <div
             class="options"
             id="options">
-
         </div>
 
 
@@ -1219,7 +1202,9 @@ h1{
 
 
         <div class="result-label">
+
             Score de closer
+
         </div>
 
 
@@ -1357,8 +1342,15 @@ h1{
         <div class="skill">
 
             <div class="skill-header">
-                <span>Discovery</span>
-                <span id="statDiscovery">0%</span>
+
+                <span>
+                    Discovery
+                </span>
+
+                <span id="statDiscovery">
+                    0%
+                </span>
+
             </div>
 
             <div class="skill-bar">
@@ -1377,8 +1369,15 @@ h1{
         <div class="skill">
 
             <div class="skill-header">
-                <span>Profundidad</span>
-                <span id="statDepth">0%</span>
+
+                <span>
+                    Profundidad
+                </span>
+
+                <span id="statDepth">
+                    0%
+                </span>
+
             </div>
 
             <div class="skill-bar">
@@ -1397,8 +1396,15 @@ h1{
         <div class="skill">
 
             <div class="skill-header">
-                <span>Control</span>
-                <span id="statControl">0%</span>
+
+                <span>
+                    Control
+                </span>
+
+                <span id="statControl">
+                    0%
+                </span>
+
             </div>
 
             <div class="skill-bar">
@@ -1421,8 +1427,6 @@ h1{
 </main>
 
 </div>
-
-
 <script>
 
 /* =====================================
@@ -1435,23 +1439,14 @@ JSON.parse(
 ) || {
 
     xp:0,
-
     lives:3,
-
     streak:0,
-
     bestStreak:0,
-
     decisions:0,
-
     goodDecisions:0,
-
     discovery:0,
-
     depth:0,
-
     control:0,
-
     criteria:0
 
 };
@@ -1468,13 +1463,9 @@ let callHistory = [];
 let callScore = {
 
     discovery:0,
-
     depth:0,
-
     control:0,
-
     criteria:0,
-
     total:0
 
 };
@@ -1484,20 +1475,9 @@ let answered = false;
 
 /* =====================================
    CONVERSACIÓN RAMIFICADA
-=====================================
-
-Cada nodo representa un momento
-de la conversación.
-
-El jugador decide.
-
-La decisión determina cuál será
-la siguiente respuesta del prospecto.
-
 ===================================== */
 
 const conversation = {
-
 
 start:{
 
@@ -1507,7 +1487,6 @@ start:{
     options:[
 
         {
-
             text:
             "¿Cuántas horas trabajás por día?",
 
@@ -1517,11 +1496,9 @@ start:{
             "Es una pregunta válida, pero todavía es superficial. Saber cuántas horas trabaja no te muestra necesariamente qué está generando el problema.",
 
             next:"hours"
-
         },
 
         {
-
             text:
             "¿Qué es lo que más sentís que te está impidiendo avanzar?",
 
@@ -1531,11 +1508,9 @@ start:{
             "Excelente. No asumís cuál es el problema. Le das espacio para definir qué considera realmente que lo está frenando.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "Justamente eso es lo que podemos solucionar con nuestro programa.",
 
@@ -1545,11 +1520,9 @@ start:{
             "Te adelantaste a vender. Todavía no sabés cuál es el problema real.",
 
             next:"pitch"
-
         },
 
         {
-
             text:
             "¿Cuánto querés ganar?",
 
@@ -1559,7 +1532,6 @@ start:{
             "El objetivo económico puede ser importante, pero acabás de recibir información sobre un problema. Primero conviene entenderlo.",
 
             next:"money"
-
         }
 
     ]
@@ -1579,7 +1551,6 @@ structure:{
     options:[
 
         {
-
             text:
             "¿Y por qué no delegás esas cosas?",
 
@@ -1589,11 +1560,9 @@ structure:{
             "Es una línea interesante, pero estás proponiendo una explicación antes de entender qué sucede cuando intenta organizarse.",
 
             next:"delegate"
-
         },
 
         {
-
             text:
             "Cuando decís que te falta estructura, ¿qué es lo que termina pasando en tu día a día?",
 
@@ -1603,11 +1572,9 @@ structure:{
             "Muy buena. Tomás exactamente sus palabras y profundizás sobre ellas sin imponerle tu diagnóstico.",
 
             next:"daily"
-
         },
 
         {
-
             text:
             "Entonces necesitás aprender a organizar mejor tu negocio.",
 
@@ -1617,11 +1584,9 @@ structure:{
             "Estás diagnosticando demasiado rápido. Todavía no sabés si el problema es organización, delegación, prioridades o capacidad.",
 
             next:"diagnosis"
-
         },
 
         {
-
             text:
             "¿Cuánto estás facturando actualmente?",
 
@@ -1631,7 +1596,6 @@ structure:{
             "Puede ser relevante, pero todavía tenés una oportunidad de profundizar en el problema que acaba de revelar.",
 
             next:"revenue"
-
         }
 
     ]
@@ -1647,7 +1611,6 @@ daily:{
     options:[
 
         {
-
             text:
             "¿Qué pasa si no sos vos quien resuelve esos problemas?",
 
@@ -1657,11 +1620,9 @@ daily:{
             "Excelente. Estás entrando en el mecanismo del problema: por qué todo termina dependiendo de él.",
 
             next:"dependency"
-
         },
 
         {
-
             text:
             "¿Y cuántas personas trabajan con vos?",
 
@@ -1671,11 +1632,9 @@ daily:{
             "Es información útil, pero todavía podés profundizar en el comportamiento que mantiene el problema.",
 
             next:"team"
-
         },
 
         {
-
             text:
             "Tenés que aprender a delegar.",
 
@@ -1685,11 +1644,9 @@ daily:{
             "Eso es una solución, no una pregunta. Todavía no sabés por qué no delega.",
 
             next:"delegate"
-
         },
 
         {
-
             text:
             "Eso debe ser agotador.",
 
@@ -1699,7 +1656,6 @@ daily:{
             "Mostrar empatía está bien, pero si solamente empatizás sin profundizar, la conversación no avanza.",
 
             next:"emotion"
-
         }
 
     ]
@@ -1715,7 +1671,6 @@ dependency:{
     options:[
 
         {
-
             text:
             "¿Qué sentís que podría pasar si dejás de estar encima?",
 
@@ -1725,11 +1680,9 @@ dependency:{
             "Excelente. Acabás de encontrar una creencia detrás del comportamiento. Ahora podés descubrir qué está sosteniendo realmente el problema.",
 
             next:"fear"
-
         },
 
         {
-
             text:
             "Entonces el problema es que no confiás en tu equipo.",
 
@@ -1739,11 +1692,9 @@ dependency:{
             "Podría ser cierto, pero lo estás afirmando vos. Es mejor hacer que el prospecto llegue a esa conclusión.",
 
             next:"trust"
-
         },
 
         {
-
             text:
             "Necesitás contratar mejores empleados.",
 
@@ -1753,11 +1704,9 @@ dependency:{
             "Estás buscando solucionar antes de comprender.",
 
             next:"team"
-
         },
 
         {
-
             text:
             "¿Cuánto te gustaría delegar?",
 
@@ -1767,7 +1716,6 @@ dependency:{
             "Es una pregunta posible, pero todavía falta entender por qué delegar resulta difícil.",
 
             next:"delegate"
-
         }
 
     ]
@@ -1783,7 +1731,6 @@ fear:{
     options:[
 
         {
-
             text:
             "¿Qué pasó las últimas veces que intentaste delegar?",
 
@@ -1793,11 +1740,9 @@ fear:{
             "Muy buena. Estás buscando evidencia concreta de la experiencia que construyó esa creencia.",
 
             next:"history"
-
         },
 
         {
-
             text:
             "Entonces claramente necesitás un mejor equipo.",
 
@@ -1807,11 +1752,9 @@ fear:{
             "No necesariamente. Todavía no sabés qué falló cuando delegó.",
 
             next:"team"
-
         },
 
         {
-
             text:
             "¿Y cuánto tiempo perdés por hacer todo vos?",
 
@@ -1821,11 +1764,9 @@ fear:{
             "Es una buena línea, pero todavía podés descubrir la causa antes de cuantificar la consecuencia.",
 
             next:"time"
-
         },
 
         {
-
             text:
             "Entiendo perfectamente.",
 
@@ -1835,7 +1776,6 @@ fear:{
             "La empatía ayuda, pero no alcanza. Acá acabás de recibir una pista importante y conviene profundizar.",
 
             next:"history"
-
         }
 
     ]
@@ -1851,7 +1791,6 @@ history:{
     options:[
 
         {
-
             text:
             "¿Qué fue lo que pasó exactamente con esas cuentas?",
 
@@ -1861,11 +1800,9 @@ history:{
             "Excelente. No te quedás con una historia superficial. Buscás entender qué pasó realmente.",
 
             next:"accounts"
-
         },
 
         {
-
             text:
             "Por eso no hay que delegar la parte comercial.",
 
@@ -1875,11 +1812,9 @@ history:{
             "Estás convirtiendo una experiencia puntual en una conclusión general.",
 
             next:"conclusion"
-
         },
 
         {
-
             text:
             "¿Y cuánto perdiste?",
 
@@ -1889,11 +1824,9 @@ history:{
             "Podría ser relevante, pero todavía falta comprender el episodio.",
 
             next:"accounts"
-
         },
 
         {
-
             text:
             "Eso es justamente lo que nosotros podemos evitar.",
 
@@ -1903,7 +1836,6 @@ history:{
             "Te adelantaste a presentar la solución.",
 
             next:"pitch"
-
         }
 
     ]
@@ -1919,7 +1851,6 @@ accounts:{
     options:[
 
         {
-
             text:
             "¿Qué impacto tuvo eso en vos además de perder esos clientes?",
 
@@ -1929,11 +1860,9 @@ accounts:{
             "Excelente. Ahora estás pasando del hecho concreto a la consecuencia personal y empresarial.",
 
             next:"impact"
-
         },
 
         {
-
             text:
             "Entonces necesitás un CRM.",
 
@@ -1943,11 +1872,9 @@ accounts:{
             "Otra vez solucionaste antes de entender. El CRM podría no ser el problema.",
 
             next:"solution"
-
         },
 
         {
-
             text:
             "¿Cuánto valían esos clientes?",
 
@@ -1957,11 +1884,9 @@ accounts:{
             "Podés cuantificar el impacto, pero todavía hay una consecuencia más profunda que podés explorar.",
 
             next:"impact"
-
         },
 
         {
-
             text:
             "¿Y ahora seguís haciendo vos el seguimiento?",
 
@@ -1971,7 +1896,6 @@ accounts:{
             "Es una pregunta útil y puede llevarte a entender el estado actual.",
 
             next:"current"
-
         }
 
     ]
@@ -1987,7 +1911,6 @@ impact:{
     options:[
 
         {
-
             text:
             "¿Qué pasa si esto sigue igual durante los próximos seis meses?",
 
@@ -1997,11 +1920,9 @@ impact:{
             "Excelente. Estás conectando el problema actual con su futuro y ayudándolo a visualizar el costo de no cambiar.",
 
             next:"future"
-
         },
 
         {
-
             text:
             "Por eso necesitás nuestro programa.",
 
@@ -2011,11 +1932,9 @@ impact:{
             "Todavía no es momento de presentar la solución. El prospecto acaba de mostrar una consecuencia importante.",
 
             next:"pitch"
-
         },
 
         {
-
             text:
             "¿Cuánto querés ganar?",
 
@@ -2025,11 +1944,9 @@ impact:{
             "El dinero puede importar, pero ahora mismo el problema emocional y operativo está mucho más presente.",
 
             next:"money"
-
         },
 
         {
-
             text:
             "Bueno, entonces tenés que delegar.",
 
@@ -2039,7 +1956,6 @@ impact:{
             "Convertiste una conversación de discovery en un consejo.",
 
             next:"delegate"
-
         }
 
     ]
@@ -2055,7 +1971,6 @@ future:{
     options:[
 
         {
-
             text:
             "¿Y qué tendría que cambiar para que eso no pase?",
 
@@ -2065,11 +1980,9 @@ future:{
             "Muy buena. Le devolvés la responsabilidad de definir qué tendría que cambiar.",
 
             next:"goal"
-
         },
 
         {
-
             text:
             "Entonces tenés que tomar una decisión ahora.",
 
@@ -2079,11 +1992,9 @@ future:{
             "Estás creando urgencia vos en lugar de descubrirla en el prospecto.",
 
             next:"pressure"
-
         },
 
         {
-
             text:
             "¿Cuánto dinero te gustaría ganar?",
 
@@ -2093,11 +2004,24 @@ future:{
             "Puede ser relevante, pero el prospecto acaba de expresar una motivación mucho más profunda.",
 
             next:"money"
-
         },
 
         {
+            text:
+            "Entiendo. A nadie le gusta trabajar así.",
 
+            quality:"ok",
+
+            feedback:
+            "La empatía está bien, pero podrías aprovechar esta respuesta para profundizar todavía más.",
+
+            next:"goal"
+        }
+
+    ]
+
+},
+        {
             text:
             "Entiendo. A nadie le gusta trabajar así.",
 
@@ -2107,7 +2031,6 @@ future:{
             "La empatía está bien, pero podrías aprovechar la frase para profundizar.",
 
             next:"goal"
-
         }
 
     ]
@@ -2123,7 +2046,6 @@ goal:{
     options:[
 
         {
-
             text:
             "Si consiguieras eso, ¿qué cambiaría concretamente en tu vida?",
 
@@ -2133,11 +2055,9 @@ goal:{
             "Excelente. Estás conectando el resultado empresarial con el resultado personal.",
 
             next:"personal"
-
         },
 
         {
-
             text:
             "Perfecto, nosotros hacemos exactamente eso.",
 
@@ -2147,11 +2067,9 @@ goal:{
             "Todavía estás vendiendo antes de completar el discovery.",
 
             next:"pitch"
-
         },
 
         {
-
             text:
             "¿Cuánto estás facturando?",
 
@@ -2161,11 +2079,9 @@ goal:{
             "Es una pregunta útil, pero hay una oportunidad más poderosa en lo que acaba de decir.",
 
             next:"revenue"
-
         },
 
         {
-
             text:
             "¿Y por qué no lo hiciste hasta ahora?",
 
@@ -2175,7 +2091,6 @@ goal:{
             "Muy buena. Estás entrando en el gap entre lo que quiere y lo que ya intentó hacer.",
 
             next:"gap"
-
         }
 
     ]
@@ -2191,7 +2106,6 @@ personal:{
     options:[
 
         {
-
             text:
             "¿Qué te está costando hoy seguir funcionando de esta manera?",
 
@@ -2201,11 +2115,9 @@ personal:{
             "Muy buena. Estás profundizando en el costo actual de no cambiar.",
 
             next:"finish"
-
         },
 
         {
-
             text:
             "Entonces nuestro programa te va a ayudar muchísimo.",
 
@@ -2215,11 +2127,9 @@ personal:{
             "Todavía estás presentando solución antes de entender completamente el gap.",
 
             next:"pitch"
-
         },
 
         {
-
             text:
             "¿Cuánto pagarías por recuperar ese tiempo?",
 
@@ -2229,11 +2139,9 @@ personal:{
             "Estás monetizando demasiado pronto una emoción. Primero necesitás comprenderla.",
 
             next:"finish"
-
         },
 
         {
-
             text:
             "¿Hace cuánto estás así?",
 
@@ -2243,7 +2151,6 @@ personal:{
             "Excelente. Te permite dimensionar cuánto tiempo lleva existiendo el problema.",
 
             next:"finish"
-
         }
 
     ]
@@ -2259,7 +2166,6 @@ gap:{
     options:[
 
         {
-
             text:
             "¿Qué creés que hace que vuelvas a tomar todo vos?",
 
@@ -2269,11 +2175,9 @@ gap:{
             "Excelente. Estás buscando el patrón que hace que las soluciones anteriores no hayan funcionado.",
 
             next:"finish"
-
         },
 
         {
-
             text:
             "Entonces necesitás aprender a delegar.",
 
@@ -2283,11 +2187,9 @@ gap:{
             "Eso es una conclusión, no una investigación.",
 
             next:"finish"
-
         },
 
         {
-
             text:
             "¿Cuántas personas contrataste?",
 
@@ -2297,11 +2199,9 @@ gap:{
             "Es información útil, aunque todavía no estás explorando por qué el patrón se repite.",
 
             next:"finish"
-
         },
 
         {
-
             text:
             "Eso demuestra que nuestro método es diferente.",
 
@@ -2311,7 +2211,6 @@ gap:{
             "No sabés todavía si tu método resolvería el problema.",
 
             next:"finish"
-
         }
 
     ]
@@ -2327,7 +2226,6 @@ finish:{
     options:[
 
         {
-
             text:
             "¿Te parece si vemos qué tendría que pasar para que puedas llegar a ese resultado?",
 
@@ -2337,11 +2235,9 @@ finish:{
             "Excelente transición. Ya existe claridad sobre el problema y ahora podés avanzar hacia una posible solución sin forzarla.",
 
             next:"end"
-
         },
 
         {
-
             text:
             "Perfecto, entonces te explico nuestro programa.",
 
@@ -2351,11 +2247,9 @@ finish:{
             "Ahora sí estás mucho más cerca de poder presentar la solución, aunque todavía podés obtener permiso y contexto antes.",
 
             next:"end"
-
         },
 
         {
-
             text:
             "Entonces tenés que decidir si querés cambiar.",
 
@@ -2365,11 +2259,9 @@ finish:{
             "Convertiste claridad en presión. No necesitás empujar al prospecto.",
 
             next:"end"
-
         },
 
         {
-
             text:
             "¿Querés comprar?",
 
@@ -2379,7 +2271,6 @@ finish:{
             "Demasiado brusco. El objetivo del discovery es generar claridad, no saltar directamente a una pregunta de compra.",
 
             next:"end"
-
         }
 
     ]
@@ -2387,7 +2278,9 @@ finish:{
 },
 
 
-/* RAMAS DE RESPUESTAS MÁS DÉBILES */
+/* =====================================
+   RAMAS DE RESPUESTAS MÁS DÉBILES
+===================================== */
 
 hours:{
 
@@ -2397,7 +2290,6 @@ hours:{
     options:[
 
         {
-
             text:
             "¿Qué es lo importante que sentís que no estás haciendo?",
 
@@ -2407,11 +2299,9 @@ hours:{
             "Bien. Recuperaste el foco y volviste al problema real.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "Eso es demasiado. Tenés que trabajar menos.",
 
@@ -2421,11 +2311,9 @@ hours:{
             "Estás dando consejo sin entender por qué trabaja tantas horas.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "¿Cuánto querés ganar?",
 
@@ -2435,11 +2323,9 @@ hours:{
             "No es la prioridad todavía.",
 
             next:"money"
-
         },
 
         {
-
             text:
             "Nosotros podemos ayudarte con eso.",
 
@@ -2449,7 +2335,6 @@ hours:{
             "Venta prematura.",
 
             next:"pitch"
-
         }
 
     ]
@@ -2465,7 +2350,6 @@ pitch:{
     options:[
 
         {
-
             text:
             "¿Qué necesitarías entender para saber si tiene sentido para vos?",
 
@@ -2475,11 +2359,9 @@ pitch:{
             "Muy buena recuperación. Dejaste de vender y volviste a descubrir.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "Te puedo contar cómo funciona.",
 
@@ -2489,11 +2371,9 @@ pitch:{
             "Podés hacerlo, pero todavía no entendiste qué duda tiene.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "¿Por qué no confiás en nosotros?",
 
@@ -2503,11 +2383,9 @@ pitch:{
             "Confrontaste una duda que todavía no entendiste.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "Entonces quizás no sea para vos.",
 
@@ -2517,7 +2395,6 @@ pitch:{
             "Abandonaste demasiado pronto.",
 
             next:"structure"
-
         }
 
     ]
@@ -2533,7 +2410,6 @@ money:{
     options:[
 
         {
-
             text:
             "¿Qué tendría que cambiar para pasar de donde estás hoy a esos cinco mil?",
 
@@ -2543,11 +2419,9 @@ money:{
             "Excelente. Estás descubriendo el gap.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "Nuestro programa te puede llevar a cinco mil.",
 
@@ -2557,11 +2431,9 @@ money:{
             "No prometas resultados antes de entender la situación.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "¿Cuánto ganás hoy?",
 
@@ -2571,11 +2443,9 @@ money:{
             "Es relevante, pero todavía podés explorar qué tendría que cambiar.",
 
             next:"structure"
-
         },
 
         {
-
             text:
             "¿Y por qué no ganás cinco mil?",
 
@@ -2585,7 +2455,6 @@ money:{
             "Puede funcionar, aunque es una formulación más confrontativa.",
 
             next:"structure"
-
         }
 
     ]
@@ -2601,7 +2470,6 @@ delegate:{
     options:[
 
         {
-
             text:
             "¿Qué sentís que tendría que cambiar para que delegar realmente te ahorre tiempo?",
 
@@ -2611,11 +2479,9 @@ delegate:{
             "Excelente. Estás buscando qué tendría que ser diferente para que la delegación funcione.",
 
             next:"daily"
-
         },
 
         {
-
             text:
             "Entonces contrataste mal.",
 
@@ -2625,11 +2491,9 @@ delegate:{
             "Es una conclusión demasiado rápida.",
 
             next:"daily"
-
         },
 
         {
-
             text:
             "¿Cuántas personas tenés?",
 
@@ -2639,11 +2503,9 @@ delegate:{
             "Puede ser útil, pero todavía no estás profundizando en el mecanismo del problema.",
 
             next:"daily"
-
         },
 
         {
-
             text:
             "Eso es porque no sabés delegar.",
 
@@ -2653,7 +2515,6 @@ delegate:{
             "Estás diagnosticando al prospecto.",
 
             next:"daily"
-
         }
 
     ]
@@ -2669,7 +2530,6 @@ team:{
     options:[
 
         {
-
             text:
             "¿Qué tipo de cosas siguen dependiendo de vos?",
 
@@ -2679,11 +2539,9 @@ team:{
             "Muy buena. Estás concretando el problema.",
 
             next:"daily"
-
         },
 
         {
-
             text:
             "Entonces necesitás contratar más gente.",
 
@@ -2693,11 +2551,9 @@ team:{
             "Más personas no necesariamente resuelven el problema.",
 
             next:"daily"
-
         },
 
         {
-
             text:
             "¿Cuánto les pagás?",
 
@@ -2707,11 +2563,9 @@ team:{
             "Información secundaria en este momento.",
 
             next:"daily"
-
         },
 
         {
-
             text:
             "Perfecto, nosotros podemos solucionar eso.",
 
@@ -2721,7 +2575,6 @@ team:{
             "Venta prematura.",
 
             next:"daily"
-
         }
 
     ]
@@ -2737,7 +2590,6 @@ emotion:{
     options:[
 
         {
-
             text:
             "¿Qué es lo que más te pesa de estar siempre pendiente?",
 
@@ -2747,11 +2599,9 @@ emotion:{
             "Excelente. Convertiste una emoción general en algo concreto.",
 
             next:"dependency"
-
         },
 
         {
-
             text:
             "Tenés que descansar más.",
 
@@ -2761,11 +2611,9 @@ emotion:{
             "Consejo prematuro.",
 
             next:"dependency"
-
         },
 
         {
-
             text:
             "¿Cuántas vacaciones tomaste este año?",
 
@@ -2775,1436 +2623,20 @@ emotion:{
             "Puede ser interesante, pero no es la pregunta más profunda en este momento.",
 
             next:"dependency"
-
         },
 
         {
-
             text:
-            "Eso es justamente lo que solucionamos.",
-
-            quality:"bad",
-
-            feedback:
-            "Venta prematura.",
-
-            next:"dependency"
-
-        }
-
-    ]
-
-},
-
-
-diagnosis:{
-
-    prospect:
-    "Puede ser, pero también creo que me cuesta confiar en que otros hagan las cosas bien.",
-
-    options:[
-
-        {
-
-            text:
-            "¿Qué tendría que pasar para que pudieras confiar en otra persona para hacerlo?",
+            "¿Hace cuánto te sentís así?",
 
             quality:"excellent",
 
             feedback:
-            "Muy buena recuperación. Ahora estás investigando la creencia detrás del comportamiento.",
+            "Buena pregunta. Te permite dimensionar cuánto tiempo lleva presente el problema.",
 
             next:"dependency"
-
-        },
-
-        {
-
-            text:
-            "Entonces el problema es tu equipo.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás desplazando el problema hacia terceros sin entenderlo.",
-
-            next:"dependency"
-
-        },
-
-        {
-
-            text:
-            "¿Querés cambiar de equipo?",
-
-            quality:"bad",
-
-            feedback:
-            "Solución prematura.",
-
-            next:"dependency"
-
-        },
-
-        {
-
-            text:
-            "¿Hace cuánto trabajás con ellos?",
-
-            quality:"ok",
-
-            feedback:
-            "Información útil, pero no necesariamente la más profunda.",
-
-            next:"dependency"
-
         }
 
     ]
 
 },
-
-
-revenue:{
-
-    prospect:
-    "Ahora estoy alrededor de tres mil dólares por mes.",
-
-    options:[
-
-        {
-
-            text:
-            "¿Qué tendría que cambiar para que esos tres mil se conviertan en cinco mil?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás comenzando a construir el gap.",
-
-            next:"structure"
-
-        },
-
-        {
-
-            text:
-            "Eso es poco.",
-
-            quality:"bad",
-
-            feedback:
-            "No juzgues el resultado del prospecto.",
-
-            next:"structure"
-
-        },
-
-        {
-
-            text:
-            "Nosotros podemos duplicarlo.",
-
-            quality:"bad",
-
-            feedback:
-            "Promesa prematura.",
-
-            next:"structure"
-
-        },
-
-        {
-
-            text:
-            "¿Y estás conforme?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede abrir conversación, aunque una pregunta más específica sería más potente.",
-
-            next:"structure"
-
-        }
-
-    ]
-
-},
-
-
-trust:{
-
-    prospect:
-    "Sí. No es que piense que son malos, pero cuando algo sale mal siento que tengo que arreglarlo yo.",
-
-    options:[
-
-        {
-
-            text:
-            "¿Qué tendría que pasar para que puedas confiar en ellos sin sentir que todo depende de vos?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás definiendo qué tendría que cambiar.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "Entonces no confiás en nadie.",
-
-            quality:"bad",
-
-            feedback:
-            "Generalizaste demasiado.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "Tenés que aprender a soltar.",
-
-            quality:"bad",
-
-            feedback:
-            "Consejo prematuro.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "¿Y cuántos empleados tenés?",
-
-            quality:"ok",
-
-            feedback:
-            "Es información secundaria.",
-
-            next:"fear"
-
-        }
-
-    ]
-
-},
-
-
-time:{
-
-    prospect:
-    "Muchísimo. Probablemente veinte horas por semana que podría estar haciendo otra cosa.",
-
-    options:[
-
-        {
-
-            text:
-            "¿Qué harías con esas veinte horas si dejaras de necesitarlas para apagar incendios?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Convertís tiempo perdido en una consecuencia concreta y deseable.",
-
-            next:"goal"
-
-        },
-
-        {
-
-            text:
-            "Entonces estás perdiendo dinero.",
-
-            quality:"ok",
-
-            feedback:
-            "Puede ser cierto, pero todavía podés explorar qué significa ese tiempo para él.",
-
-            next:"goal"
-
-        },
-
-        {
-
-            text:
-            "Eso es muchísimo.",
-
-            quality:"ok",
-
-            feedback:
-            "Empatía, pero poco descubrimiento.",
-
-            next:"goal"
-
-        },
-
-        {
-
-            text:
-            "Nuestro programa puede ahorrarte esas horas.",
-
-            quality:"bad",
-
-            feedback:
-            "Promesa prematura.",
-
-            next:"goal"
-
-        }
-
-    ]
-
-},
-
-
-current:{
-
-    prospect:
-    "Sí. Sigo haciéndolo yo porque no quiero volver a perder clientes.",
-
-    options:[
-
-        {
-
-            text:
-            "¿Qué tendría que cambiar para que pudieras dejar de hacerlo vos sin sentir ese riesgo?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Volvés al verdadero problema: el riesgo que siente cuando delega.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "Entonces no delegues.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás aceptando el problema en lugar de explorarlo.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "¿Cuántas horas te lleva?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede cuantificar el problema, aunque todavía no explora la causa.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "Eso nosotros lo solucionamos.",
-
-            quality:"bad",
-
-            feedback:
-            "Venta prematura.",
-
-            next:"fear"
-
-        }
-
-    ]
-
-},
-
-
-solution:{
-
-    prospect:
-    "Puede ser, pero el problema no es solamente la herramienta. Es que no confío en que alguien la use bien.",
-
-    options:[
-
-        {
-
-            text:
-            "¿Qué tendría que pasar para que pudieras confiar en que alguien la use correctamente?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena. Identificaste que la herramienta no es el verdadero problema.",
-
-            next:"trust"
-
-        },
-
-        {
-
-            text:
-            "Entonces necesitás otro CRM.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás resolviendo una herramienta cuando el problema es confianza.",
-
-            next:"trust"
-
-        },
-
-        {
-
-            text:
-            "Nosotros tenemos uno excelente.",
-
-            quality:"bad",
-
-            feedback:
-            "Venta de producto sin comprender el problema.",
-
-            next:"trust"
-
-        },
-
-        {
-
-            text:
-            "¿Qué CRM usás?",
-
-            quality:"ok",
-
-            feedback:
-            "Es información útil pero secundaria.",
-
-            next:"trust"
-
-        }
-
-    ]
-
-},
-
-
-current2:{
-
-    prospect:
-    "Sigo haciendo el seguimiento yo porque no quiero volver a perder clientes.",
-
-    options:[
-
-        {
-
-            text:
-            "¿Qué tendría que cambiar para que pudieras delegarlo sin sentir ese riesgo?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás profundizando sobre el riesgo percibido.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "Entonces no delegues.",
-
-            quality:"bad",
-
-            feedback:
-            "Aceptaste el problema sin explorarlo.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "¿Cuánto tiempo te lleva?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede cuantificar el problema, aunque todavía no explora la causa.",
-
-            next:"fear"
-
-        },
-
-        {
-
-            text:
-            "Eso nosotros lo solucionamos.",
-
-            quality:"bad",
-
-            feedback:
-            "Venta prematura.",
-
-            next:"fear"
-
-        }
-
-    ]
-
-},
-
-
-conclusion:{
-
-    prospect:
-    "No sé si sea tan simple. También creo que yo mismo termino metiéndome demasiado.",
-
-    options:[
-
-        {
-
-            text:
-            "¿Qué hace que termines metiéndote demasiado?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena recuperación. Volviste a investigar en lugar de asumir.",
-
-            next:"dependency"
-
-        },
-
-        {
-
-            text:
-            "Entonces el problema sos vos.",
-
-            quality:"bad",
-
-            feedback:
-            "No etiquetes al prospecto.",
-
-            next:"dependency"
-
-        },
-
-        {
-
-            text:
-            "Tenés que dejar de hacerlo.",
-
-            quality:"bad",
-
-            feedback:
-            "Consejo sin diagnóstico.",
-
-            next:"dependency"
-
-        },
-
-        {
-
-            text:
-            "¿Hace cuánto te pasa?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede servir, aunque hay una pregunta más profunda disponible.",
-
-            next:"dependency"
-
-        }
-
-    ]
-
-},
-
-
-pressure:{
-
-    prospect:
-    "No quiero sentir que me están presionando. Justamente por eso estoy tratando de entender si esto tiene sentido.",
-
-    options:[
-
-        {
-
-            text:
-            "Tiene sentido. ¿Qué necesitarías entender para tomar una decisión con tranquilidad?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente recuperación. Bajaste la presión y volviste a buscar claridad.",
-
-            next:"structure"
-
-        },
-
-        {
-
-            text:
-            "No te estoy presionando.",
-
-            quality:"bad",
-
-            feedback:
-            "Te defendiste en lugar de entender qué necesita.",
-
-            next:"structure"
-
-        },
-
-        {
-
-            text:
-            "Si no decidís ahora vas a seguir igual.",
-
-            quality:"bad",
-
-            feedback:
-            "Aumentaste la presión y perdiste autoridad.",
-
-            next:"structure"
-
-        },
-
-        {
-
-            text:
-            "Entonces dejémoslo para otro momento.",
-
-            quality:"ok",
-
-            feedback:
-            "Abandonaste demasiado rápido.",
-
-            next:"structure"
-
-        }
-
-    ]
-
-},
-
-
-end:{
-
-    end:true,
-
-    prospect:
-    "Sí. Creo que ahora entiendo mucho mejor cuál es el problema.",
-
-    options:[]
-
-}
-
-};
-
-
-/* =====================================
-   PANTALLAS
-===================================== */
-
-function showScreen(id){
-
-    document
-    .querySelectorAll(".screen")
-    .forEach(
-        screen =>
-        screen.classList.remove("active")
-    );
-
-    document
-    .getElementById(id)
-    .classList.add("active");
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-    updateUI();
-
-}
-
-
-/* =====================================
-   GUARDAR
-===================================== */
-
-function savePlayer(){
-
-    localStorage.setItem(
-        "closerElitePlayer",
-        JSON.stringify(player)
-    );
-
-    updateUI();
-
-}
-
-
-/* =====================================
-   UI
-===================================== */
-
-function updateUI(){
-
-    document.getElementById("xp").textContent =
-        player.xp;
-
-    document.getElementById("lives").textContent =
-        player.lives;
-
-    document.getElementById("streak").textContent =
-        player.streak;
-
-    document.getElementById("bestStreak").textContent =
-        player.bestStreak;
-
-    document.getElementById("completed").textContent =
-        player.decisions;
-
-    let accuracy =
-        player.decisions === 0
-        ? 0
-        : Math.round(
-            player.goodDecisions /
-            player.decisions *
-            100
-        );
-
-    document.getElementById("accuracy")
-        .textContent =
-        accuracy + "%";
-
-    document.getElementById("statsAccuracy")
-        .textContent =
-        accuracy + "%";
-
-    document.getElementById("xpProgress")
-        .textContent =
-        player.xp + " XP";
-
-
-    let progress =
-        Math.min(
-            player.xp / 1000 * 100,
-            100
-        );
-
-    document.getElementById("progress")
-        .style.width =
-        progress + "%";
-
-
-    let rank =
-        "SETTER NOVATO";
-
-    if(player.xp >= 5000)
-        rank = "CLOSER ELITE";
-
-    else if(player.xp >= 3000)
-        rank = "MASTER CLOSER";
-
-    else if(player.xp >= 2000)
-        rank = "ELITE CLOSER";
-
-    else if(player.xp >= 1000)
-        rank = "CLOSER";
-
-    document.getElementById("rank")
-        .textContent =
-        rank;
-
-
-    updateStatistics();
-
-}
-
-
-/* =====================================
-   ESTADÍSTICAS
-===================================== */
-
-function updateStatistics(){
-
-    let discovery =
-        player.decisions
-        ? Math.round(
-            player.discovery /
-            player.decisions *
-            100
-        )
-        : 0;
-
-    let depth =
-        player.decisions
-        ? Math.round(
-            player.depth /
-            player.decisions *
-            100
-        )
-        : 0;
-
-    let control =
-        player.decisions
-        ? Math.round(
-            player.control /
-            player.decisions *
-            100
-        )
-        : 0;
-
-
-    document.getElementById("statDiscovery")
-        .textContent =
-        discovery + "%";
-
-    document.getElementById("barDiscovery")
-        .style.width =
-        discovery + "%";
-
-
-    document.getElementById("statDepth")
-        .textContent =
-        depth + "%";
-
-    document.getElementById("barDepth")
-        .style.width =
-        depth + "%";
-
-
-    document.getElementById("statControl")
-        .textContent =
-        control + "%";
-
-    document.getElementById("barControl")
-        .style.width =
-        control + "%";
-
-}
-
-
-/* =====================================
-   COMENZAR NIVEL
-===================================== */
-
-function startLevel(){
-
-    if(player.lives <= 0){
-
-        alert(
-            "Te quedaste sin vidas."
-        );
-
-        return;
-
-    }
-
-
-    currentNode =
-        "start";
-
-    callHistory = [];
-
-    callScore = {
-
-        discovery:0,
-
-        depth:0,
-
-        control:0,
-
-        criteria:0,
-
-        total:0
-
-    };
-
-    answered = false;
-
-    showScreen("training");
-
-    loadNode();
-
-}
-
-
-/* =====================================
-   CARGAR NODO
-===================================== */
-
-function loadNode(){
-
-    answered = false;
-
-    let node =
-        conversation[currentNode];
-
-
-    if(node.end){
-
-        finishLevel();
-
-        return;
-
-    }
-
-
-    let decisionNumber =
-        callHistory.length + 1;
-
-
-    document.getElementById("questionNumber")
-        .textContent =
-        "Decisión " +
-        decisionNumber +
-        " de 6";
-
-
-    let progress =
-        Math.min(
-            callHistory.length /
-            6 *
-            100,
-            100
-        );
-
-
-    document.getElementById("callProgress")
-        .style.width =
-        progress + "%";
-
-
-    document.getElementById("context")
-        .textContent =
-        "Estás en una llamada de discovery. Escuchá antes de intentar solucionar.";
-
-
-    let chat =
-        document.getElementById("chat");
-
-
-    chat.innerHTML = "";
-
-
-    callHistory.forEach(
-    item => {
-
-        let you =
-            document.createElement("div");
-
-        you.className =
-            "chat-message you";
-
-        you.innerHTML =
-            `
-            <div class="speaker">VOS</div>
-            <div class="bubble">
-                ${item.text}
-            </div>
-            `;
-
-        chat.appendChild(you);
-
-
-        let prospect =
-            document.createElement("div");
-
-        prospect.className =
-            "chat-message prospect";
-
-        prospect.innerHTML =
-            `
-            <div class="speaker">PROSPECTO</div>
-            <div class="bubble">
-                ${item.response}
-            </div>
-            `;
-
-        chat.appendChild(prospect);
-
-    }
-);
-    
-    let options =
-        document.getElementById("options");
-
-    options.innerHTML = "";
-
-
-let shuffledOptions = node.options
-    .map((option, index) => ({
-        option,
-        originalIndex: index
-    }));
-
-// Encontrar la respuesta correcta
-let correctIndex = shuffledOptions.findIndex(
-    item => item.option.quality === "excellent"
-);
-
-// Mezclar las opciones
-for (let i = shuffledOptions.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-
-    [shuffledOptions[i], shuffledOptions[j]] =
-        [shuffledOptions[j], shuffledOptions[i]];
-}
-
-// Hacer que la correcta rote entre A, B, C y D
-if (correctIndex !== -1) {
-
-    let correctOption = shuffledOptions.find(
-        item => item.option.quality === "excellent"
-    );
-
-    let targetIndex =
-        callHistory.length % shuffledOptions.length;
-
-    let currentCorrectIndex =
-        shuffledOptions.indexOf(correctOption);
-
-    [shuffledOptions[targetIndex], shuffledOptions[currentCorrectIndex]] =
-        [shuffledOptions[currentCorrectIndex], shuffledOptions[targetIndex]];
-}
-
-shuffledOptions.forEach(
-    (item, displayIndex) => {
-
-        let button =
-            document.createElement("button");
-
-        button.className =
-            "option";
-
-        button.innerHTML =
-        `
-        ${String.fromCharCode(65 + displayIndex)}.
-        ${item.option.text}
-        `;
-
-        button.onclick =
-            () => chooseOption(item.originalIndex);
-
-        options.appendChild(button);
-    }
-);
-    
-    let feedback =
-        document.getElementById("feedback");
-
-    feedback.className =
-        "feedback";
-
-}
-
-
-/* =====================================
-   ELEGIR RESPUESTA
-===================================== */
-
-function chooseOption(index){
-
-    if(answered)
-        return;
-
-
-    answered = true;
-
-
-    let node =
-        conversation[currentNode];
-
-    let option =
-        node.options[index];
-
-
-    let buttons =
-        document.querySelectorAll(".option");
-
-
-    buttons.forEach(
-        button =>
-        button.disabled = true
-    );
-
-
-    let responseText =
-        getResponse(option);
-
-
-    callHistory.push({
-
-        text:option.text,
-
-        response:responseText
-
-    });
-
-
-    player.decisions++;
-
-
-    let points = 0;
-
-
-    if(option.quality === "excellent"){
-
-        points = 30;
-
-        player.goodDecisions++;
-
-        player.discovery++;
-
-        player.depth++;
-
-        player.control++;
-
-        callScore.discovery += 1;
-
-        callScore.depth += 1;
-
-        callScore.control += 1;
-
-        callScore.criteria += 1;
-
-    }
-
-    else if(option.quality === "ok"){
-
-        points = 10;
-
-        callScore.criteria += .5;
-
-    }
-
-    else{
-
-        player.lives--;
-
-        player.streak = 0;
-
-    }
-
-
-    callScore.total += points;
-
-
-    player.xp += points;
-
-
-    if(option.quality === "excellent"){
-
-        player.streak++;
-
-        if(
-            player.streak >
-            player.bestStreak
-        ){
-
-            player.bestStreak =
-                player.streak;
-
-        }
-
-    }
-
-
-    savePlayer();
-
-
-    let feedback =
-        document.getElementById("feedback");
-
-
-    let title =
-        document.getElementById("feedbackTitle");
-
-    let text =
-        document.getElementById("feedbackText");
-
-
-    if(option.quality === "excellent"){
-
-        feedback.className =
-            "feedback good show";
-
-        title.textContent =
-            "✓ DECISIÓN EXCELENTE +" +
-            points +
-            " XP";
-
-    }
-
-    else if(option.quality === "ok"){
-
-        feedback.className =
-            "feedback ok show";
-
-        title.textContent =
-            "△ DECISIÓN ACEPTABLE +" +
-            points +
-            " XP";
-
-    }
-
-    else{
-
-        feedback.className =
-            "feedback bad show";
-
-        title.textContent =
-            "✕ DECISIÓN DÉBIL";
-
-    }
-
-
-    text.textContent =
-        option.feedback;
-
-
-    if(player.lives <= 0){
-
-        setTimeout(
-            () => {
-
-                alert(
-                    "Te quedaste sin vidas. La llamada terminó."
-                );
-
-                showScreen("dashboard");
-
-            },
-            300
-        );
-
-    }
-
-}
-
-
-/* =====================================
-   RESPUESTAS DEL PROSPECTO
-===================================== */
-
-function getResponse(option){
-
-    let next =
-        conversation[option.next];
-
-
-    if(!next){
-    return "";
-}
-
- return next.prospect;
-
-}
-
-
-/* =====================================
-   CONTINUAR CONVERSACIÓN
-===================================== */
-
-function continueConversation(){
-
-    let node =
-        conversation[currentNode];
-
-
-    let last =
-        callHistory[
-            callHistory.length - 1
-        ];
-
-
-    if(!last){
-
-        return;
-    }
-
-
-    let selected =
-        node.options.find(
-            option =>
-            option.text === last.text
-        );
-
-
-    if(!selected){
-
-        return;
-    }
-
-
-    currentNode =
-        selected.next;
-
-
-    loadNode();
-
-}
-
-
-/* =====================================
-   FINALIZAR NIVEL
-===================================== */
-
-function finishLevel(){
-
-    showScreen("result");
-
-
-    let total =
-        callHistory.length;
-
-
-    let score =
-        Math.min(
-            Math.round(
-                callScore.total /
-                Math.max(total * 30,1) *
-                100
-            ),
-            100
-        );
-
-
-    let discovery =
-        Math.min(
-            Math.round(
-                callScore.discovery /
-                Math.max(total,1) *
-                100
-            ),
-            100
-        );
-
-
-    let depth =
-        Math.min(
-            Math.round(
-                callScore.depth /
-                Math.max(total,1) *
-                100
-            ),
-            100
-        );
-
-
-    let control =
-        Math.min(
-            Math.round(
-                callScore.control /
-                Math.max(total,1) *
-                100
-            ),
-            100
-        );
-
-
-    let criteria =
-        Math.min(
-            Math.round(
-                callScore.criteria /
-                Math.max(total,1) *
-                100
-            ),
-            100
-        );
-
-
-    document.getElementById("finalScore")
-        .textContent =
-        score;
-
-
-    document.getElementById("discoveryScore")
-        .textContent =
-        discovery + "%";
-
-
-    document.getElementById("depthScore")
-        .textContent =
-        depth + "%";
-
-
-    document.getElementById("controlScore")
-        .textContent =
-        control + "%";
-
-
-    document.getElementById("criteriaScore")
-        .textContent =
-        criteria + "%";
-
-
-    let message;
-
-
-    if(score >= 85){
-
-        message =
-        "Excelente desempeño. No intentaste solucionar demasiado rápido y lograste mantener el foco en entender al prospecto. Estás desarrollando criterio de closer.";
-
-    }
-
-    else if(score >= 60){
-
-        message =
-        "Buen trabajo. Tenés una base sólida, pero todavía tendés a buscar soluciones antes de terminar de descubrir el problema.";
-
-    }
-
-    else{
-
-        message =
-        "Necesitás seguir entrenando. Tu principal área de mejora es escuchar y profundizar antes de intentar solucionar.";
-
-    }
-
-
-    document.getElementById("resultMessage")
-        .textContent =
-        message;
-
-
-    updateUI();
-
-}
-
-
-/* =====================================
-   INICIO
-===================================== */
-
-updateUI();
-
-</script>
-
-</body>
-</html>
