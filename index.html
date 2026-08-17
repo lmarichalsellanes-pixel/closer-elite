@@ -1,1407 +1,4197 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Closer Elite</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #08090d;
-            color: #f5f5f5;
-            min-height: 100vh;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        .app {
-            min-height: 100vh;
-        }
-
-        /* HEADER */
-
-        header {
-            height: 72px;
-            border-bottom: 1px solid #242630;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            background: #0c0d12;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-
-        .logo span {
-            color: #8b5cf6;
-        }
-
-        .header-stats {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-            font-size: 14px;
-            color: #b7b9c5;
-        }
-
-        /* MAIN */
-
-        main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 50px 24px;
-        }
-
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        /* DASHBOARD */
-
-        .hero {
-            margin-bottom: 35px;
-        }
-
-        .eyebrow {
-            color: #8b5cf6;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 12px;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            font-size: clamp(38px, 6vw, 68px);
-            line-height: 0.95;
-            margin-bottom: 18px;
-        }
-
-        .hero p {
-            color: #9da0ad;
-            font-size: 18px;
-            max-width: 600px;
-            line-height: 1.6;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 20px;
-            margin-top: 35px;
-        }
-
-        .card {
-            background: #11131a;
-            border: 1px solid #262936;
-            border-radius: 18px;
-            padding: 25px;
-        }
-
-        .rank-label {
-            color: #8f92a0;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 7px;
-        }
-
-        .rank {
-            font-size: 30px;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .progress-container {
-            background: #242631;
-            height: 10px;
-            border-radius: 100px;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            width: 35%;
-            background: #8b5cf6;
-            border-radius: 100px;
-            transition: width 0.4s ease;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            color: #9295a2;
-            font-size: 13px;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 18px;
-        }
-
-        .mini-stat {
-            background: #181a22;
-            border-radius: 12px;
-            padding: 15px;
-        }
-
-        .mini-stat .number {
-            font-size: 23px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-
-        .mini-stat .label {
-            color: #8f92a0;
-            font-size: 12px;
-        }
-
-        .main-button {
-            width: 100%;
-            border: none;
-            background: #8b5cf6;
-            color: white;
-            padding: 17px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.2s;
-        }
-
-        .main-button:hover {
-            transform: translateY(-2px);
-            background: #9b73f7;
-        }
-
-        .secondary-button {
-            width: 100%;
-            border: 1px solid #343744;
-            background: #171922;
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 12px;
-        }
-
-        /* LEVEL MAP */
-
-        .section-title {
-            margin-bottom: 30px;
-        }
-
-        .section-title h2 {
-            font-size: 34px;
-            margin-bottom: 8px;
-        }
-
-        .section-title p {
-            color: #8f92a0;
-        }
-
-        .level-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .level {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            padding: 20px;
-            border: 1px solid #292c38;
-            background: #11131a;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .level:hover:not(.locked) {
-            transform: translateX(4px);
-            border-color: #8b5cf6;
-        }
-
-        .level-number {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #242631;
-            font-weight: 900;
-            flex-shrink: 0;
-        }
-
-        .level.unlocked .level-number {
-            background: #8b5cf6;
-        }
-
-        .level-info {
-            flex: 1;
-        }
-
-        .level-name {
-            font-weight: 800;
-            font-size: 17px;
-            margin-bottom: 4px;
-        }
-
-        .level-description {
-            color: #858896;
-            font-size: 13px;
-        }
-
-        .level-status {
-            color: #8b5cf6;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .locked {
-            opacity: 0.45;
-            cursor: not-allowed;
-        }
-
-        /* TRAINING */
-
-        .training-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .back-button {
-            background: transparent;
-            border: none;
-            color: #aaaebb;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .question-number {
-            color: #8f92a0;
-            font-size: 13px;
-        }
-
-        .conversation {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .context {
-            background: #151720;
-            border-left: 3px solid #8b5cf6;
-            padding: 18px;
-            border-radius: 10px;
-            color: #aeb1bd;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .message {
-            margin-bottom: 25px;
-        }
-
-        .speaker {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #8b5cf6;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .message-bubble {
-            background: #191b24;
-            border: 1px solid #292c38;
-            border-radius: 16px;
-            padding: 22px;
-            font-size: 20px;
-            line-height: 1.5;
-        }
-
-        .question {
-            margin: 30px 0 15px;
-            font-size: 16px;
-            font-weight: 800;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .option {
-            border: 1px solid #30333f;
-            background: #11131a;
-            color: #eee;
-            border-radius: 13px;
-            padding: 18px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 15px;
-            line-height: 1.5;
-            transition: 0.2s;
-        }
-
-        .option:hover {
-            border-color: #8b5cf6;
-            background: #171923;
-        }
-
-        .option.correct {
-            border-color: #22c55e;
-            background: rgba(34,197,94,0.08);
-        }
-
-        .option.wrong {
-            border-color: #ef4444;
-            background: rgba(239,68,68,0.08);
-        }
-
-        /* FEEDBACK */
-
-        .feedback {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 14px;
-            display: none;
-        }
-
-        .feedback.show {
-            display: block;
-        }
-
-        .feedback.correct {
-            border: 1px solid #22c55e;
-            background: rgba(34,197,94,0.08);
-        }
-
-        .feedback.wrong {
-            border: 1px solid #ef4444;
-            background: rgba(239,68,68,0.08);
-        }
-
-        .feedback-title {
-            font-size: 17px;
-            font-weight: 900;
-            margin-bottom: 8px;
-        }
-
-        .feedback-text {
-            color: #b5b7c2;
-            line-height: 1.6;
-            font-size: 14px;
-        }
-
-        .next-button {
-            width: 100%;
-            margin-top: 15px;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            background: white;
-            color: #111;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        /* STATS */
-
-        .stat-large {
-            font-size: 40px;
-            font-weight: 900;
-            margin: 10px 0;
-        }
-
-        .skill {
-            margin-bottom: 22px;
-        }
-
-        .skill-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .skill-bar {
-            height: 8px;
-            background: #252732;
-            border-radius: 100px;
-            overflow: hidden;
-        }
-
-        .skill-fill {
-            height: 100%;
-            background: #8b5cf6;
-        }
-
-        /* RESPONSIVE */
-
-        @media (max-width: 750px) {
-            header {
-                padding: 0 18px;
-            }
-
-            .header-stats {
-                gap: 10px;
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            main {
-                padding: 35px 18px;
-            }
-
-            .message-bubble {
-                font-size: 17px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Closer Elite</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#08090d;
+    color:#f5f5f5;
+    min-height:100vh;
+}
+
+button{
+    font-family:inherit;
+}
+
+.app{
+    min-height:100vh;
+}
+
+header{
+    height:72px;
+    border-bottom:1px solid #242630;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 40px;
+    background:#0c0d12;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#8b5cf6;
+}
+
+.header-stats{
+    display:flex;
+    gap:24px;
+    align-items:center;
+    font-size:14px;
+    color:#b7b9c5;
+}
+
+main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:50px 24px;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+/* DASHBOARD */
+
+.hero{
+    margin-bottom:35px;
+}
+
+.eyebrow{
+    color:#8b5cf6;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-size:12px;
+    margin-bottom:10px;
+}
+
+h1{
+    font-size:clamp(40px,6vw,70px);
+    line-height:.95;
+    margin-bottom:18px;
+}
+
+.hero p{
+    color:#9da0ad;
+    font-size:18px;
+    max-width:650px;
+    line-height:1.6;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:20px;
+    margin-top:35px;
+}
+
+.card{
+    background:#11131a;
+    border:1px solid #262936;
+    border-radius:18px;
+    padding:25px;
+}
+
+.rank-label{
+    color:#8f92a0;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin-bottom:7px;
+}
+
+.rank{
+    font-size:30px;
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+.progress-container{
+    background:#242631;
+    height:10px;
+    border-radius:100px;
+    overflow:hidden;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:#8b5cf6;
+    border-radius:100px;
+    transition:width .4s ease;
+}
+
+.progress-info{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+    color:#9295a2;
+    font-size:13px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:18px;
+}
+
+.mini-stat{
+    background:#181a22;
+    border-radius:12px;
+    padding:15px;
+}
+
+.mini-stat .number{
+    font-size:23px;
+    font-weight:800;
+    margin-bottom:4px;
+}
+
+.mini-stat .label{
+    color:#8f92a0;
+    font-size:12px;
+}
+
+.main-button{
+    width:100%;
+    border:none;
+    background:#8b5cf6;
+    color:white;
+    padding:17px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+    margin-top:20px;
+    transition:.2s;
+}
+
+.main-button:hover{
+    transform:translateY(-2px);
+    background:#9b73f7;
+}
+
+.secondary-button{
+    width:100%;
+    border:1px solid #343744;
+    background:#171922;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:12px;
+}
+
+.secondary-button:hover{
+    border-color:#8b5cf6;
+}
+
+/* LEVELS */
+
+.section-title{
+    margin-bottom:30px;
+}
+
+.section-title h2{
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.section-title p{
+    color:#8f92a0;
+}
+
+.level-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.level{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:20px;
+    border:1px solid #292c38;
+    background:#11131a;
+    border-radius:16px;
+}
+
+.level.unlocked{
+    cursor:pointer;
+}
+
+.level.unlocked:hover{
+    border-color:#8b5cf6;
+    transform:translateX(4px);
+}
+
+.level-number{
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#242631;
+    font-weight:900;
+    flex-shrink:0;
+}
+
+.level.unlocked .level-number{
+    background:#8b5cf6;
+}
+
+.level-info{
+    flex:1;
+}
+
+.level-name{
+    font-weight:800;
+    font-size:17px;
+    margin-bottom:4px;
+}
+
+.level-description{
+    color:#858896;
+    font-size:13px;
+}
+
+.level-status{
+    color:#8b5cf6;
+    font-size:12px;
+    font-weight:700;
+}
+
+.locked{
+    opacity:.45;
+}
+
+/* TRAINING */
+
+.training-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.back-button{
+    background:transparent;
+    border:none;
+    color:#aaaebb;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.question-number{
+    color:#8f92a0;
+    font-size:13px;
+}
+
+.training-container{
+    max-width:800px;
+    margin:0 auto;
+}
+
+.training-header{
+    margin-bottom:25px;
+}
+
+.training-header h2{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.training-header p{
+    color:#858896;
+}
+
+.call-progress{
+    background:#242631;
+    height:7px;
+    border-radius:50px;
+    overflow:hidden;
+    margin-top:15px;
+}
+
+.call-progress-fill{
+    height:100%;
+    background:#8b5cf6;
+    width:0%;
+    transition:.4s;
+}
+
+/* CONTEXT */
+
+.context{
+    background:#151720;
+    border-left:3px solid #8b5cf6;
+    padding:18px;
+    border-radius:10px;
+    color:#aeb1bd;
+    font-size:14px;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+/* CHAT */
+
+.chat{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.chat-message{
+    max-width:80%;
+}
+
+.chat-message.prospect{
+    align-self:flex-start;
+}
+
+.chat-message.you{
+    align-self:flex-end;
+}
+
+.speaker{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    color:#8b5cf6;
+    font-weight:800;
+    margin-bottom:7px;
+}
+
+.bubble{
+    padding:18px;
+    border-radius:16px;
+    line-height:1.55;
+    font-size:17px;
+}
+
+.prospect .bubble{
+    background:#191b24;
+    border:1px solid #292c38;
+}
+
+.you .bubble{
+    background:#2b2050;
+    border:1px solid #6545a7;
+}
+
+/* OPTIONS */
+
+.question{
+    font-size:16px;
+    font-weight:800;
+    margin-bottom:15px;
+}
+
+.options{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.option{
+    border:1px solid #30333f;
+    background:#11131a;
+    color:#eee;
+    border-radius:13px;
+    padding:18px;
+    text-align:left;
+    cursor:pointer;
+    font-size:15px;
+    line-height:1.5;
+    transition:.2s;
+}
+
+.option:hover{
+    border-color:#8b5cf6;
+    background:#171923;
+}
+
+.option:disabled{
+    cursor:default;
+}
+
+/* FEEDBACK */
+
+.feedback{
+    margin-top:20px;
+    padding:20px;
+    border-radius:14px;
+    display:none;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.good{
+    border:1px solid #22c55e;
+    background:rgba(34,197,94,.08);
+}
+
+.feedback.ok{
+    border:1px solid #eab308;
+    background:rgba(234,179,8,.08);
+}
+
+.feedback.bad{
+    border:1px solid #ef4444;
+    background:rgba(239,68,68,.08);
+}
+
+.feedback-title{
+    font-size:17px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.feedback-text{
+    color:#b5b7c2;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.next-button{
+    width:100%;
+    margin-top:15px;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:white;
+    color:#111;
+    font-weight:800;
+    cursor:pointer;
+}
+
+/* RESULT */
+
+.result{
+    max-width:800px;
+    margin:0 auto;
+    text-align:center;
+}
+
+.result-score{
+    font-size:90px;
+    font-weight:900;
+    margin:20px 0;
+}
+
+.result-label{
+    color:#8f92a0;
+    text-transform:uppercase;
+    letter-spacing:2px;
+}
+
+.result-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:30px;
+    text-align:left;
+}
+
+.result-item{
+    background:#151720;
+    border:1px solid #292c38;
+    border-radius:14px;
+    padding:18px;
+}
+
+.result-item strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.result-item span{
+    color:#8f92a0;
+    font-size:13px;
+}
+
+/* STATS */
+
+.skill{
+    margin-bottom:22px;
+}
+
+.skill-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+    font-size:14px;
+}
+
+.skill-bar{
+    height:8px;
+    background:#252732;
+    border-radius:100px;
+    overflow:hidden;
+}
+
+.skill-fill{
+    height:100%;
+    background:#8b5cf6;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:750px){
+
+    header{
+        padding:0 18px;
+    }
+
+    .header-stats{
+        gap:10px;
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    main{
+        padding:35px 18px;
+    }
+
+    .chat-message{
+        max-width:92%;
+    }
+
+    .result-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-    <header>
-        <div class="logo">CLOSER <span>ELITE</span></div>
+<header>
 
-        <div class="header-stats">
-            <div>🔥 <span id="streak">0</span></div>
-            <div>❤️ <span id="lives">3</span></div>
-            <div>⭐ <span id="xp">0</span></div>
+    <div class="logo">
+        CLOSER <span>ELITE</span>
+    </div>
+
+    <div class="header-stats">
+
+        <div>🔥 <span id="streak">0</span></div>
+
+        <div>❤️ <span id="lives">3</span></div>
+
+        <div>⭐ <span id="xp">0</span></div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="screen active">
+
+    <div class="hero">
+
+        <div class="eyebrow">
+            Entrenamiento de ventas
         </div>
-    </header>
 
-    <main>
+        <h1>
+            Entrená.<br>
+            Decidí.<br>
+            Cerrá.
+        </h1>
 
-        <!-- DASHBOARD -->
+        <p>
+            No aprendas qué decir.
+            Aprendé qué pensar cuando estás frente a un prospecto.
+        </p>
 
-        <section id="dashboard" class="screen active">
+    </div>
 
-            <div class="hero">
-                <div class="eyebrow">Entrenamiento de ventas</div>
 
-                <h1>Entrená.<br>Decidí.<br>Cerrá.</h1>
+    <div class="dashboard-grid">
 
-                <p>
-                    No aprendas qué decir.
-                    Aprendé qué pensar cuando estás frente a un prospecto.
-                </p>
+        <div class="card">
+
+            <div class="rank-label">
+                Tu rango actual
             </div>
 
-            <div class="dashboard-grid">
+            <div class="rank" id="rank">
+                SETTER NOVATO
+            </div>
 
-                <div class="card">
+            <div class="progress-container">
 
-                    <div class="rank-label">Tu rango actual</div>
-
-                    <div class="rank" id="rank">SETTER NOVATO</div>
-
-                    <div class="progress-container">
-                        <div class="progress" id="progress"></div>
-                    </div>
-
-                    <div class="progress-info">
-                        <span id="xpProgress">0 XP</span>
-                        <span>1000 XP</span>
-                    </div>
-
-                    <div class="stats">
-
-                        <div class="mini-stat">
-                            <div class="number" id="completed">0</div>
-                            <div class="label">Ejercicios</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="number" id="accuracy">0%</div>
-                            <div class="label">Precisión</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="number" id="bestStreak">0</div>
-                            <div class="label">Mejor racha</div>
-                        </div>
-
-                    </div>
-
-                    <button class="main-button" onclick="startTraining()">
-                        CONTINUAR ENTRENAMIENTO
-                    </button>
-
-                </div>
-
-                <div class="card">
-
-                    <div class="rank-label">Tu progreso</div>
-
-                    <h3 style="font-size:25px;margin-bottom:10px;">
-                        Convertite en Elite.
-                    </h3>
-
-                    <p style="color:#8f92a0;line-height:1.6;font-size:14px;">
-                        Superá escenarios cada vez más complejos
-                        y desbloqueá nuevos niveles.
-                    </p>
-
-                    <button class="secondary-button" onclick="showScreen('levels')">
-                        🏆 VER NIVELES
-                    </button>
-
-                    <button class="secondary-button" onclick="showScreen('statistics')">
-                        📊 ESTADÍSTICAS
-                    </button>
-
+                <div
+                    class="progress"
+                    id="progress">
                 </div>
 
             </div>
 
-        </section>
+            <div class="progress-info">
+
+                <span id="xpProgress">
+                    0 XP
+                </span>
+
+                <span>
+                    1000 XP
+                </span>
+
+            </div>
 
 
-        <!-- LEVELS -->
+            <div class="stats">
 
-        <section id="levels" class="screen">
+                <div class="mini-stat">
 
-            <button class="back-button" onclick="showScreen('dashboard')">
-                ← Volver
+                    <div
+                        class="number"
+                        id="completed">
+                        0
+                    </div>
+
+                    <div class="label">
+                        Decisiones
+                    </div>
+
+                </div>
+
+
+                <div class="mini-stat">
+
+                    <div
+                        class="number"
+                        id="accuracy">
+                        0%
+                    </div>
+
+                    <div class="label">
+                        Precisión
+                    </div>
+
+                </div>
+
+
+                <div class="mini-stat">
+
+                    <div
+                        class="number"
+                        id="bestStreak">
+                        0
+                    </div>
+
+                    <div class="label">
+                        Mejor racha
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="main-button"
+                onclick="startLevel()">
+
+                CONTINUAR ENTRENAMIENTO
+
             </button>
 
-            <div class="section-title" style="margin-top:25px;">
-                <h2>Mapa de entrenamiento</h2>
-                <p>Subí de nivel hasta convertirte en Closer Elite.</p>
+        </div>
+
+
+        <div class="card">
+
+            <div class="rank-label">
+                Tu progreso
             </div>
 
-            <div class="level-list">
+            <h3
+                style="font-size:25px;margin-bottom:10px;">
+                Convertite en Elite.
+            </h3>
 
-                <div class="level unlocked" onclick="startTraining()">
-                    <div class="level-number">1</div>
+            <p
+                style="color:#8f92a0;line-height:1.6;font-size:14px;">
 
-                    <div class="level-info">
-                        <div class="level-name">FUNDAMENTOS</div>
-                        <div class="level-description">
-                            Aprendé a escuchar y hacer mejores preguntas.
-                        </div>
-                    </div>
+                Entrená conversaciones reales,
+                aprendé a detectar lo que realmente
+                está pasando y desarrollá criterio comercial.
 
-                    <div class="level-status">JUGAR</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">2</div>
-                    <div class="level-info">
-                        <div class="level-name">DISCOVERY</div>
-                        <div class="level-description">
-                            Descubrí el problema detrás del problema.
-                        </div>
-                    </div>
-                    <div class="level-status">🔒</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">3</div>
-                    <div class="level-info">
-                        <div class="level-name">EL GAP</div>
-                        <div class="level-description">
-                            Entendé la distancia entre dónde está y dónde quiere estar.
-                        </div>
-                    </div>
-                    <div class="level-status">🔒</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">4</div>
-                    <div class="level-info">
-                        <div class="level-name">DOLOR Y CONSECUENCIAS</div>
-                        <div class="level-description">
-                            Aprendé a profundizar sin manipular.
-                        </div>
-                    </div>
-                    <div class="level-status">🔒</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">5</div>
-                    <div class="level-info">
-                        <div class="level-name">URGENCIA</div>
-                        <div class="level-description">
-                            Descubrí por qué cambiar ahora.
-                        </div>
-                    </div>
-                    <div class="level-status">🔒</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">6</div>
-                    <div class="level-info">
-                        <div class="level-name">OBJECIONES</div>
-                        <div class="level-description">
-                            Detectá qué hay realmente detrás de una objeción.
-                        </div>
-                    </div>
-                    <div class="level-status">🔒</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">7</div>
-                    <div class="level-info">
-                        <div class="level-name">AISLAMIENTO</div>
-                        <div class="level-description">
-                            Separá la objeción real de las excusas.
-                        </div>
-                    </div>
-                    <div class="level-status">🔒</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">8</div>
-                    <div class="level-info">
-                        <div class="level-name">CONTROL</div>
-                        <div class="level-description">
-                            Mantené dirección sin perseguir.
-                        </div>
-                    </div>
-                    <div class="level-status">🔒</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">9</div>
-                    <div class="level-info">
-                        <div class="level-name">CIERRE</div>
-                        <div class="level-description">
-                            Convertí claridad en decisión.
-                        </div>
-                    </div>
-                    <div class="level-status">🔒</div>
-                </div>
-
-                <div class="level locked">
-                    <div class="level-number">10</div>
-                    <div class="level-info">
-                        <div class="level-name">CLOSER ELITE</div>
-                        <div class="level-description">
-                            Boss Fight: llamada completa.
-                        </div>
-                    </div>
-                    <div class="level-status">👑</div>
-                </div>
-
-            </div>
-
-        </section>
+            </p>
 
 
-        <!-- TRAINING -->
+            <button
+                class="secondary-button"
+                onclick="showScreen('levels')">
 
-        <section id="training" class="screen">
+                🏆 VER NIVELES
 
-            <div class="training-top">
-
-                <button class="back-button" onclick="showScreen('dashboard')">
-                    ← Salir
-                </button>
-
-                <div class="question-number" id="questionNumber">
-                    Pregunta 1 de 5
-                </div>
-
-            </div>
-
-            <div class="conversation">
-
-                <div class="context" id="context"></div>
-
-                <div class="message">
-
-                    <div class="speaker">PROSPECTO</div>
-
-                    <div class="message-bubble" id="prospectMessage"></div>
-
-                </div>
-
-                <div class="question">
-                    ¿Qué hacés?
-                </div>
-
-                <div class="options" id="options"></div>
-
-                <div class="feedback" id="feedback">
-
-                    <div class="feedback-title" id="feedbackTitle"></div>
-
-                    <div class="feedback-text" id="feedbackText"></div>
-
-                    <button class="next-button" onclick="nextQuestion()">
-                        CONTINUAR
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- STATISTICS -->
-
-        <section id="statistics" class="screen">
-
-            <button class="back-button" onclick="showScreen('dashboard')">
-                ← Volver
             </button>
 
-            <div class="section-title" style="margin-top:25px;">
-                <h2>Tus estadísticas</h2>
-                <p>Conocé dónde sos fuerte y dónde necesitás entrenar.</p>
+
+            <button
+                class="secondary-button"
+                onclick="showScreen('statistics')">
+
+                📊 ESTADÍSTICAS
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- LEVELS -->
+
+<section id="levels" class="screen">
+
+    <button
+        class="back-button"
+        onclick="showScreen('dashboard')">
+
+        ← Volver
+
+    </button>
+
+
+    <div
+        class="section-title"
+        style="margin-top:25px;">
+
+        <h2>
+            Mapa de entrenamiento
+        </h2>
+
+        <p>
+            Subí de nivel hasta convertirte en Closer Elite.
+        </p>
+
+    </div>
+
+
+    <div class="level-list">
+
+        <div
+            class="level unlocked"
+            onclick="startLevel()">
+
+            <div class="level-number">
+                1
             </div>
 
-            <div class="card">
+            <div class="level-info">
 
-                <div class="rank-label">Precisión general</div>
+                <div class="level-name">
+                    DISCOVERY
+                </div>
 
-                <div class="stat-large" id="statsAccuracy">
+                <div class="level-description">
+                    Aprendé a escuchar,
+                    preguntar y profundizar.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                JUGAR
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                2
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    EL GAP
+                </div>
+
+                <div class="level-description">
+                    Descubrí la distancia entre
+                    su realidad y su objetivo.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                🔒
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                3
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    DOLOR
+                </div>
+
+                <div class="level-description">
+                    Profundizá sin manipular.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                🔒
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                4
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    URGENCIA
+                </div>
+
+                <div class="level-description">
+                    Descubrí por qué cambiar ahora.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                🔒
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                5
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    OBJECIONES
+                </div>
+
+                <div class="level-description">
+                    Descubrí qué existe detrás
+                    de una objeción.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                🔒
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                6
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    AISLAMIENTO
+                </div>
+
+                <div class="level-description">
+                    Aislá la verdadera razón
+                    de la indecisión.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                🔒
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                7
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    CONTROL
+                </div>
+
+                <div class="level-description">
+                    Dirigí la conversación
+                    sin perseguir.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                🔒
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                8
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    CIERRE
+                </div>
+
+                <div class="level-description">
+                    Convertí claridad en decisión.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                🔒
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                9
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    CLOSER AVANZADO
+                </div>
+
+                <div class="level-description">
+                    Situaciones complejas.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                🔒
+            </div>
+
+        </div>
+
+
+        <div class="level locked">
+
+            <div class="level-number">
+                10
+            </div>
+
+            <div class="level-info">
+
+                <div class="level-name">
+                    BOSS FIGHT
+                </div>
+
+                <div class="level-description">
+                    Una llamada completa.
+                </div>
+
+            </div>
+
+            <div class="level-status">
+                👑
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TRAINING -->
+
+<section id="training" class="screen">
+
+    <div class="training-top">
+
+        <button
+            class="back-button"
+            onclick="showScreen('dashboard')">
+
+            ← Salir
+
+        </button>
+
+        <div
+            class="question-number"
+            id="questionNumber">
+
+            Decisión 1 de 6
+
+        </div>
+
+    </div>
+
+
+    <div class="training-container">
+
+
+        <div class="training-header">
+
+            <h2>
+                LEVEL 1 — DISCOVERY
+            </h2>
+
+            <p>
+                No busques la respuesta perfecta.
+                Buscá entender qué está pasando.
+            </p>
+
+            <div class="call-progress">
+
+                <div
+                    class="call-progress-fill"
+                    id="callProgress">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="context"
+            id="context">
+
+        </div>
+
+
+        <div
+            class="chat"
+            id="chat">
+
+        </div>
+
+
+        <div class="question">
+
+            ¿Qué hacés?
+
+        </div>
+
+
+        <div
+            class="options"
+            id="options">
+
+        </div>
+
+
+        <div
+            class="feedback"
+            id="feedback">
+
+            <div
+                class="feedback-title"
+                id="feedbackTitle">
+            </div>
+
+            <div
+                class="feedback-text"
+                id="feedbackText">
+            </div>
+
+            <button
+                class="next-button"
+                onclick="continueConversation()">
+
+                CONTINUAR
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- RESULT -->
+
+<section id="result" class="screen">
+
+    <div class="result">
+
+        <div class="eyebrow">
+            Entrenamiento completado
+        </div>
+
+        <h2
+            style="font-size:40px;margin-top:10px;">
+
+            DECISIÓN BAJO PRESIÓN
+
+        </h2>
+
+
+        <div
+            class="result-score"
+            id="finalScore">
+
+            0
+
+        </div>
+
+
+        <div class="result-label">
+            Score de closer
+        </div>
+
+
+        <div
+            class="result-grid">
+
+            <div class="result-item">
+
+                <strong>
+                    Discovery
+                </strong>
+
+                <span id="discoveryScore">
                     0%
-                </div>
+                </span>
 
-                <p style="color:#8f92a0;margin-bottom:35px;">
-                    Basado en todas tus respuestas.
-                </p>
+            </div>
 
-                <div class="skill">
 
-                    <div class="skill-header">
-                        <span>Discovery</span>
-                        <span>72%</span>
-                    </div>
+            <div class="result-item">
 
-                    <div class="skill-bar">
-                        <div class="skill-fill" style="width:72%"></div>
-                    </div>
+                <strong>
+                    Profundidad
+                </strong>
 
-                </div>
+                <span id="depthScore">
+                    0%
+                </span>
 
-                <div class="skill">
+            </div>
 
-                    <div class="skill-header">
-                        <span>Preguntas</span>
-                        <span>81%</span>
-                    </div>
 
-                    <div class="skill-bar">
-                        <div class="skill-fill" style="width:81%"></div>
-                    </div>
+            <div class="result-item">
 
-                </div>
+                <strong>
+                    Control
+                </strong>
 
-                <div class="skill">
+                <span id="controlScore">
+                    0%
+                </span>
 
-                    <div class="skill-header">
-                        <span>Objeciones</span>
-                        <span>45%</span>
-                    </div>
+            </div>
 
-                    <div class="skill-bar">
-                        <div class="skill-fill" style="width:45%"></div>
-                    </div>
 
-                </div>
+            <div class="result-item">
 
-                <div class="skill">
+                <strong>
+                    Criterio
+                </strong>
 
-                    <div class="skill-header">
-                        <span>Cierre</span>
-                        <span>38%</span>
-                    </div>
+                <span id="criteriaScore">
+                    0%
+                </span>
 
-                    <div class="skill-bar">
-                        <div class="skill-fill" style="width:38%"></div>
-                    </div>
+            </div>
 
+        </div>
+
+
+        <div
+            class="card"
+            style="margin-top:20px;text-align:left;">
+
+            <div class="rank-label">
+                Evaluación
+            </div>
+
+            <p
+                id="resultMessage"
+                style="color:#b5b7c2;line-height:1.7;margin-top:10px;">
+
+            </p>
+
+        </div>
+
+
+        <button
+            class="main-button"
+            onclick="showScreen('dashboard')">
+
+            VOLVER AL DASHBOARD
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- STATISTICS -->
+
+<section id="statistics" class="screen">
+
+    <button
+        class="back-button"
+        onclick="showScreen('dashboard')">
+
+        ← Volver
+
+    </button>
+
+
+    <div
+        class="section-title"
+        style="margin-top:25px;">
+
+        <h2>
+            Tus estadísticas
+        </h2>
+
+        <p>
+            Descubrí qué tipo de closer estás construyendo.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="rank-label">
+            Precisión general
+        </div>
+
+        <div
+            class="stat-large"
+            id="statsAccuracy"
+            style="font-size:40px;font-weight:900;margin:10px 0;">
+
+            0%
+
+        </div>
+
+
+        <div class="skill">
+
+            <div class="skill-header">
+                <span>Discovery</span>
+                <span id="statDiscovery">0%</span>
+            </div>
+
+            <div class="skill-bar">
+
+                <div
+                    class="skill-fill"
+                    id="barDiscovery"
+                    style="width:0%">
                 </div>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
+
+        <div class="skill">
+
+            <div class="skill-header">
+                <span>Profundidad</span>
+                <span id="statDepth">0%</span>
+            </div>
+
+            <div class="skill-bar">
+
+                <div
+                    class="skill-fill"
+                    id="barDepth"
+                    style="width:0%">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="skill">
+
+            <div class="skill-header">
+                <span>Control</span>
+                <span id="statControl">0%</span>
+            </div>
+
+            <div class="skill-bar">
+
+                <div
+                    class="skill-fill"
+                    id="barControl"
+                    style="width:0%">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
 
 </div>
 
 
 <script>
 
-    /* ==============================
-       ESTADO DEL JUGADOR
-    ============================== */
+/* =====================================
+   ESTADO DEL JUGADOR
+===================================== */
 
-    let player = JSON.parse(localStorage.getItem("closerElitePlayer")) || {
-        xp: 0,
-        lives: 3,
-        streak: 0,
-        bestStreak: 0,
-        completed: 0,
-        correct: 0
-    };
+let player =
+JSON.parse(
+    localStorage.getItem("closerElitePlayer")
+) || {
+
+    xp:0,
+
+    lives:3,
+
+    streak:0,
+
+    bestStreak:0,
+
+    decisions:0,
+
+    goodDecisions:0,
+
+    discovery:0,
+
+    depth:0,
+
+    control:0,
+
+    criteria:0
+
+};
 
 
-    /* ==============================
-       ESCENARIOS
-    ============================== */
+/* =====================================
+   ESTADO DE LA LLAMADA
+===================================== */
 
-    const scenarios = [
+let currentNode = "start";
+
+let callHistory = [];
+
+let callScore = {
+
+    discovery:0,
+
+    depth:0,
+
+    control:0,
+
+    criteria:0,
+
+    total:0
+
+};
+
+let answered = false;
+
+
+/* =====================================
+   CONVERSACIÓN RAMIFICADA
+=====================================
+
+Cada nodo representa un momento
+de la conversación.
+
+El jugador decide.
+
+La decisión determina cuál será
+la siguiente respuesta del prospecto.
+
+===================================== */
+
+const conversation = {
+
+
+start:{
+
+    prospect:
+    "Estoy trabajando muchísimo, pero siento que no avanzo. Es como que estoy todo el día ocupado y al final del mes sigo igual.",
+
+    options:[
 
         {
-            context:
-            "Estás en discovery. El prospecto te cuenta que trabaja muchas horas pero siente que no está avanzando.",
 
-            message:
-            "Estoy trabajando muchísimo, pero siento que no avanzo. Es como que estoy todo el día ocupado y al final del mes sigo igual.",
+            text:
+            "¿Cuántas horas trabajás por día?",
 
-            options: [
+            quality:"ok",
 
-                {
-                    text: "¿Cuántas horas trabajás por día?",
-                    correct: false,
-                    feedback:
-                    "Es una pregunta válida, pero todavía es superficial. Saber cuántas horas trabaja no necesariamente te muestra qué está generando el problema."
-                },
+            feedback:
+            "Es una pregunta válida, pero todavía es superficial. Saber cuántas horas trabaja no te muestra necesariamente qué está generando el problema.",
 
-                {
-                    text: "¿Qué es lo que más sentís que te está impidiendo avanzar?",
-                    correct: true,
-                    feedback:
-                    "Excelente. En lugar de asumir cuál es el problema, abrís espacio para que el prospecto lo defina. Un closer no diagnostica demasiado rápido."
-                },
+            next:"hours"
 
-                {
-                    text: "Justamente eso es lo que podemos solucionar con nuestro programa.",
-                    correct: false,
-                    feedback:
-                    "Te adelantaste a vender. Todavía no entendiste suficientemente el problema como para presentar una solución."
-                },
-
-                {
-                    text: "¿Cuánto querés ganar?",
-                    correct: false,
-                    feedback:
-                    "Podría ser relevante más adelante, pero acabás de recibir información sobre un problema. Primero conviene profundizar en él."
-                }
-
-            ]
         },
 
-
         {
-            context:
-            "El prospecto reconoce que quiere cambiar, pero no tiene claro si hacerlo ahora.",
 
-            message:
-            "Sí, quiero generar más ingresos, pero tampoco sé si este es el momento.",
+            text:
+            "¿Qué es lo que más sentís que te está impidiendo avanzar?",
 
-            options: [
+            quality:"excellent",
 
-                {
-                    text: "Perfecto, te puedo explicar cómo funciona el programa.",
-                    correct: false,
-                    feedback:
-                    "No entendiste qué significa 'no es el momento'. Antes de presentar la solución necesitás descubrir qué hay detrás de esa frase."
-                },
+            feedback:
+            "Excelente. No asumís cuál es el problema. Le das espacio para definir qué considera realmente que lo está frenando.",
 
-                {
-                    text: "¿Qué te hace sentir que ahora no es el momento?",
-                    correct: true,
-                    feedback:
-                    "Muy buena respuesta. No discutís la objeción ni intentás convencerlo. Buscás entender qué significa realmente 'no es el momento'."
-                },
+            next:"structure"
 
-                {
-                    text: "¿Entonces cuándo sería el momento?",
-                    correct: false,
-                    feedback:
-                    "Estás intentando avanzar sin entender la causa. Primero necesitás descubrir qué está frenando la decisión."
-                },
-
-                {
-                    text: "Bueno, cuando estés listo podemos hablar.",
-                    correct: false,
-                    feedback:
-                    "Estás abandonando la conversación demasiado rápido. Puede existir una razón concreta detrás de esa duda que todavía no descubriste."
-                }
-
-            ]
         },
 
-
         {
-            context:
-            "Después de explicar el precio, el prospecto expresa una objeción.",
 
-            message:
-            "La verdad es que me parece bastante caro.",
+            text:
+            "Justamente eso es lo que podemos solucionar con nuestro programa.",
 
-            options: [
+            quality:"bad",
 
-                {
-                    text: "¿Caro comparado con qué?",
-                    correct: false,
-                    feedback:
-                    "Puede funcionar en algunos contextos, pero formulado así puede sonar confrontativo. Primero necesitás entender qué significa 'caro' para esa persona."
-                },
+            feedback:
+            "Te adelantaste a vender. Todavía no sabés cuál es el problema real.",
 
-                {
-                    text: "Entiendo. ¿Qué es lo que hace que te parezca caro?",
-                    correct: true,
-                    feedback:
-                    "Correcto. No defendés el precio ni ofrecés un descuento automáticamente. Primero descubrís qué significa realmente la objeción."
-                },
+            next:"pitch"
 
-                {
-                    text: "Podemos hacerte un descuento.",
-                    correct: false,
-                    feedback:
-                    "Error. Estás negociando antes de entender la objeción y estás reduciendo valor sin necesidad."
-                },
-
-                {
-                    text: "Pero vas a recuperar la inversión.",
-                    correct: false,
-                    feedback:
-                    "Estás intentando justificar el precio antes de comprender por qué el prospecto lo considera caro."
-                }
-
-            ]
         },
 
+        {
+
+            text:
+            "¿Cuánto querés ganar?",
+
+            quality:"ok",
+
+            feedback:
+            "El objetivo económico puede ser importante, pero acabás de recibir información sobre un problema. Primero conviene entenderlo.",
+
+            next:"money"
+
+        }
+
+    ]
+
+},
+
+
+/* ==============================
+   RAMA EXCELENTE
+============================== */
+
+structure:{
+
+    prospect:
+    "Creo que me falta estructura. Tengo mil cosas abiertas y termino apagando incendios todo el día.",
+
+    options:[
 
         {
-            context:
-            "El prospecto está interesado pero dice que necesita hablarlo con su pareja.",
 
-            message:
-            "Me interesa, pero antes tengo que hablarlo con mi pareja.",
+            text:
+            "¿Y por qué no delegás esas cosas?",
 
-            options: [
+            quality:"ok",
 
-                {
-                    text: "¿Tu pareja toma decisiones sobre este tipo de inversiones?",
-                    correct: true,
-                    feedback:
-                    "Bien. Estás buscando entender si realmente existe un decisor adicional o si simplemente apareció una objeción."
-                },
+            feedback:
+            "Es una línea interesante, pero estás proponiendo una explicación antes de entender qué sucede cuando intenta organizarse.",
 
-                {
-                    text: "No hay problema, hablalo y después me escribís.",
-                    correct: false,
-                    feedback:
-                    "Aceptaste la objeción sin entenderla. Podrías estar perdiendo una venta que todavía tenía posibilidades de avanzar."
-                },
+            next:"delegate"
 
-                {
-                    text: "¿Pero por qué necesitás preguntarle?",
-                    correct: false,
-                    feedback:
-                    "Puede sonar desafiante y defensivo. La clave es investigar, no confrontar."
-                },
-
-                {
-                    text: "Decile que es una oportunidad única.",
-                    correct: false,
-                    feedback:
-                    "Estás intentando influenciar a una persona que ni siquiera está en la conversación. Primero necesitás entender el proceso de decisión."
-                }
-
-            ]
         },
 
+        {
+
+            text:
+            "Cuando decís que te falta estructura, ¿qué es lo que termina pasando en tu día a día?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena. Tomás exactamente sus palabras y profundizás sobre ellas sin imponerle tu diagnóstico.",
+
+            next:"daily"
+
+        },
 
         {
-            context:
-            "El prospecto tuvo una mala experiencia comprando cursos anteriormente.",
 
-            message:
-            "Ya compré un curso parecido y terminé sin hacer nada. No quiero volver a gastar plata para después dejarlo.",
+            text:
+            "Entonces necesitás aprender a organizar mejor tu negocio.",
 
-            options: [
+            quality:"bad",
 
-                {
-                    text: "Este programa es diferente porque tenemos acompañamiento.",
-                    correct: false,
-                    feedback:
-                    "Te pusiste a defender el producto demasiado rápido. Todavía no entendiste qué pasó en su experiencia anterior."
-                },
+            feedback:
+            "Estás diagnosticando demasiado rápido. Todavía no sabés si el problema es organización, delegación, prioridades o capacidad.",
 
-                {
-                    text: "¿Qué sentís que hizo que aquella vez terminaras sin hacerlo?",
-                    correct: true,
-                    feedback:
-                    "Excelente. Estás buscando la causa real de la experiencia anterior. Eso te permite entender si el problema fue el producto, la implementación, el acompañamiento o algo más."
-                },
+            next:"diagnosis"
 
-                {
-                    text: "Pero esta vez sí lo vas a hacer.",
-                    correct: false,
-                    feedback:
-                    "No podés garantizar algo que todavía no conocés. Además, estás minimizando el miedo del prospecto."
-                },
+        },
 
-                {
-                    text: "Entonces quizás esto no sea para vos.",
-                    correct: false,
-                    feedback:
-                    "Te retiraste demasiado pronto. Existe información importante detrás de esa experiencia que todavía no exploraste."
-                }
+        {
 
-            ]
+            text:
+            "¿Cuánto estás facturando actualmente?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede ser relevante, pero todavía tenés una oportunidad de profundizar en el problema que acaba de revelar.",
+
+            next:"revenue"
+
         }
 
-    ];
+    ]
+
+},
 
 
-    let currentQuestion = 0;
-    let answered = false;
+daily:{
 
+    prospect:
+    "Arranco el día con una lista enorme. Después aparece un cliente con un problema, tengo que resolverlo yo, después aparece otra cosa y cuando me quiero dar cuenta pasaron ocho horas.",
 
-    /* ==============================
-       GUARDAR PROGRESO
-    ============================== */
+    options:[
 
-    function savePlayer() {
+        {
 
-        localStorage.setItem(
-            "closerElitePlayer",
-            JSON.stringify(player)
-        );
+            text:
+            "¿Qué pasa si no sos vos quien resuelve esos problemas?",
 
-        updateUI();
-    }
+            quality:"excellent",
 
+            feedback:
+            "Excelente. Estás entrando en el mecanismo del problema: por qué todo termina dependiendo de él.",
 
-    /* ==============================
-       ACTUALIZAR INTERFAZ
-    ============================== */
+            next:"dependency"
 
-    function updateUI() {
+        },
 
-        document.getElementById("xp").textContent = player.xp;
+        {
 
-        document.getElementById("lives").textContent =
-            player.lives;
+            text:
+            "¿Y cuántas personas trabajan con vos?",
 
-        document.getElementById("streak").textContent =
-            player.streak;
+            quality:"ok",
 
-        document.getElementById("bestStreak").textContent =
-            player.bestStreak;
+            feedback:
+            "Es información útil, pero todavía podés profundizar en el comportamiento que mantiene el problema.",
 
-        document.getElementById("completed").textContent =
-            player.completed;
+            next:"team"
 
-        let accuracy = player.completed === 0
-            ? 0
-            : Math.round((player.correct / player.completed) * 100);
+        },
 
-        document.getElementById("accuracy").textContent =
-            accuracy + "%";
+        {
 
-        document.getElementById("statsAccuracy").textContent =
-            accuracy + "%";
+            text:
+            "Tenés que aprender a delegar.",
 
-        document.getElementById("xpProgress").textContent =
-            player.xp + " XP";
+            quality:"bad",
 
-        let percentage =
-            Math.min((player.xp / 1000) * 100, 100);
+            feedback:
+            "Eso es una solución, no una pregunta. Todavía no sabés por qué no delega.",
 
-        document.getElementById("progress").style.width =
-            percentage + "%";
+            next:"delegate"
 
-        if (player.xp >= 5000) {
-            document.getElementById("rank").textContent =
-                "CLOSER ELITE";
-        }
-        else if (player.xp >= 3000) {
-            document.getElementById("rank").textContent =
-                "MASTER CLOSER";
-        }
-        else if (player.xp >= 2000) {
-            document.getElementById("rank").textContent =
-                "ELITE CLOSER";
-        }
-        else if (player.xp >= 1000) {
-            document.getElementById("rank").textContent =
-                "CLOSER";
-        }
-        else {
-            document.getElementById("rank").textContent =
-                "SETTER NOVATO";
-        }
-    }
+        },
 
+        {
 
-    /* ==============================
-       CAMBIAR PANTALLA
-    ============================== */
+            text:
+            "Eso debe ser agotador.",
 
-    function showScreen(screenId) {
+            quality:"ok",
 
-        document.querySelectorAll(".screen").forEach(
-            screen => screen.classList.remove("active")
-        );
+            feedback:
+            "Mostrar empatía está bien, pero si solamente empatizás sin profundizar, la conversación no avanza.",
 
-        document.getElementById(screenId)
-            .classList.add("active");
+            next:"emotion"
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-        updateUI();
-    }
-
-
-    /* ==============================
-       COMENZAR ENTRENAMIENTO
-    ============================== */
-
-    function startTraining() {
-
-        if (player.lives <= 0) {
-            alert("Te quedaste sin vidas. Volvé mañana para seguir entrenando.");
-            return;
         }
 
-        currentQuestion = 0;
+    ]
 
-        showScreen("training");
-
-        loadQuestion();
-    }
+},
 
 
-    /* ==============================
-       CARGAR PREGUNTA
-    ============================== */
+dependency:{
 
-    function loadQuestion() {
+    prospect:
+    "Ese es el problema. Si yo no estoy encima, siento que las cosas no salen como deberían. Entonces termino haciéndolas yo.",
 
-        answered = false;
+    options:[
 
-        const scenario =
-            scenarios[currentQuestion];
+        {
 
-        document.getElementById("questionNumber")
-            .textContent =
-            "Pregunta " +
-            (currentQuestion + 1) +
-            " de " +
-            scenarios.length;
+            text:
+            "¿Qué sentís que podría pasar si dejás de estar encima?",
 
-        document.getElementById("context")
-            .textContent =
-            scenario.context;
+            quality:"excellent",
 
-        document.getElementById("prospectMessage")
-            .textContent =
-            scenario.message;
+            feedback:
+            "Excelente. Acabás de encontrar una creencia detrás del comportamiento. Ahora podés descubrir qué está sosteniendo realmente el problema.",
 
-        const optionsContainer =
-            document.getElementById("options");
+            next:"fear"
 
-        optionsContainer.innerHTML = "";
+        },
 
-        document.getElementById("feedback")
-            .className = "feedback";
+        {
 
-        scenario.options.forEach(
-            (option, index) => {
+            text:
+            "Entonces el problema es que no confiás en tu equipo.",
 
-                const button =
-                    document.createElement("button");
+            quality:"ok",
 
-                button.className = "option";
+            feedback:
+            "Podría ser cierto, pero lo estás afirmando vos. Es mejor hacer que el prospecto llegue a esa conclusión.",
 
-                button.textContent =
-                    String.fromCharCode(65 + index) +
-                    ". " +
-                    option.text;
+            next:"trust"
 
-                button.onclick = () =>
-                    answerQuestion(index);
+        },
 
-                optionsContainer.appendChild(button);
-            }
-        );
-    }
+        {
 
+            text:
+            "Necesitás contratar mejores empleados.",
 
-    /* ==============================
-       RESPONDER
-    ============================== */
+            quality:"bad",
 
-    function answerQuestion(index) {
+            feedback:
+            "Estás buscando solucionar antes de comprender.",
 
-        if (answered) return;
+            next:"team"
 
-        answered = true;
+        },
 
-        const scenario =
-            scenarios[currentQuestion];
+        {
 
-        const option =
-            scenario.options[index];
+            text:
+            "¿Cuánto te gustaría delegar?",
 
-        const buttons =
-            document.querySelectorAll(".option");
+            quality:"ok",
 
-        buttons[index].classList.add(
-            option.correct ? "correct" : "wrong"
-        );
+            feedback:
+            "Es una pregunta posible, pero todavía falta entender por qué delegar resulta difícil.",
 
-        player.completed++;
-
-        const feedback =
-            document.getElementById("feedback");
-
-        const title =
-            document.getElementById("feedbackTitle");
-
-        const text =
-            document.getElementById("feedbackText");
-
-        if (option.correct) {
-
-            player.correct++;
-
-            player.xp += 20;
-
-            player.streak++;
-
-            if (player.streak >
-                player.bestStreak) {
-
-                player.bestStreak =
-                    player.streak;
-            }
-
-            feedback.className =
-                "feedback correct show";
-
-            title.textContent =
-                "✓ EXCELENTE +20 XP";
+            next:"delegate"
 
         }
-        else {
 
-            player.lives--;
+    ]
 
-            player.streak = 0;
+},
 
-            feedback.className =
-                "feedback wrong show";
 
-            title.textContent =
-                "✕ NO ES LA MEJOR DECISIÓN";
+fear:{
 
-            scenario.options.forEach(
-                (item, i) => {
+    prospect:
+    "Que algo salga mal y después sea yo el que tenga que arreglarlo. Ya me pasó varias veces.",
 
-                    if (item.correct) {
-                        buttons[i].classList.add(
-                            "correct"
-                        );
-                    }
+    options:[
 
-                }
-            );
+        {
+
+            text:
+            "¿Qué pasó las últimas veces que intentaste delegar?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena. Estás buscando evidencia concreta de la experiencia que construyó esa creencia.",
+
+            next:"history"
+
+        },
+
+        {
+
+            text:
+            "Entonces claramente necesitás un mejor equipo.",
+
+            quality:"bad",
+
+            feedback:
+            "No necesariamente. Todavía no sabés qué falló cuando delegó.",
+
+            next:"team"
+
+        },
+
+        {
+
+            text:
+            "¿Y cuánto tiempo perdés por hacer todo vos?",
+
+            quality:"ok",
+
+            feedback:
+            "Es una buena línea, pero todavía podés descubrir la causa antes de cuantificar la consecuencia.",
+
+            next:"time"
+
+        },
+
+        {
+
+            text:
+            "Entiendo perfectamente.",
+
+            quality:"ok",
+
+            feedback:
+            "La empatía ayuda, pero no alcanza. Acá acabás de recibir una pista importante y conviene profundizar.",
+
+            next:"history"
+
         }
 
-        text.textContent =
-            option.feedback;
+    ]
 
-        savePlayer();
-    }
+},
 
 
-    /* ==============================
-       SIGUIENTE PREGUNTA
-    ============================== */
+history:{
 
-    function nextQuestion() {
+    prospect:
+    "Una vez delegué la parte comercial. La persona empezó a cometer errores con clientes y terminé teniendo que recuperar yo las cuentas.",
 
-        currentQuestion++;
+    options:[
 
-        if (currentQuestion >= scenarios.length) {
+        {
 
-            alert(
-                "¡Entrenamiento completado! Ganaste experiencia como closer."
-            );
+            text:
+            "¿Qué fue lo que pasó exactamente con esas cuentas?",
 
-            showScreen("dashboard");
+            quality:"excellent",
 
-            return;
+            feedback:
+            "Excelente. No te quedás con una historia superficial. Buscás entender qué pasó realmente.",
+
+            next:"accounts"
+
+        },
+
+        {
+
+            text:
+            "Por eso no hay que delegar la parte comercial.",
+
+            quality:"bad",
+
+            feedback:
+            "Estás convirtiendo una experiencia puntual en una conclusión general.",
+
+            next:"conclusion"
+
+        },
+
+        {
+
+            text:
+            "¿Y cuánto perdiste?",
+
+            quality:"ok",
+
+            feedback:
+            "Podría ser relevante, pero todavía falta comprender el episodio.",
+
+            next:"accounts"
+
+        },
+
+        {
+
+            text:
+            "Eso es justamente lo que nosotros podemos evitar.",
+
+            quality:"bad",
+
+            feedback:
+            "Te adelantaste a presentar la solución.",
+
+            next:"pitch"
+
         }
 
-        if (player.lives <= 0) {
+    ]
 
-            alert(
-                "Te quedaste sin vidas. Volvé a entrenar cuando tengas nuevas vidas."
-            );
+},
 
-            showScreen("dashboard");
 
-            return;
+accounts:{
+
+    prospect:
+    "Dos clientes se fueron porque la persona no hizo seguimiento. Yo me enteré tarde y tuve que volver a contactar a los clientes personalmente.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué impacto tuvo eso en vos además de perder esos clientes?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Ahora estás pasando del hecho concreto a la consecuencia personal y empresarial.",
+
+            next:"impact"
+
+        },
+
+        {
+
+            text:
+            "Entonces necesitás un CRM.",
+
+            quality:"bad",
+
+            feedback:
+            "Otra vez solucionaste antes de entender. El CRM podría no ser el problema.",
+
+            next:"solution"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto valían esos clientes?",
+
+            quality:"ok",
+
+            feedback:
+            "Podés cuantificar el impacto, pero todavía hay una consecuencia más profunda que podés explorar.",
+
+            next:"impact"
+
+        },
+
+        {
+
+            text:
+            "¿Y ahora seguís haciendo vos el seguimiento?",
+
+            quality:"ok",
+
+            feedback:
+            "Es una pregunta útil y puede llevarte a entender el estado actual.",
+
+            next:"current"
+
         }
 
-        loadQuestion();
-    }
+    ]
+
+},
 
 
-    /* ==============================
-       INICIO
-    ============================== */
+impact:{
+
+    prospect:
+    "Más que la plata, me consume. Siento que si quiero que el negocio funcione tengo que estar yo atrás de todo. Y eso me está agotando.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué pasa si esto sigue igual durante los próximos seis meses?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Estás conectando el problema actual con su futuro y ayudándolo a visualizar el costo de no cambiar.",
+
+            next:"future"
+
+        },
+
+        {
+
+            text:
+            "Por eso necesitás nuestro programa.",
+
+            quality:"bad",
+
+            feedback:
+            "Todavía no es momento de presentar la solución. El prospecto acaba de mostrar una consecuencia importante.",
+
+            next:"pitch"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto querés ganar?",
+
+            quality:"ok",
+
+            feedback:
+            "El dinero puede importar, pero ahora mismo el problema emocional y operativo está mucho más presente.",
+
+            next:"money"
+
+        },
+
+        {
+
+            text:
+            "Bueno, entonces tenés que delegar.",
+
+            quality:"bad",
+
+            feedback:
+            "Convertiste una conversación de discovery en un consejo.",
+
+            next:"delegate"
+
+        }
+
+    ]
+
+},
+
+
+future:{
+
+    prospect:
+    "Si sigo así, probablemente voy a seguir trabajando igual o más. Y sinceramente no quiero pasar otro año viviendo pendiente del negocio.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Y qué tendría que cambiar para que eso no pase?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena. Le devolvés la responsabilidad de definir qué tendría que cambiar.",
+
+            next:"goal"
+
+        },
+
+        {
+
+            text:
+            "Entonces tenés que tomar una decisión ahora.",
+
+            quality:"bad",
+
+            feedback:
+            "Estás creando urgencia vos en lugar de descubrirla en el prospecto.",
+
+            next:"pressure"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto dinero te gustaría ganar?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede ser relevante, pero el prospecto acaba de expresar una motivación mucho más profunda.",
+
+            next:"money"
+
+        },
+
+        {
+
+            text:
+            "Entiendo. A nadie le gusta trabajar así.",
+
+            quality:"ok",
+
+            feedback:
+            "La empatía está bien, pero podrías aprovechar la frase para profundizar.",
+
+            next:"goal"
+
+        }
+
+    ]
+
+},
+
+
+goal:{
+
+    prospect:
+    "Quiero que el negocio funcione sin que yo tenga que estar pendiente de cada cosa. Quiero recuperar tiempo y poder crecer sin sentir que todo depende de mí.",
+
+    options:[
+
+        {
+
+            text:
+            "Si consiguieras eso, ¿qué cambiaría concretamente en tu vida?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Estás conectando el resultado empresarial con el resultado personal.",
+
+            next:"personal"
+
+        },
+
+        {
+
+            text:
+            "Perfecto, nosotros hacemos exactamente eso.",
+
+            quality:"bad",
+
+            feedback:
+            "Todavía estás vendiendo antes de completar el discovery.",
+
+            next:"pitch"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto estás facturando?",
+
+            quality:"ok",
+
+            feedback:
+            "Es una pregunta útil, pero hay una oportunidad más poderosa en lo que acaba de decir.",
+
+            next:"revenue"
+
+        },
+
+        {
+
+            text:
+            "¿Y por qué no lo hiciste hasta ahora?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena. Estás entrando en el gap entre lo que quiere y lo que ya intentó hacer.",
+
+            next:"gap"
+
+        }
+
+    ]
+
+},
+
+
+personal:{
+
+    prospect:
+    "Tendría más tiempo para mí, podría dejar de trabajar hasta tarde y probablemente estaría mucho menos estresado.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué te está costando hoy seguir funcionando de esta manera?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena. Estás profundizando en el costo actual de no cambiar.",
+
+            next:"finish"
+
+        },
+
+        {
+
+            text:
+            "Entonces nuestro programa te va a ayudar muchísimo.",
+
+            quality:"bad",
+
+            feedback:
+            "Todavía estás presentando solución antes de entender completamente el gap.",
+
+            next:"pitch"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto pagarías por recuperar ese tiempo?",
+
+            quality:"bad",
+
+            feedback:
+            "Estás monetizando demasiado pronto una emoción. Primero necesitás comprenderla.",
+
+            next:"finish"
+
+        },
+
+        {
+
+            text:
+            "¿Hace cuánto estás así?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Te permite dimensionar cuánto tiempo lleva existiendo el problema.",
+
+            next:"finish"
+
+        }
+
+    ]
+
+},
+
+
+gap:{
+
+    prospect:
+    "Intenté contratar gente y también probé organizarme mejor, pero termino volviendo a hacer las cosas yo.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué creés que hace que vuelvas a tomar todo vos?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Estás buscando el patrón que hace que las soluciones anteriores no hayan funcionado.",
+
+            next:"finish"
+
+        },
+
+        {
+
+            text:
+            "Entonces necesitás aprender a delegar.",
+
+            quality:"bad",
+
+            feedback:
+            "Eso es una conclusión, no una investigación.",
+
+            next:"finish"
+
+        },
+
+        {
+
+            text:
+            "¿Cuántas personas contrataste?",
+
+            quality:"ok",
+
+            feedback:
+            "Es información útil, aunque todavía no estás explorando por qué el patrón se repite.",
+
+            next:"finish"
+
+        },
+
+        {
+
+            text:
+            "Eso demuestra que nuestro método es diferente.",
+
+            quality:"bad",
+
+            feedback:
+            "No sabés todavía si tu método resolvería el problema.",
+
+            next:"finish"
+
+        }
+
+    ]
+
+},
+
+
+finish:{
+
+    prospect:
+    "La verdad es que nunca había pensado el problema de esa manera. Sé que quiero cambiarlo, pero también sé que seguir haciendo lo mismo no me va a llevar a un resultado diferente.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Te parece si vemos qué tendría que pasar para que puedas llegar a ese resultado?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente transición. Ya existe claridad sobre el problema y ahora podés avanzar hacia una posible solución sin forzarla.",
+
+            next:"end"
+
+        },
+
+        {
+
+            text:
+            "Perfecto, entonces te explico nuestro programa.",
+
+            quality:"ok",
+
+            feedback:
+            "Ahora sí estás mucho más cerca de poder presentar la solución, aunque todavía podés obtener permiso y contexto antes.",
+
+            next:"end"
+
+        },
+
+        {
+
+            text:
+            "Entonces tenés que decidir si querés cambiar.",
+
+            quality:"bad",
+
+            feedback:
+            "Convertiste claridad en presión. No necesitás empujar al prospecto.",
+
+            next:"end"
+
+        },
+
+        {
+
+            text:
+            "¿Querés comprar?",
+
+            quality:"bad",
+
+            feedback:
+            "Demasiado brusco. El objetivo del discovery es generar claridad, no saltar directamente a una pregunta de compra.",
+
+            next:"end"
+
+        }
+
+    ]
+
+},
+
+
+/* RAMAS DE RESPUESTAS MÁS DÉBILES */
+
+hours:{
+
+    prospect:
+    "Entre diez y doce horas algunos días. El problema es que termino el día agotado y siento que hice de todo menos lo importante.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué es lo importante que sentís que no estás haciendo?",
+
+            quality:"excellent",
+
+            feedback:
+            "Bien. Recuperaste el foco y volviste al problema real.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "Eso es demasiado. Tenés que trabajar menos.",
+
+            quality:"bad",
+
+            feedback:
+            "Estás dando consejo sin entender por qué trabaja tantas horas.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto querés ganar?",
+
+            quality:"ok",
+
+            feedback:
+            "No es la prioridad todavía.",
+
+            next:"money"
+
+        },
+
+        {
+
+            text:
+            "Nosotros podemos ayudarte con eso.",
+
+            quality:"bad",
+
+            feedback:
+            "Venta prematura.",
+
+            next:"pitch"
+
+        }
+
+    ]
+
+},
+
+
+pitch:{
+
+    prospect:
+    "Puede ser, pero todavía no entiendo si realmente esto es para mí.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué necesitarías entender para saber si tiene sentido para vos?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena recuperación. Dejaste de vender y volviste a descubrir.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "Te puedo contar cómo funciona.",
+
+            quality:"ok",
+
+            feedback:
+            "Podés hacerlo, pero todavía no entendiste qué duda tiene.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "¿Por qué no confiás en nosotros?",
+
+            quality:"bad",
+
+            feedback:
+            "Confrontaste una duda que todavía no entendiste.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "Entonces quizás no sea para vos.",
+
+            quality:"bad",
+
+            feedback:
+            "Abandonaste demasiado pronto.",
+
+            next:"structure"
+
+        }
+
+    ]
+
+},
+
+
+money:{
+
+    prospect:
+    "Quiero llegar a unos cinco mil dólares al mes. Hoy estoy bastante lejos de eso.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué tendría que cambiar para pasar de donde estás hoy a esos cinco mil?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Estás descubriendo el gap.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "Nuestro programa te puede llevar a cinco mil.",
+
+            quality:"bad",
+
+            feedback:
+            "No prometas resultados antes de entender la situación.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto ganás hoy?",
+
+            quality:"ok",
+
+            feedback:
+            "Es relevante, pero todavía podés explorar qué tendría que cambiar.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "¿Y por qué no ganás cinco mil?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede funcionar, aunque es una formulación más confrontativa.",
+
+            next:"structure"
+
+        }
+
+    ]
+
+},
+
+
+delegate:{
+
+    prospect:
+    "Porque cuando delego tengo que explicar todo, revisar todo y al final siento que me lleva más tiempo que hacerlo yo.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué sentís que tendría que cambiar para que delegar realmente te ahorre tiempo?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Estás buscando qué tendría que ser diferente para que la delegación funcione.",
+
+            next:"daily"
+
+        },
+
+        {
+
+            text:
+            "Entonces contrataste mal.",
+
+            quality:"bad",
+
+            feedback:
+            "Es una conclusión demasiado rápida.",
+
+            next:"daily"
+
+        },
+
+        {
+
+            text:
+            "¿Cuántas personas tenés?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede ser útil, pero todavía no estás profundizando en el mecanismo del problema.",
+
+            next:"daily"
+
+        },
+
+        {
+
+            text:
+            "Eso es porque no sabés delegar.",
+
+            quality:"bad",
+
+            feedback:
+            "Estás diagnosticando al prospecto.",
+
+            next:"daily"
+
+        }
+
+    ]
+
+},
+
+
+team:{
+
+    prospect:
+    "Tengo tres personas, pero igual muchas cosas terminan pasando por mí.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué tipo de cosas siguen dependiendo de vos?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena. Estás concretando el problema.",
+
+            next:"daily"
+
+        },
+
+        {
+
+            text:
+            "Entonces necesitás contratar más gente.",
+
+            quality:"bad",
+
+            feedback:
+            "Más personas no necesariamente resuelven el problema.",
+
+            next:"daily"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto les pagás?",
+
+            quality:"ok",
+
+            feedback:
+            "Información secundaria en este momento.",
+
+            next:"daily"
+
+        },
+
+        {
+
+            text:
+            "Perfecto, nosotros podemos solucionar eso.",
+
+            quality:"bad",
+
+            feedback:
+            "Venta prematura.",
+
+            next:"daily"
+
+        }
+
+    ]
+
+},
+
+
+emotion:{
+
+    prospect:
+    "Sí. Estoy cansado de sentir que nunca termino realmente de trabajar.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué es lo que más te pesa de estar siempre pendiente?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Convertiste una emoción general en algo concreto.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "Tenés que descansar más.",
+
+            quality:"bad",
+
+            feedback:
+            "Consejo prematuro.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "¿Cuántas vacaciones tomaste este año?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede ser interesante, pero no es la pregunta más profunda en este momento.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "Eso es justamente lo que solucionamos.",
+
+            quality:"bad",
+
+            feedback:
+            "Venta prematura.",
+
+            next:"dependency"
+
+        }
+
+    ]
+
+},
+
+
+diagnosis:{
+
+    prospect:
+    "Puede ser, pero también creo que me cuesta confiar en que otros hagan las cosas bien.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué tendría que pasar para que pudieras confiar en otra persona para hacerlo?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena recuperación. Ahora estás investigando la creencia detrás del comportamiento.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "Entonces el problema es tu equipo.",
+
+            quality:"bad",
+
+            feedback:
+            "Estás desplazando el problema hacia terceros sin entenderlo.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "¿Querés cambiar de equipo?",
+
+            quality:"bad",
+
+            feedback:
+            "Solución prematura.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "¿Hace cuánto trabajás con ellos?",
+
+            quality:"ok",
+
+            feedback:
+            "Información útil, pero no necesariamente la más profunda.",
+
+            next:"dependency"
+
+        }
+
+    ]
+
+},
+
+
+revenue:{
+
+    prospect:
+    "Ahora estoy alrededor de tres mil dólares por mes.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué tendría que cambiar para que esos tres mil se conviertan en cinco mil?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Estás comenzando a construir el gap.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "Eso es poco.",
+
+            quality:"bad",
+
+            feedback:
+            "No juzgues el resultado del prospecto.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "Nosotros podemos duplicarlo.",
+
+            quality:"bad",
+
+            feedback:
+            "Promesa prematura.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "¿Y estás conforme?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede abrir conversación, aunque una pregunta más específica sería más potente.",
+
+            next:"structure"
+
+        }
+
+    ]
+
+},
+
+
+trust:{
+
+    prospect:
+    "Sí. No es que piense que son malos, pero cuando algo sale mal siento que tengo que arreglarlo yo.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué tendría que pasar para que puedas confiar en ellos sin sentir que todo depende de vos?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Estás definiendo qué tendría que cambiar.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "Entonces no confiás en nadie.",
+
+            quality:"bad",
+
+            feedback:
+            "Generalizaste demasiado.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "Tenés que aprender a soltar.",
+
+            quality:"bad",
+
+            feedback:
+            "Consejo prematuro.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "¿Y cuántos empleados tenés?",
+
+            quality:"ok",
+
+            feedback:
+            "Es información secundaria.",
+
+            next:"fear"
+
+        }
+
+    ]
+
+},
+
+
+time:{
+
+    prospect:
+    "Muchísimo. Probablemente veinte horas por semana que podría estar haciendo otra cosa.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué harías con esas veinte horas si dejaras de necesitarlas para apagar incendios?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Convertís tiempo perdido en una consecuencia concreta y deseable.",
+
+            next:"goal"
+
+        },
+
+        {
+
+            text:
+            "Entonces estás perdiendo dinero.",
+
+            quality:"ok",
+
+            feedback:
+            "Puede ser cierto, pero todavía podés explorar qué significa ese tiempo para él.",
+
+            next:"goal"
+
+        },
+
+        {
+
+            text:
+            "Eso es muchísimo.",
+
+            quality:"ok",
+
+            feedback:
+            "Empatía, pero poco descubrimiento.",
+
+            next:"goal"
+
+        },
+
+        {
+
+            text:
+            "Nuestro programa puede ahorrarte esas horas.",
+
+            quality:"bad",
+
+            feedback:
+            "Promesa prematura.",
+
+            next:"goal"
+
+        }
+
+    ]
+
+},
+
+
+current:{
+
+    prospect:
+    "Sí. Sigo haciéndolo yo porque no quiero volver a perder clientes.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué tendría que cambiar para que pudieras dejar de hacerlo vos sin sentir ese riesgo?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Volvés al verdadero problema: el riesgo que siente cuando delega.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "Entonces no delegues.",
+
+            quality:"bad",
+
+            feedback:
+            "Estás aceptando el problema en lugar de explorarlo.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "¿Cuántas horas te lleva?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede cuantificar el problema, aunque todavía no explora la causa.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "Eso nosotros lo solucionamos.",
+
+            quality:"bad",
+
+            feedback:
+            "Venta prematura.",
+
+            next:"fear"
+
+        }
+
+    ]
+
+},
+
+
+solution:{
+
+    prospect:
+    "Puede ser, pero el problema no es solamente la herramienta. Es que no confío en que alguien la use bien.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué tendría que pasar para que pudieras confiar en que alguien la use correctamente?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena. Identificaste que la herramienta no es el verdadero problema.",
+
+            next:"trust"
+
+        },
+
+        {
+
+            text:
+            "Entonces necesitás otro CRM.",
+
+            quality:"bad",
+
+            feedback:
+            "Estás resolviendo una herramienta cuando el problema es confianza.",
+
+            next:"trust"
+
+        },
+
+        {
+
+            text:
+            "Nosotros tenemos uno excelente.",
+
+            quality:"bad",
+
+            feedback:
+            "Venta de producto sin comprender el problema.",
+
+            next:"trust"
+
+        },
+
+        {
+
+            text:
+            "¿Qué CRM usás?",
+
+            quality:"ok",
+
+            feedback:
+            "Es información útil pero secundaria.",
+
+            next:"trust"
+
+        }
+
+    ]
+
+},
+
+
+current2:{
+
+    prospect:
+    "Sigo haciendo el seguimiento yo porque no quiero volver a perder clientes.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué tendría que cambiar para que pudieras delegarlo sin sentir ese riesgo?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente. Estás profundizando sobre el riesgo percibido.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "Entonces no delegues.",
+
+            quality:"bad",
+
+            feedback:
+            "Aceptaste el problema sin explorarlo.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "¿Cuánto tiempo te lleva?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede cuantificar el problema, aunque todavía no explora la causa.",
+
+            next:"fear"
+
+        },
+
+        {
+
+            text:
+            "Eso nosotros lo solucionamos.",
+
+            quality:"bad",
+
+            feedback:
+            "Venta prematura.",
+
+            next:"fear"
+
+        }
+
+    ]
+
+},
+
+
+conclusion:{
+
+    prospect:
+    "No sé si sea tan simple. También creo que yo mismo termino metiéndome demasiado.",
+
+    options:[
+
+        {
+
+            text:
+            "¿Qué hace que termines metiéndote demasiado?",
+
+            quality:"excellent",
+
+            feedback:
+            "Muy buena recuperación. Volviste a investigar en lugar de asumir.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "Entonces el problema sos vos.",
+
+            quality:"bad",
+
+            feedback:
+            "No etiquetes al prospecto.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "Tenés que dejar de hacerlo.",
+
+            quality:"bad",
+
+            feedback:
+            "Consejo sin diagnóstico.",
+
+            next:"dependency"
+
+        },
+
+        {
+
+            text:
+            "¿Hace cuánto te pasa?",
+
+            quality:"ok",
+
+            feedback:
+            "Puede servir, aunque hay una pregunta más profunda disponible.",
+
+            next:"dependency"
+
+        }
+
+    ]
+
+},
+
+
+pressure:{
+
+    prospect:
+    "No quiero sentir que me están presionando. Justamente por eso estoy tratando de entender si esto tiene sentido.",
+
+    options:[
+
+        {
+
+            text:
+            "Tiene sentido. ¿Qué necesitarías entender para tomar una decisión con tranquilidad?",
+
+            quality:"excellent",
+
+            feedback:
+            "Excelente recuperación. Bajaste la presión y volviste a buscar claridad.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "No te estoy presionando.",
+
+            quality:"bad",
+
+            feedback:
+            "Te defendiste en lugar de entender qué necesita.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "Si no decidís ahora vas a seguir igual.",
+
+            quality:"bad",
+
+            feedback:
+            "Aumentaste la presión y perdiste autoridad.",
+
+            next:"structure"
+
+        },
+
+        {
+
+            text:
+            "Entonces dejémoslo para otro momento.",
+
+            quality:"ok",
+
+            feedback:
+            "Abandonaste demasiado rápido.",
+
+            next:"structure"
+
+        }
+
+    ]
+
+},
+
+
+end:{
+
+    end:true,
+
+    prospect:
+    "Sí. Creo que ahora entiendo mucho mejor cuál es el problema.",
+
+    options:[]
+
+}
+
+};
+
+
+/* =====================================
+   PANTALLAS
+===================================== */
+
+function showScreen(id){
+
+    document
+    .querySelectorAll(".screen")
+    .forEach(
+        screen =>
+        screen.classList.remove("active")
+    );
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
     updateUI();
+
+}
+
+
+/* =====================================
+   GUARDAR
+===================================== */
+
+function savePlayer(){
+
+    localStorage.setItem(
+        "closerElitePlayer",
+        JSON.stringify(player)
+    );
+
+    updateUI();
+
+}
+
+
+/* =====================================
+   UI
+===================================== */
+
+function updateUI(){
+
+    document.getElementById("xp").textContent =
+        player.xp;
+
+    document.getElementById("lives").textContent =
+        player.lives;
+
+    document.getElementById("streak").textContent =
+        player.streak;
+
+    document.getElementById("bestStreak").textContent =
+        player.bestStreak;
+
+    document.getElementById("completed").textContent =
+        player.decisions;
+
+    let accuracy =
+        player.decisions === 0
+        ? 0
+        : Math.round(
+            player.goodDecisions /
+            player.decisions *
+            100
+        );
+
+    document.getElementById("accuracy")
+        .textContent =
+        accuracy + "%";
+
+    document.getElementById("statsAccuracy")
+        .textContent =
+        accuracy + "%";
+
+    document.getElementById("xpProgress")
+        .textContent =
+        player.xp + " XP";
+
+
+    let progress =
+        Math.min(
+            player.xp / 1000 * 100,
+            100
+        );
+
+    document.getElementById("progress")
+        .style.width =
+        progress + "%";
+
+
+    let rank =
+        "SETTER NOVATO";
+
+    if(player.xp >= 5000)
+        rank = "CLOSER ELITE";
+
+    else if(player.xp >= 3000)
+        rank = "MASTER CLOSER";
+
+    else if(player.xp >= 2000)
+        rank = "ELITE CLOSER";
+
+    else if(player.xp >= 1000)
+        rank = "CLOSER";
+
+    document.getElementById("rank")
+        .textContent =
+        rank;
+
+
+    updateStatistics();
+
+}
+
+
+/* =====================================
+   ESTADÍSTICAS
+===================================== */
+
+function updateStatistics(){
+
+    let discovery =
+        player.decisions
+        ? Math.round(
+            player.discovery /
+            player.decisions *
+            100
+        )
+        : 0;
+
+    let depth =
+        player.decisions
+        ? Math.round(
+            player.depth /
+            player.decisions *
+            100
+        )
+        : 0;
+
+    let control =
+        player.decisions
+        ? Math.round(
+            player.control /
+            player.decisions *
+            100
+        )
+        : 0;
+
+
+    document.getElementById("statDiscovery")
+        .textContent =
+        discovery + "%";
+
+    document.getElementById("barDiscovery")
+        .style.width =
+        discovery + "%";
+
+
+    document.getElementById("statDepth")
+        .textContent =
+        depth + "%";
+
+    document.getElementById("barDepth")
+        .style.width =
+        depth + "%";
+
+
+    document.getElementById("statControl")
+        .textContent =
+        control + "%";
+
+    document.getElementById("barControl")
+        .style.width =
+        control + "%";
+
+}
+
+
+/* =====================================
+   COMENZAR NIVEL
+===================================== */
+
+function startLevel(){
+
+    if(player.lives <= 0){
+
+        alert(
+            "Te quedaste sin vidas."
+        );
+
+        return;
+
+    }
+
+
+    currentNode =
+        "start";
+
+    callHistory = [];
+
+    callScore = {
+
+        discovery:0,
+
+        depth:0,
+
+        control:0,
+
+        criteria:0,
+
+        total:0
+
+    };
+
+    answered = false;
+
+    showScreen("training");
+
+    loadNode();
+
+}
+
+
+/* =====================================
+   CARGAR NODO
+===================================== */
+
+function loadNode(){
+
+    answered = false;
+
+    let node =
+        conversation[currentNode];
+
+
+    if(node.end){
+
+        finishLevel();
+
+        return;
+
+    }
+
+
+    let decisionNumber =
+        callHistory.length + 1;
+
+
+    document.getElementById("questionNumber")
+        .textContent =
+        "Decisión " +
+        decisionNumber +
+        " de 6";
+
+
+    let progress =
+        Math.min(
+            callHistory.length /
+            6 *
+            100,
+            100
+        );
+
+
+    document.getElementById("callProgress")
+        .style.width =
+        progress + "%";
+
+
+    document.getElementById("context")
+        .textContent =
+        "Estás en una llamada de discovery. Escuchá antes de intentar solucionar.";
+
+
+    let chat =
+        document.getElementById("chat");
+
+
+    chat.innerHTML = "";
+
+
+    callHistory.forEach(
+        item => {
+
+            let you =
+                document.createElement("div");
+
+            you.className =
+                "chat-message you";
+
+            you.innerHTML =
+                `
+                <div class="speaker">VOS</div>
+                <div class="bubble">
+                    ${item.text}
+                </div>
+                `;
+
+            chat.appendChild(you);
+
+
+            let prospect =
+                document.createElement("div");
+
+            prospect.className =
+                "chat-message prospect";
+
+            prospect.innerHTML =
+                `
+                <div class="speaker">PROSPECTO</div>
+                <div class="bubble">
+                    ${item.response}
+                </div>
+                `;
+
+            chat.appendChild(prospect);
+
+        }
+    );
+
+
+    let prospect =
+        document.createElement("div");
+
+    prospect.className =
+        "chat-message prospect";
+
+    prospect.innerHTML =
+        `
+        <div class="speaker">PROSPECTO</div>
+        <div class="bubble">
+            ${node.prospect}
+        </div>
+        `;
+
+    chat.appendChild(prospect);
+
+
+    let options =
+        document.getElementById("options");
+
+    options.innerHTML = "";
+
+
+    node.options.forEach(
+        (option,index) => {
+
+            let button =
+                document.createElement("button");
+
+            button.className =
+                "option";
+
+            button.innerHTML =
+                `
+                ${String.fromCharCode(65 + index)}.
+                ${option.text}
+                `;
+
+            button.onclick =
+                () => chooseOption(index);
+
+            options.appendChild(button);
+
+        }
+    );
+
+
+    let feedback =
+        document.getElementById("feedback");
+
+    feedback.className =
+        "feedback";
+
+}
+
+
+/* =====================================
+   ELEGIR RESPUESTA
+===================================== */
+
+function chooseOption(index){
+
+    if(answered)
+        return;
+
+
+    answered = true;
+
+
+    let node =
+        conversation[currentNode];
+
+    let option =
+        node.options[index];
+
+
+    let buttons =
+        document.querySelectorAll(".option");
+
+
+    buttons.forEach(
+        button =>
+        button.disabled = true
+    );
+
+
+    let responseText =
+        getResponse(option);
+
+
+    callHistory.push({
+
+        text:option.text,
+
+        response:responseText
+
+    });
+
+
+    player.decisions++;
+
+
+    let points = 0;
+
+
+    if(option.quality === "excellent"){
+
+        points = 30;
+
+        player.goodDecisions++;
+
+        player.discovery++;
+
+        player.depth++;
+
+        player.control++;
+
+        callScore.discovery += 1;
+
+        callScore.depth += 1;
+
+        callScore.control += 1;
+
+        callScore.criteria += 1;
+
+    }
+
+    else if(option.quality === "ok"){
+
+        points = 10;
+
+        callScore.criteria += .5;
+
+    }
+
+    else{
+
+        player.lives--;
+
+        player.streak = 0;
+
+    }
+
+
+    callScore.total += points;
+
+
+    player.xp += points;
+
+
+    if(option.quality === "excellent"){
+
+        player.streak++;
+
+        if(
+            player.streak >
+            player.bestStreak
+        ){
+
+            player.bestStreak =
+                player.streak;
+
+        }
+
+    }
+
+
+    savePlayer();
+
+
+    let feedback =
+        document.getElementById("feedback");
+
+
+    let title =
+        document.getElementById("feedbackTitle");
+
+    let text =
+        document.getElementById("feedbackText");
+
+
+    if(option.quality === "excellent"){
+
+        feedback.className =
+            "feedback good show";
+
+        title.textContent =
+            "✓ DECISIÓN EXCELENTE +" +
+            points +
+            " XP";
+
+    }
+
+    else if(option.quality === "ok"){
+
+        feedback.className =
+            "feedback ok show";
+
+        title.textContent =
+            "△ DECISIÓN ACEPTABLE +" +
+            points +
+            " XP";
+
+    }
+
+    else{
+
+        feedback.className =
+            "feedback bad show";
+
+        title.textContent =
+            "✕ DECISIÓN DÉBIL";
+
+    }
+
+
+    text.textContent =
+        option.feedback;
+
+
+    if(player.lives <= 0){
+
+        setTimeout(
+            () => {
+
+                alert(
+                    "Te quedaste sin vidas. La llamada terminó."
+                );
+
+                showScreen("dashboard");
+
+            },
+            300
+        );
+
+    }
+
+}
+
+
+/* =====================================
+   RESPUESTAS DEL PROSPECTO
+===================================== */
+
+function getResponse(option){
+
+    let next =
+        conversation[option.next];
+
+
+    if(
+        !next ||
+        next.end
+    ){
+
+        return "";
+    }
+
+
+    return next.prospect;
+
+}
+
+
+/* =====================================
+   CONTINUAR CONVERSACIÓN
+===================================== */
+
+function continueConversation(){
+
+    let node =
+        conversation[currentNode];
+
+
+    let last =
+        callHistory[
+            callHistory.length - 1
+        ];
+
+
+    if(!last){
+
+        return;
+    }
+
+
+    let selected =
+        node.options.find(
+            option =>
+            option.text === last.text
+        );
+
+
+    if(!selected){
+
+        return;
+    }
+
+
+    currentNode =
+        selected.next;
+
+
+    loadNode();
+
+}
+
+
+/* =====================================
+   FINALIZAR NIVEL
+===================================== */
+
+function finishLevel(){
+
+    showScreen("result");
+
+
+    let total =
+        callHistory.length;
+
+
+    let score =
+        Math.min(
+            Math.round(
+                callScore.total /
+                Math.max(total * 30,1) *
+                100
+            ),
+            100
+        );
+
+
+    let discovery =
+        Math.min(
+            Math.round(
+                callScore.discovery /
+                Math.max(total,1) *
+                100
+            ),
+            100
+        );
+
+
+    let depth =
+        Math.min(
+            Math.round(
+                callScore.depth /
+                Math.max(total,1) *
+                100
+            ),
+            100
+        );
+
+
+    let control =
+        Math.min(
+            Math.round(
+                callScore.control /
+                Math.max(total,1) *
+                100
+            ),
+            100
+        );
+
+
+    let criteria =
+        Math.min(
+            Math.round(
+                callScore.criteria /
+                Math.max(total,1) *
+                100
+            ),
+            100
+        );
+
+
+    document.getElementById("finalScore")
+        .textContent =
+        score;
+
+
+    document.getElementById("discoveryScore")
+        .textContent =
+        discovery + "%";
+
+
+    document.getElementById("depthScore")
+        .textContent =
+        depth + "%";
+
+
+    document.getElementById("controlScore")
+        .textContent =
+        control + "%";
+
+
+    document.getElementById("criteriaScore")
+        .textContent =
+        criteria + "%";
+
+
+    let message;
+
+
+    if(score >= 85){
+
+        message =
+        "Excelente desempeño. No intentaste solucionar demasiado rápido y lograste mantener el foco en entender al prospecto. Estás desarrollando criterio de closer.";
+
+    }
+
+    else if(score >= 60){
+
+        message =
+        "Buen trabajo. Tenés una base sólida, pero todavía tendés a buscar soluciones antes de terminar de descubrir el problema.";
+
+    }
+
+    else{
+
+        message =
+        "Necesitás seguir entrenando. Tu principal área de mejora es escuchar y profundizar antes de intentar solucionar.";
+
+    }
+
+
+    document.getElementById("resultMessage")
+        .textContent =
+        message;
+
+
+    updateUI();
+
+}
+
+
+/* =====================================
+   INICIO
+===================================== */
+
+updateUI();
 
 </script>
 
