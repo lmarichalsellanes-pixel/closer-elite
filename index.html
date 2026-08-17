@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1429,6 +1432,7 @@ h1{
 </div>
 <script>
 
+
 /* =====================================
    ESTADO DEL JUGADOR
 ===================================== */
@@ -2021,22 +2025,6 @@ future:{
     ]
 
 },
-        {
-            text:
-            "Entiendo. A nadie le gusta trabajar así.",
-
-            quality:"ok",
-
-            feedback:
-            "La empatía está bien, pero podrías aprovechar la frase para profundizar.",
-
-            next:"goal"
-        }
-
-    ]
-
-},
-
 
 goal:{
 
@@ -2640,3 +2628,630 @@ emotion:{
     ]
 
 },
+
+/* =====================================
+   CIERRE DE LA CONVERSACIÓN
+===================================== */
+
+    trust:{
+        prospect:
+        "Puede ser que no confíe del todo, porque ya tuve experiencias en las que tuve que volver a revisar todo.",
+
+        options:[
+            {
+                text:"¿Qué tendría que pasar para que pudieras confiar en que otra persona lo haga bien?",
+                quality:"excellent",
+                feedback:"Muy buena. En lugar de discutir si confía o no, descubrís qué condición necesita para delegar.",
+                next:"finish"
+            },
+            {
+                text:"Entonces necesitás confiar más en tu equipo.",
+                quality:"bad",
+                feedback:"Estás diagnosticando al prospecto en lugar de investigar qué necesitaría para confiar.",
+                next:"finish"
+            },
+            {
+                text:"¿Cuántas personas tenés en tu equipo?",
+                quality:"ok",
+                feedback:"Es información útil, pero todavía no profundiza en qué tendría que cambiar.",
+                next:"finish"
+            },
+            {
+                text:"Nuestro programa te va a enseñar a delegar.",
+                quality:"bad",
+                feedback:"Te adelantaste a vender antes de entender la necesidad.",
+                next:"finish"
+            }
+        ]
+    },
+
+    diagnosis:{
+        prospect:
+        "No sé exactamente. A veces siento que es organización y otras veces que simplemente tengo demasiadas cosas encima.",
+
+        options:[
+            {
+                text:"¿En qué momentos sentís más fuerte esa falta de organización?",
+                quality:"excellent",
+                feedback:"Bien. En vez de aceptar tu propio diagnóstico, buscás ejemplos concretos.",
+                next:"daily"
+            },
+            {
+                text:"Entonces el problema es la organización.",
+                quality:"bad",
+                feedback:"No podés convertir una hipótesis en diagnóstico todavía.",
+                next:"daily"
+            },
+            {
+                text:"¿Cuánto facturás?",
+                quality:"ok",
+                feedback:"Es un dato relevante, pero no responde qué está pasando en la operación.",
+                next:"revenue"
+            },
+            {
+                text:"Podemos ayudarte a organizarte.",
+                quality:"bad",
+                feedback:"Venta prematura.",
+                next:"daily"
+            }
+        ]
+    },
+
+    revenue:{
+        prospect:
+        "Estoy alrededor de tres mil dólares al mes, pero siento que podría estar mucho más arriba si no estuviera apagando incendios todo el tiempo.",
+
+        options:[
+            {
+                text:"¿Qué tendría que cambiar para que puedas crecer sin que todo siga dependiendo de vos?",
+                quality:"excellent",
+                feedback:"Excelente. Volvés del número al mecanismo que está frenando el crecimiento.",
+                next:"gap"
+            },
+            {
+                text:"Entonces nuestro programa te puede llevar más arriba.",
+                quality:"bad",
+                feedback:"No prometas un resultado sin entender primero la situación.",
+                next:"gap"
+            },
+            {
+                text:"¿Hace cuánto facturás tres mil?",
+                quality:"ok",
+                feedback:"Es una pregunta válida, pero todavía podés explorar el cuello de botella.",
+                next:"gap"
+            },
+            {
+                text:"¿Por qué no facturás más?",
+                quality:"ok",
+                feedback:"Puede funcionar, aunque es una formulación más confrontativa.",
+                next:"gap"
+            }
+        ]
+    },
+
+    solution:{
+        prospect:
+        "No sé. Capaz necesito ordenar mejor los procesos, pero tampoco quiero sumar herramientas por sumar.",
+
+        options:[
+            {
+                text:"¿Qué tendría que estar resuelto para que sintieras que el problema realmente desapareció?",
+                quality:"excellent",
+                feedback:"Muy buena. Definís el resultado deseado antes de hablar de herramientas.",
+                next:"finish"
+            },
+            {
+                text:"Entonces necesitás un CRM.",
+                quality:"bad",
+                feedback:"Estás asumiendo la solución antes de entender el problema.",
+                next:"finish"
+            },
+            {
+                text:"¿Qué herramientas usás hoy?",
+                quality:"ok",
+                feedback:"Puede aportar contexto, pero todavía falta entender qué resultado necesita.",
+                next:"finish"
+            },
+            {
+                text:"Nosotros tenemos una herramienta para eso.",
+                quality:"bad",
+                feedback:"Venta prematura.",
+                next:"finish"
+            }
+        ]
+    },
+
+    current:{
+        prospect:
+        "Sí. Sigo haciendo yo gran parte del seguimiento porque no quiero que vuelva a pasar lo mismo.",
+
+        options:[
+            {
+                text:"¿Qué tendría que pasar para que pudieras dejar ese seguimiento en manos de otra persona?",
+                quality:"excellent",
+                feedback:"Excelente. Estás descubriendo la condición necesaria para cambiar el comportamiento actual.",
+                next:"finish"
+            },
+            {
+                text:"Entonces claramente no confiás en tu equipo.",
+                quality:"ok",
+                feedback:"Puede ser, pero es mejor que el prospecto explique qué le impide delegarlo.",
+                next:"finish"
+            },
+            {
+                text:"¿Cuánto tiempo te lleva por semana?",
+                quality:"ok",
+                feedback:"Cuantificar ayuda, pero todavía podés descubrir la causa.",
+                next:"finish"
+            },
+            {
+                text:"Necesitás contratar a alguien para seguimiento.",
+                quality:"bad",
+                feedback:"Estás solucionando antes de comprender.",
+                next:"finish"
+            }
+        ]
+    },
+
+    pressure:{
+        prospect:
+        "Sí, sé que tengo que cambiar algo, pero no quiero tomar una decisión apurado y equivocarme otra vez.",
+
+        options:[
+            {
+                text:"¿Qué necesitarías tener claro para poder tomar una decisión con tranquilidad?",
+                quality:"excellent",
+                feedback:"Excelente. No presionás: descubrís qué necesita para decidir.",
+                next:"finish"
+            },
+            {
+                text:"Si no decidís ahora, vas a seguir igual.",
+                quality:"bad",
+                feedback:"Estás creando presión en lugar de comprender la indecisión.",
+                next:"finish"
+            },
+            {
+                text:"¿Cuánto cuesta tu problema hoy?",
+                quality:"ok",
+                feedback:"Puede ser útil, aunque primero conviene entender qué necesita para sentirse seguro.",
+                next:"finish"
+            },
+            {
+                text:"Entonces te explico por qué deberías hacerlo.",
+                quality:"bad",
+                feedback:"Entraste en modo persuasión antes de aislar la duda.",
+                next:"finish"
+            }
+        ]
+    },
+
+    end:{
+        end:true
+    }
+
+};
+
+/* =====================================
+   NAVEGACIÓN
+===================================== */
+
+function showScreen(id){
+    document.querySelectorAll(".screen").forEach(
+        screen => screen.classList.remove("active")
+    );
+
+    const screen = document.getElementById(id);
+
+    if(screen){
+        screen.classList.add("active");
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+function startLevel(){
+    currentNode = "start";
+    callHistory = [];
+    callScore = {
+        discovery:0,
+        depth:0,
+        control:0,
+        criteria:0,
+        total:0
+    };
+    answered = false;
+
+    showScreen("training");
+    loadNode();
+}
+
+function loadNode(){
+
+    answered = false;
+
+    const node = conversation[currentNode];
+
+    if(!node){
+        finishLevel();
+        return;
+    }
+
+    if(node.end){
+        finishLevel();
+        return;
+    }
+
+    const decisionNumber = callHistory.length + 1;
+
+    document.getElementById("questionNumber").textContent =
+        "Decisión " + decisionNumber + " de 6";
+
+    const progress = Math.min(
+        callHistory.length / 6 * 100,
+        100
+    );
+
+    document.getElementById("callProgress").style.width =
+        progress + "%";
+
+    document.getElementById("context").textContent =
+        "Estás en una llamada de discovery. Escuchá antes de intentar solucionar.";
+
+    const chat = document.getElementById("chat");
+    chat.innerHTML = "";
+
+    /* Mostrar toda la conversación anterior */
+    callHistory.forEach(item => {
+
+        const you = document.createElement("div");
+        you.className = "chat-message you";
+
+        you.innerHTML = `
+            <div class="speaker">VOS</div>
+            <div class="bubble">${escapeHTML(item.text)}</div>
+        `;
+
+        chat.appendChild(you);
+
+        const prospect = document.createElement("div");
+        prospect.className = "chat-message prospect";
+
+        prospect.innerHTML = `
+            <div class="speaker">PROSPECTO</div>
+            <div class="bubble">${escapeHTML(item.response)}</div>
+        `;
+
+        chat.appendChild(prospect);
+    });
+
+    /* Mostrar la respuesta actual del prospecto */
+    const currentProspect = document.createElement("div");
+    currentProspect.className = "chat-message prospect";
+
+    currentProspect.innerHTML = `
+        <div class="speaker">PROSPECTO</div>
+        <div class="bubble">${escapeHTML(node.prospect)}</div>
+    `;
+
+    chat.appendChild(currentProspect);
+
+    const options = document.getElementById("options");
+    options.innerHTML = "";
+
+    const feedback = document.getElementById("feedback");
+    feedback.className = "feedback";
+    feedback.innerHTML = `
+        <div class="feedback-title" id="feedbackTitle"></div>
+        <div class="feedback-text" id="feedbackText"></div>
+        <button class="next-button" onclick="continueConversation()">
+            CONTINUAR
+        </button>
+    `;
+
+    let shuffledOptions = node.options.map(
+        (option,index) => ({
+            option,
+            originalIndex:index
+        })
+    );
+
+    for(let i = shuffledOptions.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [shuffledOptions[i], shuffledOptions[j]] =
+        [shuffledOptions[j], shuffledOptions[i]];
+    }
+
+    shuffledOptions.forEach(
+        (item,displayIndex) => {
+
+            const button =
+                document.createElement("button");
+
+            button.className = "option";
+
+            button.innerHTML = `
+                ${String.fromCharCode(65 + displayIndex)}.
+                ${escapeHTML(item.option.text)}
+            `;
+
+            button.onclick =
+                () => chooseOption(item.originalIndex);
+
+            options.appendChild(button);
+        }
+    );
+}
+
+function chooseOption(index){
+
+    if(answered){
+        return;
+    }
+
+    const node = conversation[currentNode];
+
+    if(!node || !node.options || !node.options[index]){
+        return;
+    }
+
+    answered = true;
+
+    const option = node.options[index];
+
+    callHistory.push({
+        text: option.text,
+        response: node.prospect
+    });
+
+    player.decisions++;
+
+    if(option.quality === "excellent"){
+
+        player.goodDecisions++;
+        player.xp += 100;
+        player.streak++;
+
+        if(player.streak > player.bestStreak){
+            player.bestStreak = player.streak;
+        }
+
+        callScore.total += 100;
+
+        callScore.discovery += 25;
+        callScore.depth += 25;
+        callScore.control += 25;
+        callScore.criteria += 25;
+
+    } else if(option.quality === "ok"){
+
+        player.xp += 50;
+        player.streak = 0;
+        callScore.total += 50;
+
+        callScore.discovery += 12.5;
+        callScore.depth += 12.5;
+        callScore.control += 12.5;
+        callScore.criteria += 12.5;
+
+    } else {
+
+        player.lives = Math.max(
+            0,
+            player.lives - 1
+        );
+
+        player.streak = 0;
+    }
+
+    savePlayer();
+    updateUI();
+
+    const feedback = document.getElementById("feedback");
+    const title = document.getElementById("feedbackTitle");
+    const text = document.getElementById("feedbackText");
+
+    feedback.className =
+        "feedback show " +
+        (
+            option.quality === "excellent"
+                ? "good"
+                : option.quality === "ok"
+                    ? "ok"
+                    : "bad"
+        );
+
+    title.textContent =
+        option.quality === "excellent"
+            ? "✓ Excelente decisión"
+            : option.quality === "ok"
+                ? "△ Decisión aceptable"
+                : "✕ Cuidado";
+
+    text.textContent = option.feedback;
+
+    document.querySelectorAll(".option").forEach(
+        button => button.disabled = true
+    );
+}
+
+function continueConversation(){
+
+    if(callHistory.length >= 6){
+        finishLevel();
+        return;
+    }
+
+    const lastNode = conversation[currentNode];
+
+    if(!lastNode || !lastNode.options){
+        finishLevel();
+        return;
+    }
+
+    /* La última opción elegida determina el siguiente nodo */
+    const lastAnswer =
+        callHistory[callHistory.length - 1];
+
+    const selectedOption =
+        lastNode.options.find(
+            option => option.text === lastAnswer.text
+        );
+
+    if(!selectedOption || !selectedOption.next){
+        finishLevel();
+        return;
+    }
+
+    currentNode = selectedOption.next;
+
+    loadNode();
+}
+
+function finishLevel(){
+
+    const total = 6 * 100;
+
+    const score =
+        Math.round(
+            Math.min(
+                callScore.total / total * 100,
+                100
+            )
+        );
+
+    document.getElementById("finalScore").textContent =
+        score;
+
+    document.getElementById("discoveryScore").textContent =
+        Math.round(callScore.discovery / 6) + "%";
+
+    document.getElementById("depthScore").textContent =
+        Math.round(callScore.depth / 6) + "%";
+
+    document.getElementById("controlScore").textContent =
+        Math.round(callScore.control / 6) + "%";
+
+    document.getElementById("criteriaScore").textContent =
+        Math.round(callScore.criteria / 6) + "%";
+
+    let message =
+        "Buen trabajo. La clave es escuchar, profundizar y evitar solucionar antes de entender.";
+
+    if(score >= 80){
+        message =
+            "Muy buen criterio comercial. Estás escuchando antes de vender y haciendo preguntas que profundizan.";
+    } else if(score < 50){
+        message =
+            "Necesitás trabajar el discovery. Estás tendiendo a diagnosticar o solucionar demasiado rápido.";
+    }
+
+    document.getElementById("resultMessage").textContent =
+        message;
+
+    savePlayer();
+    updateUI();
+    showScreen("result");
+}
+
+function updateUI(){
+
+    document.getElementById("streak").textContent =
+        player.streak;
+
+    document.getElementById("lives").textContent =
+        player.lives;
+
+    document.getElementById("xp").textContent =
+        player.xp;
+
+    document.getElementById("completed").textContent =
+        player.decisions;
+
+    const accuracy =
+        player.decisions > 0
+            ? Math.round(
+                player.goodDecisions /
+                player.decisions *
+                100
+            )
+            : 0;
+
+    document.getElementById("accuracy").textContent =
+        accuracy + "%";
+
+    document.getElementById("bestStreak").textContent =
+        player.bestStreak;
+
+    document.getElementById("xpProgress").textContent =
+        player.xp + " XP";
+
+    document.getElementById("progress").style.width =
+        Math.min(player.xp / 1000 * 100,100) + "%";
+
+    document.getElementById("statsAccuracy").textContent =
+        accuracy + "%";
+
+    document.getElementById("statDiscovery").textContent =
+        accuracy + "%";
+
+    document.getElementById("statDepth").textContent =
+        accuracy + "%";
+
+    document.getElementById("statControl").textContent =
+        accuracy + "%";
+
+    document.getElementById("barDiscovery").style.width =
+        accuracy + "%";
+
+    document.getElementById("barDepth").style.width =
+        accuracy + "%";
+
+    document.getElementById("barControl").style.width =
+        accuracy + "%";
+
+    const rank =
+        document.getElementById("rank");
+
+    if(player.xp >= 1000){
+        rank.textContent = "CLOSER ELITE";
+    } else if(player.xp >= 700){
+        rank.textContent = "CLOSER AVANZADO";
+    } else if(player.xp >= 400){
+        rank.textContent = "SETTER INTERMEDIO";
+    } else {
+        rank.textContent = "SETTER NOVATO";
+    }
+}
+
+function savePlayer(){
+
+    localStorage.setItem(
+        "closerElitePlayer",
+        JSON.stringify(player)
+    );
+}
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+/* =====================================
+   INICIO
+===================================== */
+
+updateUI();
+showScreen("dashboard");
+
+</script>
+</body>
+</html>
