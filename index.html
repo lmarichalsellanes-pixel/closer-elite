@@ -4,520 +4,2353 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Closer Elite — Motor de Conversaciones</title>
+
 <style>
-:root{--bg:#090a0e;--panel:#151720;--panel2:#1b1e29;--line:#2b2f3d;--text:#f5f5f7;--muted:#9a9daa;--purple:#8b5cf6;--purple2:#a78bfa;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button{font:inherit}.top{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;background:#0b0c10;z-index:5}.logo{font-weight:900;font-size:25px}.logo span{color:var(--purple)}.stats{display:flex;gap:24px;color:#ddd}.app{max-width:1120px;margin:0 auto;padding:34px 24px 70px}.eyebrow{color:var(--purple2);font-weight:800;letter-spacing:3px;font-size:12px}.hero h1{font-size:54px;line-height:.98;margin:12px 0}.hero p{color:var(--muted);font-size:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;margin-top:22px}.levels{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.level{cursor:pointer;transition:.15s}.level:hover{transform:translateY(-2px);border-color:var(--purple)}.level h3{margin:0 0 8px}.level p{color:var(--muted);margin:0}.bar{height:8px;background:#262936;border-radius:99px;overflow:hidden;margin:18px 0}.bar i{display:block;height:100%;background:var(--purple);width:0}.primary{width:100%;border:0;background:var(--purple);color:white;padding:16px;border-radius:12px;font-weight:800;cursor:pointer}.primary:hover{background:#7c4ff0}.screen{display:none}.screen.active{display:block}.back{background:none;border:1px solid var(--line);color:white;border-radius:10px;padding:10px 14px;cursor:pointer}.scenarioHead{display:flex;justify-content:space-between;align-items:center;gap:20px}.scenarioTitle{font-size:30px;margin:8px 0}.progress{height:6px;background:#252834;border-radius:99px;margin:18px 0 24px}.progress i{display:block;height:100%;background:var(--purple);border-radius:99px}.coach{border-left:3px solid var(--purple);background:#171923;padding:17px 18px;border-radius:0 12px 12px 0;color:#c8c9d0;margin-bottom:18px}.speaker{color:var(--purple2);font-size:12px;letter-spacing:2px;font-weight:900;margin:18px 0 8px}.prospect{background:#20232d;border:1px solid #303442;padding:22px;border-radius:15px;font-size:18px;line-height:1.55}.question{font-size:16px;font-weight:800;margin:24px 0 12px}.options{display:grid;gap:12px}.opt{background:#151720;border:1px solid #303442;color:#eee;text-align:left;padding:17px;border-radius:13px;cursor:pointer}.opt:hover{border-color:var(--purple2)}.feedback{margin-top:18px;border-radius:15px;padding:18px;display:none}.feedback.good{display:block;background:#102318;border:1px solid #245b37}.feedback.ok{display:block;background:#221e10;border:1px solid #66501d}.feedback.bad{display:block;background:#251416;border:1px solid #673036}.feedback strong{display:block;margin-bottom:7px}.next{margin-top:14px}.result{text-align:center}.score{font-size:92px;font-weight:900}.chips{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.chip{background:var(--panel);border:1px solid var(--line);padding:18px;border-radius:14px;text-align:left}.chip b{display:block;font-size:20px}.small{color:var(--muted);font-size:14px}.notice{background:#151720;border:1px solid var(--line);padding:15px;border-radius:12px;color:#bfc0c8;margin-top:14px}.footerNote{color:#777b89;font-size:13px;margin-top:20px}
-@media(max-width:700px){.levels,.chips{grid-template-columns:1fr}.hero h1{font-size:42px}.top{padding:0 18px}.stats{gap:10px;font-size:12px}}
+:root{
+  --bg:#090a0e;
+  --panel:#151720;
+  --panel2:#1b1e29;
+  --line:#2b2f3d;
+  --text:#f5f5f7;
+  --muted:#9a9daa;
+  --purple:#8b5cf6;
+  --purple2:#a78bfa;
+  --green:#22c55e;
+  --red:#ef4444;
+  --yellow:#f59e0b
+}
+
+*{
+  box-sizing:border-box
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+}
+
+button{
+  font:inherit
+}
+
+.top{
+  height:72px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 34px;
+  position:sticky;
+  top:0;
+  background:#0b0c10;
+  z-index:5
+}
+
+.logo{
+  font-weight:900;
+  font-size:25px
+}
+
+.logo span{
+  color:var(--purple)
+}
+
+.stats{
+  display:flex;
+  gap:24px;
+  color:#ddd
+}
+
+.app{
+  max-width:1120px;
+  margin:0 auto;
+  padding:34px 24px 70px
+}
+
+.eyebrow{
+  color:var(--purple2);
+  font-weight:800;
+  letter-spacing:3px;
+  font-size:12px
+}
+
+.hero h1{
+  font-size:54px;
+  line-height:.98;
+  margin:12px 0
+}
+
+.hero p{
+  color:var(--muted);
+  font-size:18px
+}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px;
+  margin-top:22px
+}
+
+.levels{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px
+}
+
+.level{
+  cursor:pointer;
+  transition:.15s
+}
+
+.level:hover{
+  transform:translateY(-2px);
+  border-color:var(--purple)
+}
+
+.level h3{
+  margin:0 0 8px
+}
+
+.level p{
+  color:var(--muted);
+  margin:0
+}
+
+.bar{
+  height:8px;
+  background:#262936;
+  border-radius:99px;
+  overflow:hidden;
+  margin:18px 0
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  background:var(--purple);
+  width:0
+}
+
+.primary{
+  width:100%;
+  border:0;
+  background:var(--purple);
+  color:white;
+  padding:16px;
+  border-radius:12px;
+  font-weight:800;
+  cursor:pointer
+}
+
+.primary:hover{
+  background:#7c4ff0
+}
+
+.screen{
+  display:none
+}
+
+.screen.active{
+  display:block
+}
+
+.back{
+  background:none;
+  border:1px solid var(--line);
+  color:white;
+  border-radius:10px;
+  padding:10px 14px;
+  cursor:pointer
+}
+
+.scenarioHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px
+}
+
+.scenarioTitle{
+  font-size:30px;
+  margin:8px 0
+}
+
+.progress{
+  height:6px;
+  background:#252834;
+  border-radius:99px;
+  margin:18px 0 24px
+}
+
+.progress i{
+  display:block;
+  height:100%;
+  background:var(--purple);
+  border-radius:99px
+}
+
+.coach{
+  border-left:3px solid var(--purple);
+  background:#171923;
+  padding:17px 18px;
+  border-radius:0 12px 12px 0;
+  color:#c8c9d0;
+  margin-bottom:18px
+}
+
+.speaker{
+  color:var(--purple2);
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:900;
+  margin:18px 0 8px
+}
+
+.prospect{
+  background:#20232d;
+  border:1px solid #303442;
+  padding:22px;
+  border-radius:15px;
+  font-size:18px;
+  line-height:1.55
+}
+
+.question{
+  font-size:16px;
+  font-weight:800;
+  margin:24px 0 12px
+}
+
+.options{
+  display:grid;
+  gap:12px
+}
+
+.opt{
+  background:#151720;
+  border:1px solid #303442;
+  color:#eee;
+  text-align:left;
+  padding:17px;
+  border-radius:13px;
+  cursor:pointer
+}
+
+.opt:hover{
+  border-color:var(--purple2)
+}
+
+.feedback{
+  margin-top:18px;
+  border-radius:15px;
+  padding:18px;
+  display:none
+}
+
+.feedback.good{
+  display:block;
+  background:#102318;
+  border:1px solid #245b37
+}
+
+.feedback.ok{
+  display:block;
+  background:#221e10;
+  border:1px solid #66501d
+}
+
+.feedback.bad{
+  display:block;
+  background:#251416;
+  border:1px solid #673036
+}
+
+.feedback strong{
+  display:block;
+  margin-bottom:7px
+}
+
+.next{
+  margin-top:14px
+}
+
+.result{
+  text-align:center
+}
+
+.score{
+  font-size:92px;
+  font-weight:900
+}
+
+.chips{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px
+}
+
+.chip{
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:18px;
+  border-radius:14px;
+  text-align:left
+}
+
+.chip b{
+  display:block;
+  font-size:20px
+}
+
+.small{
+  color:var(--muted);
+  font-size:14px
+}
+
+.notice{
+  background:#151720;
+  border:1px solid var(--line);
+  padding:15px;
+  border-radius:12px;
+  color:#bfc0c8;
+  margin-top:14px
+}
+
+.footerNote{
+  color:#777b89;
+  font-size:13px;
+  margin-top:20px
+}
+
+@media(max-width:700px){
+  .levels,
+  .chips{
+    grid-template-columns:1fr
+  }
+
+  .hero h1{
+    font-size:42px
+  }
+
+  .top{
+    padding:0 18px
+  }
+
+  .stats{
+    gap:10px;
+    font-size:12px
+  }
+}
 </style>
 </head>
+
 <body>
+
 <header class="top">
   <div class="logo">CLOSER <span>ELITE</span></div>
-  <div class="stats"><span>🔥 <b id="streak">0</b></span><span>❤️ <b id="lives">3</b></span><span>⭐ <b id="xp">0</b></span></div>
+
+  <div class="stats">
+    <span>🔥 <b id="streak">0</b></span>
+    <span>❤️ <b id="lives">3</b></span>
+    <span>⭐ <b id="xp">0</b></span>
+  </div>
 </header>
 
 <main class="app">
+
   <section id="dashboard" class="screen active">
+
     <div class="hero">
       <div class="eyebrow">ENTRENAMIENTO DE CLOSING</div>
-      <h1>Entrená.<br>Decidí.<br>Cerrá.</h1>
-      <p>No memorices respuestas. Aprendé a leer qué está pasando en una conversación.</p>
+
+      <h1>
+        Entrená.<br>
+        Decidí.<br>
+        Cerrá.
+      </h1>
+
+      <p>
+        No memorices respuestas.
+        Aprendé a leer qué está pasando en una conversación.
+      </p>
     </div>
+
     <div class="card">
+
       <div class="small">TU RANGO ACTUAL</div>
+
       <h2 id="rank">SETTER NOVATO</h2>
-      <div class="bar"><i id="xpbar"></i></div>
-      <div class="small"><span id="xpleft">0 XP</span> · <span id="xpright">1000 XP</span></div>
+
+      <div class="bar">
+        <i id="xpbar"></i>
+      </div>
+
+      <div class="small">
+        <span id="xpleft">0 XP</span>
+        ·
+        <span id="xpright">4000 XP</span>
+      </div>
+
     </div>
+
     <div class="levels" id="levels"></div>
+
   </section>
+
 
   <section id="game" class="screen">
+
     <div class="scenarioHead">
-      <div><button class="back" onclick="goDashboard()">← Dashboard</button><div class="eyebrow" id="blockEyebrow"></div><div class="scenarioTitle" id="scenarioTitle"></div></div>
-      <div class="small" id="scenarioCounter"></div>
+
+      <div>
+
+        <button
+          class="back"
+          onclick="goDashboard()">
+          ← Dashboard
+        </button>
+
+        <div
+          class="eyebrow"
+          id="blockEyebrow">
+        </div>
+
+        <div
+          class="scenarioTitle"
+          id="scenarioTitle">
+        </div>
+
+      </div>
+
+      <div
+        class="small"
+        id="scenarioCounter">
+      </div>
+
     </div>
-    <div class="progress"><i id="prog"></i></div>
-    <div class="coach" id="coach"></div>
-    <div class="speaker">PROSPECTO</div>
-    <div class="prospect" id="prospectText"></div>
-    <div class="question">¿Qué hacés?</div>
-    <div class="options" id="options"></div>
-    <div id="feedback" class="feedback"></div>
-    <button id="nextBtn" class="primary next" style="display:none" onclick="nextTurn()">CONTINUAR</button>
+
+    <div class="progress">
+      <i id="prog"></i>
+    </div>
+
+    <div
+      class="coach"
+      id="coach">
+    </div>
+
+    <div class="speaker">
+      PROSPECTO
+    </div>
+
+    <div
+      class="prospect"
+      id="prospectText">
+    </div>
+
+    <div class="question">
+      ¿Qué hacés?
+    </div>
+
+    <div
+      class="options"
+      id="options">
+    </div>
+
+    <div
+      id="feedback"
+      class="feedback">
+    </div>
+
+    <button
+      id="nextBtn"
+      class="primary next"
+      style="display:none"
+      onclick="nextTurn()">
+      CONTINUAR
+    </button>
+
   </section>
+
 
   <section id="result" class="screen result">
-    <div class="eyebrow" id="resultBlock"></div>
-    <h1>ENTRENAMIENTO COMPLETADO</h1>
-    <div class="score" id="finalScore">0</div>
-    <div class="small">SCORE DE CLOSER</div>
-    <div class="chips" style="margin-top:25px">
-      <div class="chip"><b id="rDiscovery">0%</b><span class="small">Discovery</span></div>
-      <div class="chip"><b id="rDepth">0%</b><span class="small">Profundidad</span></div>
-      <div class="chip"><b id="rControl">0%</b><span class="small">Control</span></div>
-      <div class="chip"><b id="rCriteria">0%</b><span class="small">Criterio</span></div>
+
+    <div
+      class="eyebrow"
+      id="resultBlock">
     </div>
-    <div class="card" id="evaluation"></div>
-    <button class="primary" onclick="goDashboard()">VOLVER AL DASHBOARD</button>
+
+    <h1>
+      ENTRENAMIENTO COMPLETADO
+    </h1>
+
+    <div
+      class="score"
+      id="finalScore">
+      0
+    </div>
+
+    <div class="small">
+      SCORE DE CLOSER
+    </div>
+
+    <div
+      class="chips"
+      style="margin-top:25px">
+
+      <div class="chip">
+        <b id="rDiscovery">0%</b>
+        <span class="small">Discovery</span>
+      </div>
+
+      <div class="chip">
+        <b id="rDepth">0%</b>
+        <span class="small">Profundidad</span>
+      </div>
+
+      <div class="chip">
+        <b id="rControl">0%</b>
+        <span class="small">Control</span>
+      </div>
+
+      <div class="chip">
+        <b id="rCriteria">0%</b>
+        <span class="small">Criterio</span>
+      </div>
+
+    </div>
+
+    <div
+      class="card"
+      id="evaluation">
+    </div>
+
+    <button
+      class="primary"
+      onclick="goDashboard()">
+      VOLVER AL DASHBOARD
+    </button>
+
   </section>
+
 </main>
 
+
 <script>
+
 /* ============================================================
    CLOSER ELITE — MOTOR DE CONVERSACIÓN COHERENTE
-   La regla estructural es:
-   pregunta elegida -> intent -> respuesta específica -> nuevo estado.
-   Nunca se reutiliza una respuesta genérica para otra pregunta.
+
+   REGLA:
+   pregunta elegida
+   ->
+   intent
+   ->
+   respuesta específica
+   ->
+   nuevo estado.
+
+   Nunca se reutiliza una respuesta genérica
+   para otra pregunta.
    ============================================================ */
 
+
 const blockDefs = [
- {id:"discovery",name:"LEVEL 1 — DISCOVERY",desc:"Entendé qué está pasando antes de intentar vender.",coach:"Escuchá al prospecto. Tu objetivo es entender, no solucionar."},
- {id:"gap",name:"LEVEL 2 — GAP",desc:"Conectá situación actual con lo que necesita cambiar.",coach:"El GAP no es preguntar por preguntar: encontrá la distancia entre hoy y lo que quiere conseguir."},
- {id:"dolor",name:"LEVEL 3 — DOLOR",desc:Entendé qué impacto tiene el problema si nada cambia.,coach:"No empujes. Descubrí qué le cuesta realmente seguir igual."},
- {id:"urgencia",name:"LEVEL 4 — URGENCIA",desc:"Entendé por qué esto importa ahora.",coach:"Urgencia real = consecuencia + momento + decisión. No presión artificial."},
- {id:"objeciones",name:"LEVEL 5 — OBJECIONES",desc:"Aprendé a pensar cuando aparece resistencia.",coach:"No rebatas automáticamente. Primero descubrí qué significa la objeción."}
+
+  {
+    id:"discovery",
+    name:"LEVEL 1 — DISCOVERY",
+    desc:"Entendé qué está pasando antes de intentar vender.",
+    coach:"Escuchá al prospecto. Tu objetivo es entender, no solucionar."
+  },
+
+  {
+    id:"gap",
+    name:"LEVEL 2 — GAP",
+    desc:"Conectá situación actual con lo que necesita cambiar.",
+    coach:"El GAP no es preguntar por preguntar: encontrá la distancia entre hoy y lo que quiere conseguir."
+  },
+
+  {
+    id:"dolor",
+    name:"LEVEL 3 — DOLOR",
+    desc:"Entendé qué impacto tiene el problema si nada cambia.",
+    coach:"No empujes. Descubrí qué le cuesta realmente seguir igual."
+  },
+
+  {
+    id:"urgencia",
+    name:"LEVEL 4 — URGENCIA",
+    desc:"Entendé por qué esto importa ahora.",
+    coach:"Urgencia real = consecuencia + momento + decisión. No presión artificial."
+  },
+
+  {
+    id:"objeciones",
+    name:"LEVEL 5 — OBJECIONES",
+    desc:"Aprendé a pensar cuando aparece resistencia.",
+    coach:"No rebatas automáticamente. Primero descubrí qué significa la objeción."
+  }
+
 ];
 
-/* 10 arquetipos por bloque x 5 variantes = 50 situaciones.
-   Los bloques tienen bancos distintos: no se reciclan situaciones. */
+
+/* ============================================================
+   BANCOS
+   ============================================================ */
+
 const banks = {
- discovery:[
-  ["equipo","Siento que termino revisando todo lo que hace mi equipo.","Probé delegar algunas tareas, pero después vuelvo a meterme.","Cada revisión me termina comiendo horas que podría usar para crecer.","Me di cuenta una tarde en que terminé trabajando hasta después de cenar.","Quiero poder confiar en el equipo sin sentir que pierdo el control."],
-  ["tiempo","Últimamente siento que mi agenda no me deja avanzar.","Intenté organizarme por bloques y también usar una lista de prioridades.","Aun así, termino reaccionando a lo urgente y dejo lo importante para después.","Lo noté porque varias semanas terminaron igual aunque cambiara mi planificación.","Necesito recuperar tiempo sin bajar el nivel de lo que hago."],
-  ["ventas","Tengo meses donde vendo bien y otros donde parece que todo se frena.","Probé cambiar el guion y también hacer más seguimiento.","El problema es que no sé qué parte está fallando cuando baja la conversión.","Me di cuenta al comparar dos meses con la misma cantidad de oportunidades.","Quiero entender qué está pasando en mis conversaciones."],
-  ["clientes","Siento que algunos clientes me consumen muchísimo más de lo que deberían.","Intenté poner límites y ordenar mejor las entregas.","A veces termino haciendo excepciones y después todo se desordena.","Lo vi cuando un proyecto pequeño terminó ocupando casi el mismo tiempo que uno grande.","Quiero tener una forma más clara de trabajar con ellos."],
-  ["delegacion","Sé que debería delegar más, pero me cuesta soltar ciertas cosas.","Probé contratar ayuda para tareas operativas.","Terminé revisando o corrigiendo casi todo antes de dejarlo salir.","Me di cuenta de que la persona estaba avanzando, pero yo igual intervenía.","Quiero dejar de ser el cuello de botella."],
-  ["prioridades","Tengo muchas cosas abiertas y me cuesta decidir qué debería ir primero.","Probé usar prioridades y objetivos semanales.","Cuando aparece algo urgente, termino cambiando todo el orden.","Lo noté porque mis semanas están llenas pero siento poco avance real.","Quiero tomar decisiones con más criterio."],
-  ["estructura","Siento que el negocio funciona, pero depende demasiado de mí.","Probé documentar procesos y ordenar responsabilidades.","El problema es que cuando algo se sale del proceso vuelvo a resolverlo yo.","Lo vi cuando me fui unos días y varias decisiones terminaron esperándome.","Quiero que funcione sin estar encima de todo."],
-  ["confianza","Me cuesta confiar en que las cosas van a salir bien si no las controlo.","Intenté soltar algunas decisiones importantes.","Después termino preguntando, revisando y corrigiendo.","Me di cuenta de que incluso cuando no había errores yo igual necesitaba comprobarlo.","Quiero entender de dónde viene esa necesidad de control."],
-  ["crecimiento","Quiero crecer, pero siento que la operación actual me frena.","Intenté aumentar ventas antes de ordenar la parte interna.","Eso hizo que tuviera más movimiento pero también más problemas.","Lo vi cuando entraron más clientes y yo terminé más saturado.","Quiero crecer sin multiplicar el caos."],
-  ["decisiones","Me cuesta saber qué decisión tomar cuando tengo varias opciones.","Intenté buscar más información antes de decidir.","A veces termino acumulando información y postergando la decisión.","Me pasó con una inversión que llevo meses evaluando.","Quiero tener un criterio más claro para decidir."]
- ],
- gap:[
-  ["ingresos","Hoy estoy alrededor de 3.000 al mes, pero quiero llegar a 8.000.","Probé aumentar precios y también buscar más clientes.","Lo que todavía no tengo claro es qué tendría que cambiar para que ese salto sea sostenible.","Comparé mis meses y vi que vender más no siempre significó ganar más.","Quiero una ruta concreta entre mi situación actual y ese objetivo."],
-  ["libertad","Tengo ingresos relativamente buenos, pero sigo trabajando prácticamente todo el día.","Intenté contratar ayuda y también reducir algunas tareas.","El problema es que el negocio sigue necesitando demasiada atención mía.","Cuando me tomo un día libre, siento que tengo que volver y ponerme al día.","Quiero que el resultado económico no dependa de estar conectado todo el tiempo."],
-  ["liderazgo","Hoy tengo un equipo, pero todavía siento que yo tomo demasiadas decisiones.","Probé asignar responsables y hacer reuniones de seguimiento.","Aun así, muchas decisiones vuelven a mi mesa.","Cuando intento apartarme, aparecen preguntas que esperaba que resolvieran solos.","Quiero pasar de ejecutar a liderar de verdad."],
-  ["conversion","Tengo suficientes oportunidades, pero convierto menos de lo que esperaba.","Probé aumentar el volumen de llamadas y cambiar algunas preguntas.","Eso me dio más actividad, pero no solucionó la diferencia entre oportunidades y cierres.","Lo confirmé cuando comparé meses con más llamadas y casi la misma facturación.","Quiero entender qué falta entre una conversación y una decisión."],
-  ["sistema","Sé hacer el trabajo, pero no tengo un sistema que me permita repetirlo bien.","Intenté documentar lo que hago y usar herramientas.","Termino volviendo a mi forma manual porque me parece más rápido.","Cuando alguien nuevo entra, necesita demasiada explicación mía.","Quiero construir algo que otra persona pueda ejecutar."],
-  ["margen","Estoy facturando más que antes, pero el margen no mejora.","Intenté bajar costos y también vender servicios de mayor valor.","Parte del problema es que sigo poniendo demasiadas horas por cada cliente.","Lo vi cuando calculé cuánto realmente me queda después del tiempo invertido.","Quiero que crecer también signifique ganar mejor."],
-  ["foco","Tengo varias oportunidades, pero siento que ninguna recibe suficiente foco.","Intenté elegir una prioridad por trimestre.","Cuando aparece una oportunidad atractiva vuelvo a abrir frentes nuevos.","Terminé con más proyectos y menos claridad.","Quiero decidir qué merece realmente mi atención."],
-  ["capacidad","La demanda está, pero mi capacidad para atenderla es limitada.","Intenté sumar personas cuando aparecía más trabajo.","La incorporación siempre me genera más supervisión de la que esperaba.","Lo noté cuando crecer la demanda hizo crecer también mi carga.","Quiero aumentar capacidad sin convertirme en gerente de emergencias."],
-  ["previsibilidad","Hay meses buenos, pero no sé cuánto voy a cerrar el mes siguiente.","Intenté mejorar seguimiento y generar más oportunidades.","Todavía siento que el resultado depende demasiado de lo que ocurra esa semana.","Me di cuenta al mirar seis meses y ver una variación enorme.","Quiero una operación comercial más previsible."],
-  ["objetivo","Tengo claro que quiero crecer, pero no tengo claro qué debería cambiar primero.","Probé atacar varias áreas al mismo tiempo.","Eso hizo que avanzara un poco en todas y realmente no resolviera ninguna.","Lo noté porque después de meses sigo haciendo muchas de las mismas cosas.","Quiero saber cuál es la brecha principal que tengo que cerrar."]
- ],
- dolor:[
-  ["agotamiento","Estoy cansado de terminar el día sintiendo que hice muchísimo y no avancé.","Probé trabajar más temprano y organizar mejor la agenda.","Aun así, sigo cerrando el día con cosas importantes pendientes.","Me está pasando incluso en semanas donde no tengo problemas extraordinarios.","No quiero seguir sosteniendo este ritmo indefinidamente."],
-  ["familia","Mi trabajo está empezando a afectar el tiempo que tengo para mi familia.","Intenté poner horarios y dejar el teléfono después de cierta hora.","Cuando aparece un problema vuelvo a conectarme igual.","Ya hubo momentos en que estaba físicamente con mi familia pero pensando en el negocio.","No quiero que esto se convierta en la normalidad."],
-  ["equipo","Lo que más me frustra es tener gente y sentir que igual todo termina en mí.","Intenté explicar mejor y dar más autonomía.","Cuando algo sale distinto a como lo imaginaba, vuelvo a tomarlo.","Eso me hace sentir que contratar ayuda no solucionó el problema.","Quiero dejar de ser imprescindible para cada detalle."],
-  ["dinero","Me molesta que facture bien y aun así no sienta que estoy progresando.","Intenté vender más para compensarlo.","Terminé trabajando más y la mejora no fue proporcional.","Lo vi cuando comparé facturación con horas trabajadas.","Quiero que el esfuerzo tenga una relación más lógica con el resultado."],
-  ["autoexigencia","Sé que soy parte del problema porque me cuesta aceptar algo que no esté como yo lo haría.","Intenté bajar el nivel de control.","Me dura poco: encuentro algo para corregir y vuelvo a intervenir.","Me di cuenta de que muchas veces el resultado ya era suficiente.","Quiero poder exigir calidad sin necesitar hacerlo todo yo."],
-  ["frustracion","Siento que llevo tiempo intentando solucionar lo mismo.","Probé varias herramientas, cursos y cambios de proceso.","Cada cosa ayuda un poco, pero vuelvo al mismo patrón.","Lo frustrante es que ya invertí tiempo y dinero y no quiero repetirlo.","Necesito entender qué estoy haciendo distinto a lo que realmente necesito."],
-  ["estancamiento","No estoy mal, pero tampoco siento que esté avanzando.","Intenté aumentar actividad y sumar nuevos objetivos.","Eso me mantiene ocupado, pero no cambia demasiado el resultado.","Me di cuenta de que llevo varios meses con números parecidos.","Quiero salir de este punto sin simplemente trabajar más."],
-  ["caos","Cuando hay muchas cosas pasando siento que todo se vuelve urgente.","Intenté hacer listas y priorizar.","En la práctica, la urgencia de otros termina dominando mi día.","Hay semanas donde termino resolviendo problemas que ni siquiera deberían llegar a mí.","Quiero dejar de vivir apagando incendios."],
-  ["miedo","Hay decisiones que sé que debería tomar pero sigo postergando.","Intenté buscar más datos para sentirme seguro.","Cuanto más información tengo, más escenarios encuentro para dudar.","Me pasó con una contratación que sigo evaluando.","Quiero poder decidir sin necesitar certeza absoluta."],
-  ["control","Lo que más me cuesta reconocer es cuánto necesito controlar.","Intenté delegar para comprobar si podía soltar.","Cuando no tengo visibilidad, empiezo a imaginar problemas y vuelvo a revisar.","Eso termina afectando incluso mi descanso.","Quiero tener control del negocio sin controlar cada tarea."]
- ],
- urgencia:[
-  ["plazo","Hay una fecha concreta en la que necesito que esto esté funcionando mejor.","Intenté avanzar por mi cuenta durante las últimas semanas.","El problema es que el tiempo se está achicando y sigo con la misma dificultad.","Si llego a esa fecha igual, voy a tener que tomar decisiones más drásticas.","Necesito resolverlo antes de que llegue ese punto."],
-  ["cambio","Estoy por hacer un cambio importante en el negocio y no quiero llevar el mismo problema conmigo.","Intenté solucionarlo antes de dar el siguiente paso.","No conseguí resolverlo del todo y el cambio ya se acerca.","Si hago el cambio sin resolverlo, probablemente amplifique el problema.","Quiero llegar preparado."],
-  ["crecimiento","Estoy entrando en una etapa donde van a aumentar las ventas.","Intenté preparar al equipo con algunas tareas nuevas.","Todavía hay demasiadas cosas que dependen de mí.","Si el volumen sube como espero, eso puede convertirse en un cuello de botella serio.","Necesito corregirlo antes de que el crecimiento lo haga evidente."],
-  ["oportunidad","Tengo una oportunidad importante que podría cambiar mis números.","Intenté evaluar si puedo asumirla con la estructura actual.","La duda es que para aprovecharla tendría que funcionar de una manera que hoy todavía no funciona.","Si digo que sí sin ordenar esto, puedo ganar la oportunidad y perder el control.","Necesito decidir pronto."],
-  ["equipo","Una persona clave del equipo va a cambiar de rol o dejar de hacer una parte importante.","Intenté redistribuir sus tareas.","Me encontré con que varias cosas solo las sé hacer yo o sé yo dónde están.","Eso me mostró una dependencia que antes no veía.","Necesito solucionarlo antes del cambio."],
-  ["finanzas","Tengo una meta financiera para los próximos meses y no puedo seguir improvisando.","Intenté recortar gastos y aumentar actividad.","Eso no ataca el problema de fondo de cómo estoy generando y entregando valor.","Si sigo igual, la meta se vuelve cada vez menos probable.","Necesito cambiar algo ahora."],
-  ["saturacion","La cantidad de trabajo está aumentando y mi forma actual de operar ya no alcanza.","Intenté aguantar un poco más para ver si era algo temporal.","Cada semana termina siendo igual o peor.","Si sigue creciendo, la calidad va a empezar a caer.","No quiero esperar a que el problema explote."],
-  ["decision","Tengo que tomar una decisión importante en las próximas semanas.","Intenté posponerla hasta tener más claridad.","La espera no está haciendo que aparezca información nueva.","Cada semana que pasa también tiene un costo.","Necesito encontrar qué dato realmente me falta."],
-  ["competencia","Estoy viendo que otros se están moviendo más rápido que yo.","Intenté responder aumentando mi actividad.","Eso me hizo correr más, pero no necesariamente mejorar mi posición.","Si mantengo el mismo sistema, temo quedarme atrás.","Quiero saber qué tendría que cambiar primero."],
-  ["personal","Hay una razón personal por la que ya no quiero sostener esta situación.","Intenté aguantar y resolverlo gradualmente.","Pero cada vez me pesa más seguir igual.","Si no hago un cambio ahora, sé que voy a seguir postergándolo.","Necesito tomar una decisión distinta."]
- ],
- objeciones:[
-  ["precio","La inversión me parece alta para lo que tenía pensado gastar.","Intenté comparar alternativas más económicas antes de decidir.","El problema es que todavía no sé si la diferencia de precio realmente se justifica para mí.","Si no entiendo el retorno, me cuesta comprometerme.","Quiero tener claridad antes de decidir."],
-  ["tiempo","No sé si este es el momento porque tengo demasiadas cosas encima.","Intenté pensar cómo podría hacerlo encajar en mi agenda.","Si para hacerlo tengo que agregar otra cosa más, me preocupa abandonar a mitad de camino.","Necesito saber qué implicaría realmente en tiempo y ejecución.","No quiero comprar algo que después no pueda implementar."],
-  ["pareja","Necesito hablarlo con mi pareja antes de tomar una decisión.","Intenté explicarle por qué estoy considerando hacerlo.","La conversación depende de que yo pueda explicar qué cambia concretamente para nosotros.","No quiero llegar a casa diciendo simplemente que quiero gastar dinero.","Necesito poder justificar la decisión."],
-  ["confianza","Me interesa, pero todavía tengo dudas de si esto realmente funcionaría para mi situación.","Intenté mirar experiencias de otras personas.","Eso me ayuda, pero mi caso tiene algunas particularidades.","Necesito entender qué pasaría específicamente si esas particularidades aparecen en mi proceso.","Quiero reducir el riesgo de equivocarme."],
-  ["alternativa","Estoy considerando otra opción que cuesta menos.","Intenté comparar ambas y no quiero decidir solo por precio.","La alternativa parece más simple, aunque no sé si resuelve la parte que más me importa.","Necesito entender qué diferencia concreta habría en mi resultado.","No quiero pagar más por algo que no necesite."],
-  ["momento","Quizás debería esperar un par de meses.","Intenté imaginar qué tendría que cambiar para que entonces sí fuera el momento.","No estoy seguro de que esperar cambie la situación por sí solo.","Si sigo igual dos meses, probablemente tenga el mismo problema.","Necesito entender qué ganaría realmente esperando."],
-  ["experiencia","Ya hice cursos antes y algunos no me sirvieron demasiado.","Intenté aplicar lo aprendido, pero después de un tiempo volví a mis hábitos anteriores.","Por eso ahora soy más cuidadoso antes de invertir en otra cosa.","Necesito saber qué sería diferente esta vez.","No quiero repetir la misma experiencia."],
-  ["resultado","Me cuesta comprometerme sin saber qué resultado puedo esperar.","Intenté mirar números y casos anteriores.","Sé que nadie puede garantizarme un resultado, pero necesito entender qué variables sí puedo controlar.","Si eso está claro, puedo evaluar el riesgo de otra manera.","Quiero saber qué depende de mí."],
-  ["prioridad","No sé si esto es realmente mi prioridad número uno ahora.","Intenté ordenar todos los problemas que tengo.","Hay varias cosas importantes, pero esta aparece repetidamente cuando miro lo que me está frenando.","Necesito entender si resolver esto desbloquearía las demás cosas.","No quiero atacar el problema equivocado."],
-  ["decision","Siento que estoy cerca de decidir, pero todavía hay algo que me frena.","Intenté identificar qué es y fui descartando algunas dudas.","La parte que todavía no tengo clara es si la decisión encaja con lo que realmente necesito.","Si pudiera aclarar eso, probablemente podría decidir.","Quiero tomar una decisión con criterio, no por presión."]
- ]
+
+  discovery:[
+
+    [
+      "equipo",
+      "Siento que termino revisando todo lo que hace mi equipo.",
+      "Probé delegar algunas tareas, pero después vuelvo a meterme.",
+      "Cada revisión me termina comiendo horas que podría usar para crecer.",
+      "Me di cuenta una tarde en que terminé trabajando hasta después de cenar.",
+      "Quiero poder confiar en el equipo sin sentir que pierdo el control."
+    ],
+
+    [
+      "tiempo",
+      "Últimamente siento que mi agenda no me deja avanzar.",
+      "Intenté organizarme por bloques y también usar una lista de prioridades.",
+      "Aun así, termino reaccionando a lo urgente y dejo lo importante para después.",
+      "Lo noté porque varias semanas terminaron igual aunque cambiara mi planificación.",
+      "Necesito recuperar tiempo sin bajar el nivel de lo que hago."
+    ],
+
+    [
+      "ventas",
+      "Tengo meses donde vendo bien y otros donde parece que todo se frena.",
+      "Probé cambiar el guion y también hacer más seguimiento.",
+      "El problema es que no sé qué parte está fallando cuando baja la conversión.",
+      "Me di cuenta al comparar dos meses con la misma cantidad de oportunidades.",
+      "Quiero entender qué está pasando en mis conversaciones."
+    ],
+
+    [
+      "clientes",
+      "Siento que algunos clientes me consumen muchísimo más de lo que deberían.",
+      "Intenté poner límites y ordenar mejor las entregas.",
+      "A veces termino haciendo excepciones y después todo se desordena.",
+      "Lo vi cuando un proyecto pequeño terminó ocupando casi el mismo tiempo que uno grande.",
+      "Quiero tener una forma más clara de trabajar con ellos."
+    ],
+
+    [
+      "delegacion",
+      "Sé que debería delegar más, pero me cuesta soltar ciertas cosas.",
+      "Probé contratar ayuda para tareas operativas.",
+      "Terminé revisando o corrigiendo casi todo antes de dejarlo salir.",
+      "Me di cuenta de que la persona estaba avanzando, pero yo igual intervenía.",
+      "Quiero dejar de ser el cuello de botella."
+    ],
+
+    [
+      "prioridades",
+      "Tengo muchas cosas abiertas y me cuesta decidir qué debería ir primero.",
+      "Probé usar prioridades y objetivos semanales.",
+      "Cuando aparece algo urgente, termino cambiando todo el orden.",
+      "Lo noté porque mis semanas están llenas pero siento poco avance real.",
+      "Quiero tomar decisiones con más criterio."
+    ],
+
+    [
+      "estructura",
+      "Siento que el negocio funciona, pero depende demasiado de mí.",
+      "Probé documentar procesos y ordenar responsabilidades.",
+      "El problema es que cuando algo se sale del proceso vuelvo a resolverlo yo.",
+      "Lo vi cuando me fui unos días y varias decisiones terminaron esperándome.",
+      "Quiero que funcione sin estar encima de todo."
+    ],
+
+    [
+      "confianza",
+      "Me cuesta confiar en que las cosas van a salir bien si no las controlo.",
+      "Intenté soltar algunas decisiones importantes.",
+      "Después termino preguntando, revisando y corrigiendo.",
+      "Me di cuenta de que incluso cuando no había errores yo igual necesitaba comprobarlo.",
+      "Quiero entender de dónde viene esa necesidad de control."
+    ],
+
+    [
+      "crecimiento",
+      "Quiero crecer, pero siento que la operación actual me frena.",
+      "Intenté aumentar ventas antes de ordenar la parte interna.",
+      "Eso hizo que tuviera más movimiento pero también más problemas.",
+      "Lo vi cuando entraron más clientes y yo terminé más saturado.",
+      "Quiero crecer sin multiplicar el caos."
+    ],
+
+    [
+      "decisiones",
+      "Me cuesta saber qué decisión tomar cuando tengo varias opciones.",
+      "Intenté buscar más información antes de decidir.",
+      "A veces termino acumulando información y postergando la decisión.",
+      "Me pasó con una inversión que llevo meses evaluando.",
+      "Quiero tener un criterio más claro para decidir."
+    ]
+
+  ],
+
+
+  gap:[
+
+    [
+      "ingresos",
+      "Hoy estoy alrededor de 3.000 al mes, pero quiero llegar a 8.000.",
+      "Probé aumentar precios y también buscar más clientes.",
+      "Lo que todavía no tengo claro es qué tendría que cambiar para que ese salto sea sostenible.",
+      "Comparé mis meses y vi que vender más no siempre significó ganar más.",
+      "Quiero una ruta concreta entre mi situación actual y ese objetivo."
+    ],
+
+    [
+      "libertad",
+      "Tengo ingresos relativamente buenos, pero sigo trabajando prácticamente todo el día.",
+      "Intenté contratar ayuda y también reducir algunas tareas.",
+      "El problema es que el negocio sigue necesitando demasiada atención mía.",
+      "Cuando me tomo un día libre, siento que tengo que volver y ponerme al día.",
+      "Quiero que el resultado económico no dependa de estar conectado todo el tiempo."
+    ],
+
+    [
+      "liderazgo",
+      "Hoy tengo un equipo, pero todavía siento que yo tomo demasiadas decisiones.",
+      "Probé asignar responsables y hacer reuniones de seguimiento.",
+      "Aun así, muchas decisiones vuelven a mi mesa.",
+      "Cuando intento apartarme, aparecen preguntas que esperaba que resolvieran solos.",
+      "Quiero pasar de ejecutar a liderar de verdad."
+    ],
+
+    [
+      "conversion",
+      "Tengo suficientes oportunidades, pero convierto menos de lo que esperaba.",
+      "Probé aumentar el volumen de llamadas y cambiar algunas preguntas.",
+      "Eso me dio más actividad, pero no solucionó la diferencia entre oportunidades y cierres.",
+      "Lo confirmé cuando comparé meses con más llamadas y casi la misma facturación.",
+      "Quiero entender qué falta entre una conversación y una decisión."
+    ],
+
+    [
+      "sistema",
+      "Sé hacer el trabajo, pero no tengo un sistema que me permita repetirlo bien.",
+      "Intenté documentar lo que hago y usar herramientas.",
+      "Termino volviendo a mi forma manual porque me parece más rápido.",
+      "Cuando alguien nuevo entra, necesita demasiada explicación mía.",
+      "Quiero construir algo que otra persona pueda ejecutar."
+    ],
+
+    [
+      "margen",
+      "Estoy facturando más que antes, pero el margen no mejora.",
+      "Intenté bajar costos y también vender servicios de mayor valor.",
+      "Parte del problema es que sigo poniendo demasiadas horas por cada cliente.",
+      "Lo vi cuando calculé cuánto realmente me queda después del tiempo invertido.",
+      "Quiero que crecer también signifique ganar mejor."
+    ],
+
+    [
+      "foco",
+      "Tengo varias oportunidades, pero siento que ninguna recibe suficiente foco.",
+      "Intenté elegir una prioridad por trimestre.",
+      "Cuando aparece una oportunidad atractiva vuelvo a abrir frentes nuevos.",
+      "Terminé con más proyectos y menos claridad.",
+      "Quiero decidir qué merece realmente mi atención."
+    ],
+
+    [
+      "capacidad",
+      "La demanda está, pero mi capacidad para atenderla es limitada.",
+      "Intenté sumar personas cuando aparecía más trabajo.",
+      "La incorporación siempre me genera más supervisión de la que esperaba.",
+      "Lo noté cuando crecer la demanda hizo crecer también mi carga.",
+      "Quiero aumentar capacidad sin convertirme en gerente de emergencias."
+    ],
+
+    [
+      "previsibilidad",
+      "Hay meses buenos, pero no sé cuánto voy a cerrar el mes siguiente.",
+      "Intenté mejorar seguimiento y generar más oportunidades.",
+      "Todavía siento que el resultado depende demasiado de lo que ocurra esa semana.",
+      "Me di cuenta al mirar seis meses y ver una variación enorme.",
+      "Quiero una operación comercial más previsible."
+    ],
+
+    [
+      "objetivo",
+      "Tengo claro que quiero crecer, pero no tengo claro qué debería cambiar primero.",
+      "Probé atacar varias áreas al mismo tiempo.",
+      "Eso hizo que avanzara un poco en todas y realmente no resolviera ninguna.",
+      "Lo noté porque después de meses sigo haciendo muchas de las mismas cosas.",
+      "Quiero saber cuál es la brecha principal que tengo que cerrar."
+    ]
+
+  ],
+
+
+  dolor:[
+
+    [
+      "agotamiento",
+      "Estoy cansado de terminar el día sintiendo que hice muchísimo y no avancé.",
+      "Probé trabajar más temprano y organizar mejor la agenda.",
+      "Aun así, sigo cerrando el día con cosas importantes pendientes.",
+      "Me está pasando incluso en semanas donde no tengo problemas extraordinarios.",
+      "No quiero seguir sosteniendo este ritmo indefinidamente."
+    ],
+
+    [
+      "familia",
+      "Mi trabajo está empezando a afectar el tiempo que tengo para mi familia.",
+      "Intenté poner horarios y dejar el teléfono después de cierta hora.",
+      "Cuando aparece un problema vuelvo a conectarme igual.",
+      "Ya hubo momentos en que estaba físicamente con mi familia pero pensando en el negocio.",
+      "No quiero que esto se convierta en la normalidad."
+    ],
+
+    [
+      "equipo",
+      "Lo que más me frustra es tener gente y sentir que igual todo termina en mí.",
+      "Intenté explicar mejor y dar más autonomía.",
+      "Cuando algo sale distinto a como lo imaginaba, vuelvo a tomarlo.",
+      "Eso me hace sentir que contratar ayuda no solucionó el problema.",
+      "Quiero dejar de ser imprescindible para cada detalle."
+    ],
+
+    [
+      "dinero",
+      "Me molesta que facture bien y aun así no sienta que estoy progresando.",
+      "Intenté vender más para compensarlo.",
+      "Terminé trabajando más y la mejora no fue proporcional.",
+      "Lo vi cuando comparé facturación con horas trabajadas.",
+      "Quiero que el esfuerzo tenga una relación más lógica con el resultado."
+    ],
+
+    [
+      "autoexigencia",
+      "Sé que soy parte del problema porque me cuesta aceptar algo que no esté como yo lo haría.",
+      "Intenté bajar el nivel de control.",
+      "Me dura poco: encuentro algo para corregir y vuelvo a intervenir.",
+      "Me di cuenta de que muchas veces el resultado ya era suficiente.",
+      "Quiero poder exigir calidad sin necesitar hacerlo todo yo."
+    ],
+
+    [
+      "frustracion",
+      "Siento que llevo tiempo intentando solucionar lo mismo.",
+      "Probé varias herramientas, cursos y cambios de proceso.",
+      "Cada cosa ayuda un poco, pero vuelvo al mismo patrón.",
+      "Lo frustrante es que ya invertí tiempo y dinero y no quiero repetirlo.",
+      "Necesito entender qué estoy haciendo distinto a lo que realmente necesito."
+    ],
+
+    [
+      "estancamiento",
+      "No estoy mal, pero tampoco siento que esté avanzando.",
+      "Intenté aumentar actividad y sumar nuevos objetivos.",
+      "Eso me mantiene ocupado, pero no cambia demasiado el resultado.",
+      "Me di cuenta de que llevo varios meses con números parecidos.",
+      "Quiero salir de este punto sin simplemente trabajar más."
+    ],
+
+    [
+      "caos",
+      "Cuando hay muchas cosas pasando siento que todo se vuelve urgente.",
+      "Intenté hacer listas y priorizar.",
+      "En la práctica, la urgencia de otros termina dominando mi día.",
+      "Hay semanas donde termino resolviendo problemas que ni siquiera deberían llegar a mí.",
+      "Quiero dejar de vivir apagando incendios."
+    ],
+
+    [
+      "miedo",
+      "Hay decisiones que sé que debería tomar pero sigo postergando.",
+      "Intenté buscar más datos para sentirme seguro.",
+      "Cuanto más información tengo, más escenarios encuentro para dudar.",
+      "Me pasó con una contratación que sigo evaluando.",
+      "Quiero poder decidir sin necesitar certeza absoluta."
+    ],
+
+    [
+      "control",
+      "Lo que más me cuesta reconocer es cuánto necesito controlar.",
+      "Intenté delegar para comprobar si podía soltar.",
+      "Cuando no tengo visibilidad, empiezo a imaginar problemas y vuelvo a revisar.",
+      "Eso termina afectando incluso mi descanso.",
+      "Quiero tener control del negocio sin controlar cada tarea."
+    ]
+
+  ],
+
+
+  urgencia:[
+
+    [
+      "plazo",
+      "Hay una fecha concreta en la que necesito que esto esté funcionando mejor.",
+      "Intenté avanzar por mi cuenta durante las últimas semanas.",
+      "El problema es que el tiempo se está achicando y sigo con la misma dificultad.",
+      "Si llego a esa fecha igual, voy a tener que tomar decisiones más drásticas.",
+      "Necesito resolverlo antes de que llegue ese punto."
+    ],
+
+    [
+      "cambio",
+      "Estoy por hacer un cambio importante en el negocio y no quiero llevar el mismo problema conmigo.",
+      "Intenté solucionarlo antes de dar el siguiente paso.",
+      "No conseguí resolverlo del todo y el cambio ya se acerca.",
+      "Si hago el cambio sin resolverlo, probablemente amplifique el problema.",
+      "Quiero llegar preparado."
+    ],
+
+    [
+      "crecimiento",
+      "Estoy entrando en una etapa donde van a aumentar las ventas.",
+      "Intenté preparar al equipo con algunas tareas nuevas.",
+      "Todavía hay demasiadas cosas que dependen de mí.",
+      "Si el volumen sube como espero, eso puede convertirse en un cuello de botella serio.",
+      "Necesito corregirlo antes de que el crecimiento lo haga evidente."
+    ],
+
+    [
+      "oportunidad",
+      "Tengo una oportunidad importante que podría cambiar mis números.",
+      "Intenté evaluar si puedo asumirla con la estructura actual.",
+      "La duda es que para aprovecharla tendría que funcionar de una manera que hoy todavía no funciona.",
+      "Si digo que sí sin ordenar esto, puedo ganar la oportunidad y perder el control.",
+      "Necesito decidir pronto."
+    ],
+
+    [
+      "equipo",
+      "Una persona clave del equipo va a cambiar de rol o dejar de hacer una parte importante.",
+      "Intenté redistribuir sus tareas.",
+      "Me encontré con que varias cosas solo las sé hacer yo o sé yo dónde están.",
+      "Eso me mostró una dependencia que antes no veía.",
+      "Necesito solucionarlo antes del cambio."
+    ],
+
+    [
+      "finanzas",
+      "Tengo una meta financiera para los próximos meses y no puedo seguir improvisando.",
+      "Intenté recortar gastos y aumentar actividad.",
+      "Eso no ataca el problema de fondo de cómo estoy generando y entregando valor.",
+      "Si sigo igual, la meta se vuelve cada vez menos probable.",
+      "Necesito cambiar algo ahora."
+    ],
+
+    [
+      "saturacion",
+      "La cantidad de trabajo está aumentando y mi forma actual de operar ya no alcanza.",
+      "Intenté aguantar un poco más para ver si era algo temporal.",
+      "Cada semana termina siendo igual o peor.",
+      "Si sigue creciendo, la calidad va a empezar a caer.",
+      "No quiero esperar a que el problema explote."
+    ],
+
+    [
+      "decision",
+      "Tengo que tomar una decisión importante en las próximas semanas.",
+      "Intenté posponerla hasta tener más claridad.",
+      "La espera no está haciendo que aparezca información nueva.",
+      "Cada semana que pasa también tiene un costo.",
+      "Necesito encontrar qué dato realmente me falta."
+    ],
+
+    [
+      "competencia",
+      "Estoy viendo que otros se están moviendo más rápido que yo.",
+      "Intenté responder aumentando mi actividad.",
+      "Eso me hizo correr más, pero no necesariamente mejorar mi posición.",
+      "Si mantengo el mismo sistema, temo quedarme atrás.",
+      "Quiero saber qué tendría que cambiar primero."
+    ],
+
+    [
+      "personal",
+      "Hay una razón personal por la que ya no quiero sostener esta situación.",
+      "Intenté aguantar y resolverlo gradualmente.",
+      "Pero cada vez me pesa más seguir igual.",
+      "Si no hago un cambio ahora, sé que voy a seguir postergándolo.",
+      "Necesito tomar una decisión distinta."
+    ]
+
+  ],
+
+
+  objeciones:[
+
+    [
+      "precio",
+      "La inversión me parece alta para lo que tenía pensado gastar.",
+      "Intenté comparar alternativas más económicas antes de decidir.",
+      "El problema es que todavía no sé si la diferencia de precio realmente se justifica para mí.",
+      "Si no entiendo el retorno, me cuesta comprometerme.",
+      "Quiero tener claridad antes de decidir."
+    ],
+
+    [
+      "tiempo",
+      "No sé si este es el momento porque tengo demasiadas cosas encima.",
+      "Intenté pensar cómo podría hacerlo encajar en mi agenda.",
+      "Si para hacerlo tengo que agregar otra cosa más, me preocupa abandonar a mitad de camino.",
+      "Necesito saber qué implicaría realmente en tiempo y ejecución.",
+      "No quiero comprar algo que después no pueda implementar."
+    ],
+
+    [
+      "pareja",
+      "Necesito hablarlo con mi pareja antes de tomar una decisión.",
+      "Intenté explicarle por qué estoy considerando hacerlo.",
+      "La conversación depende de que yo pueda explicar qué cambia concretamente para nosotros.",
+      "No quiero llegar a casa diciendo simplemente que quiero gastar dinero.",
+      "Necesito poder justificar la decisión."
+    ],
+
+    [
+      "confianza",
+      "Me interesa, pero todavía tengo dudas de si esto realmente funcionaría para mi situación.",
+      "Intenté mirar experiencias de otras personas.",
+      "Eso me ayuda, pero mi caso tiene algunas particularidades.",
+      "Necesito entender qué pasaría específicamente si esas particularidades aparecen en mi proceso.",
+      "Quiero reducir el riesgo de equivocarme."
+    ],
+
+    [
+      "alternativa",
+      "Estoy considerando otra opción que cuesta menos.",
+      "Intenté comparar ambas y no quiero decidir solo por precio.",
+      "La alternativa parece más simple, aunque no sé si resuelve la parte que más me importa.",
+      "Necesito entender qué diferencia concreta habría en mi resultado.",
+      "No quiero pagar más por algo que no necesite."
+    ],
+
+    [
+      "momento",
+      "Quizás debería esperar un par de meses.",
+      "Intenté imaginar qué tendría que cambiar para que entonces sí fuera el momento.",
+      "No estoy seguro de que esperar cambie la situación por sí solo.",
+      "Si sigo igual dos meses, probablemente tenga el mismo problema.",
+      "Necesito entender qué ganaría realmente esperando."
+    ],
+
+    [
+      "experiencia",
+      "Ya hice cursos antes y algunos no me sirvieron demasiado.",
+      "Intenté aplicar lo aprendido, pero después de un tiempo volví a mis hábitos anteriores.",
+      "Por eso ahora soy más cuidadoso antes de invertir en otra cosa.",
+      "Necesito saber qué sería diferente esta vez.",
+      "No quiero repetir la misma experiencia."
+    ],
+
+    [
+      "resultado",
+      "Me cuesta comprometerme sin saber qué resultado puedo esperar.",
+      "Intenté mirar números y casos anteriores.",
+      "Sé que nadie puede garantizarme un resultado, pero necesito entender qué variables sí puedo controlar.",
+      "Si eso está claro, puedo evaluar el riesgo de otra manera.",
+      "Quiero saber qué depende de mí."
+    ],
+
+    [
+      "prioridad",
+      "No sé si esto es realmente mi prioridad número uno ahora.",
+      "Intenté ordenar todos los problemas que tengo.",
+      "Hay varias cosas importantes, pero esta aparece repetidamente cuando miro lo que me está frenando.",
+      "Necesito entender si resolver esto desbloquearía las demás cosas.",
+      "No quiero atacar el problema equivocado."
+    ],
+
+    [
+      "decision",
+      "Siento que estoy cerca de decidir, pero todavía hay algo que me frena.",
+      "Intenté identificar qué es y fui descartando algunas dudas.",
+      "La parte que todavía no tengo clara es si la decisión encaja con lo que realmente necesito.",
+      "Si pudiera aclarar eso, probablemente podría decidir.",
+      "Quiero tomar una decisión con criterio, no por presión."
+    ]
+
+  ]
+
 };
 
-/* Variantes REALES por bloque.
-   No se usan para cambiar solo el nombre: cada variante agrega un contexto
-   distinto para que los 10 arquetipos generen 50 situaciones realmente diferentes. */
+
+/* ============================================================
+   VARIANTES
+   ============================================================ */
+
 const variantsByBlock = {
- discovery:[
-  {context:"Estoy al frente de una agencia chica de marketing y todavía soy quien aprueba casi todo.",detail:"El equipo creció de golpe este año y ahora coordino a cuatro personas.",goal:"Quiero ordenar la operación antes de seguir sumando clientes."},
-  {context:"Trabajo como consultora independiente y la mayor parte de los clientes depende directamente de mí.",detail:"Cuando tengo varios proyectos simultáneos, soy yo quien termina destrabando cada entrega.",goal:"Quiero dejar de ser el punto de paso de cada decisión."},
-  {context:"Tengo un negocio de servicios que viene creciendo, pero la estructura interna quedó atrás.",detail:"Hace unos meses podía controlar todo; hoy ya no llego a revisar cada frente.",goal:"Quiero entender qué debería cambiar antes de crecer más."},
-  {context:"Lidero un pequeño equipo comercial y todavía intervengo demasiado en conversaciones y decisiones.",detail:"Aunque tengo personas capacitadas, me cuesta aceptar resultados diferentes a los que habría obtenido yo.",goal:"Quiero aprender a liderar sin convertirme en supervisor de cada detalle."},
-  {context:"Estoy construyendo un proyecto nuevo y todavía hago demasiadas funciones al mismo tiempo.",detail:"Hay tareas que sé que no deberían depender de mí, pero no encontré una forma simple de ordenarlas.",goal:"Quiero identificar qué me está frenando antes de contratar o invertir más."}
- ],
- gap:[
-  {context:"Tengo una agencia que factura de forma estable, pero el crecimiento se frenó.",detail:"Hoy genero unos 3.000 al mes y para el próximo año quiero acercarme a 8.000.",goal:"Quiero saber qué brecha concreta tengo que cerrar para que ese salto sea sostenible."},
-  {context:"Trabajo por mi cuenta y gano bien, pero sigo intercambiando demasiadas horas por dinero.",detail:"Podría facturar más, pero eso también significaría trabajar más horas.",goal:"Quiero construir una forma de crecer sin que mi agenda sea el límite."},
-  {context:"Tengo un equipo pequeño y ya no quiero seguir siendo quien ejecuta las tareas importantes.",detail:"Hay personas a las que podría dar más responsabilidad, pero todavía vuelven muchas decisiones a mí.",goal:"Quiero pasar de hacer a dirigir sin perder resultados."},
-  {context:"Tengo suficientes oportunidades comerciales, pero el porcentaje de cierre no acompaña.",detail:"Puedo generar más llamadas, pero eso no corrige necesariamente lo que pasa dentro de ellas.",goal:"Quiero identificar qué falta entre tener oportunidades y convertirlas."},
-  {context:"Mi negocio funciona, pero todavía no tiene un sistema que otra persona pueda repetir sin mí.",detail:"Cuando incorporo a alguien necesito explicarle demasiadas cosas personalmente.",goal:"Quiero construir una operación que no dependa de mi memoria."}
- ],
- dolor:[
-  {context:"Llevo varios meses trabajando muchas más horas de las que quiero.",detail:"No es una semana puntual: incluso cuando el negocio está tranquilo termino agotado.",goal:"Quiero dejar de aceptar que este ritmo sea el precio de que las cosas funcionen."},
-  {context:"Mi trabajo empezó a invadir espacios que antes reservaba para mi familia y mi vida personal.",detail:"Ya me pasó varias veces estar presente físicamente pero seguir resolviendo cosas del negocio desde el teléfono.",goal:"Quiero recuperar una separación real entre trabajo y vida."},
-  {context:"Tengo personas contratadas, pero sigo sintiendo que cada problema termina en mi escritorio.",detail:"Cuando algo sale diferente a lo esperado, mi primera reacción es intervenir.",goal:"Quiero dejar de ser imprescindible para que el equipo funcione."},
-  {context:"Estoy facturando más que hace un año, pero no siento que mi vida haya mejorado en la misma proporción.",detail:"Cuando miro las horas y el margen real, la diferencia me preocupa.",goal:"Quiero que crecer tenga un impacto real y no solamente aumente mi carga."},
-  {context:"Sé que mi nivel de exigencia está haciendo difícil delegar.",detail:"Muchas veces el trabajo ya está bien, pero encuentro algo que yo habría hecho distinto y vuelvo a intervenir.",goal:"Quiero mantener estándares altos sin necesitar controlar todo."}
- ],
- urgencia:[
-  {context:"Tengo una fecha concreta en la que necesito que la operación esté más ordenada.",detail:"En unas semanas empieza una etapa de mayor demanda y no quiero llegar igual que hoy.",goal:"Quiero corregir el problema antes de que el volumen lo convierta en una crisis."},
-  {context:"Estoy por lanzar un nuevo servicio y sé que va a aumentar la cantidad de trabajo.",detail:"El lanzamiento está cerca y todavía hay procesos que dependen demasiado de mí.",goal:"Quiero preparar la estructura antes de abrir la puerta a más clientes."},
-  {context:"Estoy entrando en una etapa de crecimiento comercial y ya veo señales de saturación.",detail:"Si las ventas aumentan como espero, la forma actual de operar no va a aguantar.",goal:"Quiero resolver el cuello de botella antes de que el crecimiento lo exponga."},
-  {context:"Tengo una oportunidad grande sobre la mesa y necesito decidir si puedo asumirla.",detail:"La oportunidad es atractiva, pero para aprovecharla tendría que operar de una manera que hoy todavía no domino.",goal:"Quiero tomar la decisión sin comprometer la estabilidad que ya construí."},
-  {context:"Una persona clave de mi equipo va a cambiar de rol en las próximas semanas.",detail:"Al revisar sus tareas descubrí que varias cosas dependen de conocimiento que solo tengo yo.",goal:"Quiero eliminar esa dependencia antes de que llegue el cambio."}
- ],
- objeciones:[
-  {context:"La propuesta me interesa, pero la inversión está por encima de lo que había presupuestado.",detail:"No estoy buscando necesariamente lo más barato; quiero entender si pagar más cambia realmente el resultado.",goal:"Quiero evaluar el retorno antes de comprometer el dinero."},
-  {context:"Me interesa, pero mi agenda está bastante cargada y eso me hace dudar.",detail:"Ya compré cosas antes que terminé dejando a medias porque no tuve tiempo de implementarlas.",goal:"Quiero saber qué nivel de tiempo y ejecución requiere realmente."},
-  {context:"Antes de decidir necesito conversarlo con mi pareja porque es una inversión que afecta nuestro presupuesto.",detail:"No quiero plantearlo como una compra impulsiva ni llegar con argumentos vagos.",goal:"Quiero entender qué tendría que explicar para tomar una decisión compartida."},
-  {context:"La propuesta me gusta, pero todavía no estoy seguro de que funcione para mi caso particular.",detail:"Mi situación tiene algunas características que no veo reflejadas en todos los casos que escuché.",goal:"Quiero reducir el riesgo de invertir en algo que no encaje conmigo."},
-  {context:"Estoy comparando esto con una alternativa más económica.",detail:"La otra opción parece suficiente a primera vista, aunque no sé si resuelve la parte que más me importa.",goal:"Quiero entender qué diferencia concreta justificaría elegir una opción sobre la otra."}
- ]
+
+  discovery:[
+
+    {
+      context:"Estoy al frente de una agencia chica de marketing y todavía soy quien aprueba casi todo.",
+      detail:"El equipo creció de golpe este año y ahora coordino a cuatro personas.",
+      goal:"Quiero ordenar la operación antes de seguir sumando clientes."
+    },
+
+    {
+      context:"Trabajo como consultora independiente y la mayor parte de los clientes depende directamente de mí.",
+      detail:"Cuando tengo varios proyectos simultáneos, soy yo quien termina destrabando cada entrega.",
+      goal:"Quiero dejar de ser el punto de paso de cada decisión."
+    },
+
+    {
+      context:"Tengo un negocio de servicios que viene creciendo, pero la estructura interna quedó atrás.",
+      detail:"Hace unos meses podía controlar todo; hoy ya no llego a revisar cada frente.",
+      goal:"Quiero entender qué debería cambiar antes de crecer más."
+    },
+
+    {
+      context:"Lidero un pequeño equipo comercial y todavía intervengo demasiado en conversaciones y decisiones.",
+      detail:"Aunque tengo personas capacitadas, me cuesta aceptar resultados diferentes a los que habría obtenido yo.",
+      goal:"Quiero aprender a liderar sin convertirme en supervisor de cada detalle."
+    },
+
+    {
+      context:"Estoy construyendo un proyecto nuevo y todavía hago demasiadas funciones al mismo tiempo.",
+      detail:"Hay tareas que sé que no deberían depender de mí, pero no encontré una forma simple de ordenarlas.",
+      goal:"Quiero identificar qué me está frenando antes de contratar o invertir más."
+    }
+
+  ],
+
+  gap:[
+
+    {
+      context:"Tengo una agencia que factura de forma estable, pero el crecimiento se frenó.",
+      detail:"Hoy genero unos 3.000 al mes y para el próximo año quiero acercarme a 8.000.",
+      goal:"Quiero saber qué brecha concreta tengo que cerrar para que ese salto sea sostenible."
+    },
+
+    {
+      context:"Trabajo por mi cuenta y gano bien, pero sigo intercambiando demasiadas horas por dinero.",
+      detail:"Podría facturar más, pero eso también significaría trabajar más horas.",
+      goal:"Quiero construir una forma de crecer sin que mi agenda sea el límite."
+    },
+
+    {
+      context:"Tengo un equipo pequeño y ya no quiero seguir siendo quien ejecuta las tareas importantes.",
+      detail:"Hay personas a las que podría dar más responsabilidad, pero todavía vuelven muchas decisiones a mí.",
+      goal:"Quiero pasar de hacer a dirigir sin perder resultados."
+    },
+
+    {
+      context:"Tengo suficientes oportunidades comerciales, pero el porcentaje de cierre no acompaña.",
+      detail:"Puedo generar más llamadas, pero eso no corrige necesariamente lo que pasa dentro de ellas.",
+      goal:"Quiero identificar qué falta entre tener oportunidades y convertirlas."
+    },
+
+    {
+      context:"Mi negocio funciona, pero todavía no tiene un sistema que otra persona pueda repetir sin mí.",
+      detail:"Cuando incorporo a alguien necesito explicarle demasiadas cosas personalmente.",
+      goal:"Quiero construir una operación que no dependa de mi memoria."
+    }
+
+  ],
+
+  dolor:[
+
+    {
+      context:"Llevo varios meses trabajando muchas más horas de las que quiero.",
+      detail:"No es una semana puntual: incluso cuando el negocio está tranquilo termino agotado.",
+      goal:"Quiero dejar de aceptar que este ritmo sea el precio de que las cosas funcionen."
+    },
+
+    {
+      context:"Mi trabajo empezó a invadir espacios que antes reservaba para mi familia y mi vida personal.",
+      detail:"Ya me pasó varias veces estar presente físicamente pero seguir resolviendo cosas del negocio desde el teléfono.",
+      goal:"Quiero recuperar una separación real entre trabajo y vida."
+    },
+
+    {
+      context:"Tengo personas contratadas, pero sigo sintiendo que cada problema termina en mi escritorio.",
+      detail:"Cuando algo sale diferente a lo esperado, mi primera reacción es intervenir.",
+      goal:"Quiero dejar de ser imprescindible para que el equipo funcione."
+    },
+
+    {
+      context:"Estoy facturando más que hace un año, pero no siento que mi vida haya mejorado en la misma proporción.",
+      detail:"Cuando miro las horas y el margen real, la diferencia me preocupa.",
+      goal:"Quiero que crecer tenga un impacto real y no solamente aumente mi carga."
+    },
+
+    {
+      context:"Sé que mi nivel de exigencia está haciendo difícil delegar.",
+      detail:"Muchas veces el trabajo ya está bien, pero encuentro algo que yo habría hecho distinto y vuelvo a intervenir.",
+      goal:"Quiero mantener estándares altos sin necesitar controlar todo."
+    }
+
+  ],
+
+  urgencia:[
+
+    {
+      context:"Tengo una fecha concreta en la que necesito que la operación esté más ordenada.",
+      detail:"En unas semanas empieza una etapa de mayor demanda y no quiero llegar igual que hoy.",
+      goal:"Quiero corregir el problema antes de que el volumen lo convierta en una crisis."
+    },
+
+    {
+      context:"Estoy por lanzar un nuevo servicio y sé que va a aumentar la cantidad de trabajo.",
+      detail:"El lanzamiento está cerca y todavía hay procesos que dependen demasiado de mí.",
+      goal:"Quiero preparar la estructura antes de abrir la puerta a más clientes."
+    },
+
+    {
+      context:"Estoy entrando en una etapa de crecimiento comercial y ya veo señales de saturación.",
+      detail:"Si las ventas aumentan como espero, la forma actual de operar no va a aguantar.",
+      goal:"Quiero resolver el cuello de botella antes de que el crecimiento lo exponga."
+    },
+
+    {
+      context:"Tengo una oportunidad grande sobre la mesa y necesito decidir si puedo asumirla.",
+      detail:"La oportunidad es atractiva, pero para aprovecharla tendría que operar de una manera que hoy todavía no domino.",
+      goal:"Quiero tomar la decisión sin comprometer la estabilidad que ya construí."
+    },
+
+    {
+      context:"Una persona clave de mi equipo va a cambiar de rol en las próximas semanas.",
+      detail:"Al revisar sus tareas descubrí que varias cosas dependen de conocimiento que solo tengo yo.",
+      goal:"Quiero eliminar esa dependencia antes de que llegue el cambio."
+    }
+
+  ],
+
+  objeciones:[
+
+    {
+      context:"La propuesta me interesa, pero la inversión está por encima de lo que había presupuestado.",
+      detail:"No estoy buscando necesariamente lo más barato; quiero entender si pagar más cambia realmente el resultado.",
+      goal:"Quiero evaluar el retorno antes de comprometer el dinero."
+    },
+
+    {
+      context:"Me interesa, pero mi agenda está bastante cargada y eso me hace dudar.",
+      detail:"Ya compré cosas antes que terminé dejando a medias porque no tuve tiempo de implementarlas.",
+      goal:"Quiero saber qué nivel de tiempo y ejecución requiere realmente."
+    },
+
+    {
+      context:"Antes de decidir necesito conversarlo con mi pareja porque es una inversión que afecta nuestro presupuesto.",
+      detail:"No quiero plantearlo como una compra impulsiva ni llegar con argumentos vagos.",
+      goal:"Quiero entender qué tendría que explicar para tomar una decisión compartida."
+    },
+
+    {
+      context:"La propuesta me gusta, pero todavía no estoy seguro de que funcione para mi caso particular.",
+      detail:"Mi situación tiene algunas características que no veo reflejadas en todos los casos que escuché.",
+      goal:"Quiero reducir el riesgo de invertir en algo que no encaje conmigo."
+    },
+
+    {
+      context:"Estoy comparando esto con una alternativa más económica.",
+      detail:"La otra opción parece suficiente a primera vista, aunque no sé si resuelve la parte que más me importa.",
+      goal:"Quiero entender qué diferencia concreta justificaría elegir una opción sobre la otra."
+    }
+
+  ]
+
 };
 
-/* Construye 50 escenarios REALES por bloque: 10 arquetipos x 5 contextos
-   específicos del bloque. */
+
+/* ============================================================
+   CONSTRUCCIÓN DE ESCENARIOS
+   ============================================================ */
+
 function makeScenarios(blockId){
+
   return banks[blockId].flatMap((a,ai)=>
+
     variantsByBlock[blockId].map((v,vi)=>{
-      const [tag,opening,attempt,impact,evidence,desired]=a;
-      const contextOpening = `${v.context} ${opening}`;
-      const contextAttempt = `${v.detail} ${attempt}`;
-      const contextImpact = `${impact} ${v.goal}`;
-      const contextEvidence = `${evidence} Eso me hizo ver que necesito moverme de otra manera.`;
-      const contextDesired = `${desired}`;
-      return {
-        id:`${blockId}-${ai}-${vi}`,
+
+      const [
         tag,
+        opening,
+        attempt,
+        impact,
+        evidence,
+        desired
+      ] = a;
+
+      const contextOpening =
+        `${v.context} ${opening}`;
+
+      const contextAttempt =
+        `${v.detail} ${attempt}`;
+
+      const contextImpact =
+        `${impact} ${v.goal}`;
+
+      const contextEvidence =
+        `${evidence} Eso me hizo ver que necesito moverme de otra manera.`;
+
+      const contextDesired =
+        `${desired}`;
+
+      return {
+
+        id:`${blockId}-${ai}-${vi}`,
+
+        tag,
+
         opening:contextOpening,
+
         attempt:contextAttempt,
+
         impact:contextImpact,
+
         evidence:contextEvidence,
+
         desired:contextDesired,
+
         context:v.context,
+
         detail:v.detail,
+
         goal:v.goal,
+
         variant:vi,
+
         archetype:ai,
+
         block:blockId
+
       };
+
     })
+
   );
+
 }
 
+
 const scenarios = Object.fromEntries(
-  blockDefs.map(b=>[b.id,makeScenarios(b.id)])
+
+  blockDefs.map(b=>[
+    b.id,
+    makeScenarios(b.id)
+  ])
+
 );
 
+
+/* ============================================================
+   PREGUNTAS
+   ============================================================ */
+
 const questionBanks = {
- discovery:[
-  ["clarify","¿Qué es exactamente lo que está pasando?"],
-  ["attempt","¿Qué intentaste hasta ahora para resolverlo?"],
-  ["evidence","¿Cuándo te diste cuenta de que esto era un problema?"],
-  ["impact","¿Cómo te está afectando hoy?"]
- ],
- gap:[
-  ["current","¿Dónde estás hoy exactamente?"],
-  ["goal","¿Qué tendría que cambiar para que sientas que llegaste a donde querés?"],
-  ["attempt","¿Qué hiciste hasta ahora para acercarte a eso?"],
-  ["difference","¿Qué sentís que falta entre tu situación actual y ese objetivo?"]
- ],
- dolor:[
-  ["impact","¿Qué es lo que más te está costando de seguir así?"],
-  ["attempt","¿Qué intentaste hacer para cambiarlo?"],
-  ["evidence","¿Qué pasó concretamente que te hizo verlo así?"],
-  ["consequence","¿Qué termina pasando si esto sigue igual?"]
- ],
- urgencia:[
-  ["whyNow","¿Por qué esto se volvió importante ahora?"],
-  ["deadline","¿Qué cambia si no lo resolvés en ese plazo?"],
-  ["attempt","¿Qué hiciste hasta ahora para evitar llegar a ese punto?"],
-  ["priority","¿Por qué esto merece atención antes que las otras cosas que tenés?"]
- ],
- objeciones:[
-  ["meaning","Cuando decís eso, ¿qué es lo que más te preocupa exactamente?"],
-  ["attempt","¿Qué necesitás comprobar antes de sentirte cómodo tomando la decisión?"],
-  ["risk","¿Qué riesgo querés evitar si avanzás?"],
-  ["criteria","¿Qué tendría que quedar claro para que puedas decidir con tranquilidad?"]
- ]
+
+  discovery:[
+
+    ["clarify","¿Qué es exactamente lo que está pasando?"],
+
+    ["attempt","¿Qué intentaste hasta ahora para resolverlo?"],
+
+    ["evidence","¿Cuándo te diste cuenta de que esto era un problema?"],
+
+    ["impact","¿Cómo te está afectando hoy?"]
+
+  ],
+
+  gap:[
+
+    ["current","¿Dónde estás hoy exactamente?"],
+
+    ["goal","¿Qué tendría que cambiar para que sientas que llegaste a donde querés?"],
+
+    ["attempt","¿Qué hiciste hasta ahora para acercarte a eso?"],
+
+    ["difference","¿Qué sentís que falta entre tu situación actual y ese objetivo?"]
+
+  ],
+
+  dolor:[
+
+    ["impact","¿Qué es lo que más te está costando de seguir así?"],
+
+    ["attempt","¿Qué intentaste hacer para cambiarlo?"],
+
+    ["evidence","¿Qué pasó concretamente que te hizo verlo así?"],
+
+    ["consequence","¿Qué termina pasando si esto sigue igual?"]
+
+  ],
+
+  urgencia:[
+
+    ["whyNow","¿Por qué esto se volvió importante ahora?"],
+
+    ["deadline","¿Qué cambia si no lo resolvés en ese plazo?"],
+
+    ["attempt","¿Qué hiciste hasta ahora para evitar llegar a ese punto?"],
+
+    ["priority","¿Por qué esto merece atención antes que las otras cosas que tenés?"]
+
+  ],
+
+  objeciones:[
+
+    ["meaning","Cuando decís eso, ¿qué es lo que más te preocupa exactamente?"],
+
+    ["attempt","¿Qué necesitás comprobar antes de sentirte cómodo tomando la decisión?"],
+
+    ["risk","¿Qué riesgo querés evitar si avanzás?"],
+
+    ["criteria","¿Qué tendría que quedar claro para que puedas decidir con tranquilidad?"]
+
+  ]
+
 };
 
-const optionIntents = {
- discovery:["clarify","attempt","impact","pitch"],
- gap:["current","goal","difference","pitch"],
- dolor:["impact","attempt","consequence","pitch"],
- urgencia:["whyNow","deadline","priority","pitch"],
- objeciones:["meaning","risk","criteria","pitch"]
-};
+
+/* ============================================================
+   TEXTOS DE PREGUNTAS
+   ============================================================ */
 
 const questionText = {
- clarify:"¿Qué es exactamente lo que está pasando?",
- attempt:"¿Qué intentaste hasta ahora para resolverlo?",
- impact:"¿Cómo te está afectando hoy?",
- evidence:"¿Cuándo te diste cuenta de que esto era un problema?",
- current:"¿Dónde estás hoy exactamente?",
- goal:"¿Qué tendría que cambiar para que sientas que llegaste a donde querés?",
- difference:"¿Qué sentís que falta entre tu situación actual y ese objetivo?",
- consequence:"¿Qué termina pasando si esto sigue igual?",
- whyNow:"¿Por qué esto se volvió importante ahora?",
- deadline:"¿Qué cambia si no lo resolvés en ese plazo?",
- priority:"¿Por qué esto merece atención antes que las otras cosas que tenés?",
- meaning:"Cuando decís eso, ¿qué es lo que más te preocupa exactamente?",
- risk:"¿Qué riesgo querés evitar si avanzás?",
- criteria:"¿Qué tendría que quedar claro para que puedas decidir con tranquilidad?",
- pitch:"Eso es exactamente lo que solucionamos con nuestro programa."
+
+  clarify:"¿Qué es exactamente lo que está pasando?",
+
+  attempt:"¿Qué intentaste hasta ahora para resolverlo?",
+
+  impact:"¿Cómo te está afectando hoy?",
+
+  evidence:"¿Cuándo te diste cuenta de que esto era un problema?",
+
+  current:"¿Dónde estás hoy exactamente?",
+
+  goal:"¿Qué tendría que cambiar para que sientas que llegaste a donde querés?",
+
+  difference:"¿Qué sentís que falta entre tu situación actual y ese objetivo?",
+
+  consequence:"¿Qué termina pasando si esto sigue igual?",
+
+  whyNow:"¿Por qué esto se volvió importante ahora?",
+
+  deadline:"¿Qué cambia si no lo resolvés en ese plazo?",
+
+  priority:"¿Por qué esto merece atención antes que las otras cosas que tenés?",
+
+  meaning:"Cuando decís eso, ¿qué es lo que más te preocupa exactamente?",
+
+  risk:"¿Qué riesgo querés evitar si avanzás?",
+
+  criteria:"¿Qué tendría que quedar claro para que puedas decidir con tranquilidad?",
+
+  pitch:"Eso es exactamente lo que solucionamos con nuestro programa."
+
 };
 
-/* La respuesta depende de la pregunta elegida Y del contexto de la situación.
-   No se recicla una respuesta genérica entre intenciones. */
+
+/* ============================================================
+   RESPUESTAS DEL PROSPECTO
+   ============================================================ */
+
 function responseFor(s,intent,turn){
+
   switch(intent){
+
     case "clarify":
+
       return turn===0
         ? s.opening
         : `Lo que todavía no había ordenado es esto: ${s.opening.toLowerCase()}`;
 
+
     case "attempt":
+
       return s.attempt;
 
+
     case "impact":
+
       return s.impact;
 
+
     case "evidence":
+
       return s.evidence;
 
+
     case "current":
+
       return `${s.context} ${s.opening}`;
 
+
     case "goal":
+
       return s.desired;
 
+
     case "difference":
+
       return `La brecha que veo es que ${s.desired.charAt(0).toLowerCase()+s.desired.slice(1)}. Hoy todavía sigo en esta situación: ${s.opening.toLowerCase()}`;
 
+
     case "consequence":
+
       return `Si sigo igual, ${s.impact.charAt(0).toLowerCase()+s.impact.slice(1)}. Y no quiero que eso se convierta en mi forma normal de trabajar.`;
 
+
     case "whyNow":
+
       return `${s.evidence} Por eso siento que ya no tiene sentido seguir dejándolo para después.`;
 
+
     case "deadline":
+
       return `Si no lo resuelvo a tiempo, voy a llegar a ese momento con el mismo problema y con menos margen para reaccionar. ${s.impact}`;
 
+
     case "priority":
+
       return `Porque esto está afectando directamente lo que quiero conseguir. ${s.goal} Si no resuelvo esta parte, siento que todo lo demás va a seguir chocando con el mismo límite.`;
 
+
     case "meaning":
+
       return `Lo que más me preocupa es tomar una decisión equivocada. ${s.opening}`;
 
+
     case "risk":
+
       return `Quiero evitar invertir tiempo o dinero y terminar exactamente en el mismo lugar. ${s.attempt}`;
 
+
     case "criteria":
+
       return `${s.desired} Para decidir necesito entender qué tendría que pasar, qué depende de mí y qué tan realista es para mi situación.`;
 
+
     case "pitch":
+
       return `Puede ser, pero todavía no estoy listo para saltar a una solución. ${s.opening} Primero necesito saber si realmente encaja conmigo.`;
 
+
     default:
+
       return s.opening;
+
   }
+
 }
+
+
+/* ============================================================
+   FEEDBACK
+   ============================================================ */
 
 const feedbacks = {
- excellent:{
-  discovery:["Excelente decisión. Estás descubriendo antes de intentar vender.","Muy buena lectura. La pregunta abre información en vez de cerrar la conversación."],
-  gap:["Bien. Estás buscando la distancia real entre hoy y el objetivo.","Excelente: estás construyendo el GAP con información del prospecto."],
-  dolor:["Bien. Profundizaste sin inventar dolor ni poner palabras en su boca.","Excelente. Estás llevando al prospecto a describir la consecuencia por sí mismo."],
-  urgencia:["Muy bien. Estás descubriendo por qué ahora, no fabricando urgencia.","Excelente. La urgencia aparece desde la realidad del prospecto."],
-  objeciones:["Muy bien. No discutiste la objeción; descubriste qué significa.","Excelente. Antes de resolver una objeción, entendiste qué hay detrás."]
- },
- good:{
-  discovery:"Buena dirección, aunque todavía podrías profundizar un nivel más.",
-  gap:"Tiene sentido, pero todavía falta conectar mejor la situación actual con el objetivo.",
-  dolor:"La pregunta es válida. Ahora necesitás conseguir una consecuencia más concreta.",
-  urgencia:"Bien, pero todavía falta precisar qué cambia si no actúa.",
-  objeciones:"Bien. Estás explorando la objeción, aunque todavía falta aislar el criterio de decisión."
- },
- weak:"La conversación sigue, pero esta pregunta no aprovecha del todo la información que acaba de darte.",
- bad:"Esto salta demasiado rápido a una conclusión o solución. El prospecto todavía no llegó ahí."
+
+  excellent:{
+
+    discovery:[
+      "Excelente decisión. Estás descubriendo antes de intentar vender.",
+      "Muy buena lectura. La pregunta abre información en vez de cerrar la conversación."
+    ],
+
+    gap:[
+      "Bien. Estás buscando la distancia real entre hoy y el objetivo.",
+      "Excelente: estás construyendo el GAP con información del prospecto."
+    ],
+
+    dolor:[
+      "Bien. Profundizaste sin inventar dolor ni poner palabras en su boca.",
+      "Excelente. Estás llevando al prospecto a describir la consecuencia por sí mismo."
+    ],
+
+    urgencia:[
+      "Muy bien. Estás descubriendo por qué ahora, no fabricando urgencia.",
+      "Excelente. La urgencia aparece desde la realidad del prospecto."
+    ],
+
+    objeciones:[
+      "Muy bien. No discutiste la objeción; descubriste qué significa.",
+      "Excelente. Antes de resolver una objeción, entendiste qué hay detrás."
+    ]
+
+  },
+
+
+  good:{
+
+    discovery:
+      "Buena dirección, aunque todavía podrías profundizar un nivel más.",
+
+    gap:
+      "Tiene sentido, pero todavía falta conectar mejor la situación actual con el objetivo.",
+
+    dolor:
+      "La pregunta es válida. Ahora necesitás conseguir una consecuencia más concreta.",
+
+    urgencia:
+      "Bien, pero todavía falta precisar qué cambia si no actúa.",
+
+    objeciones:
+      "Bien. Estás explorando la objeción, aunque todavía falta aislar el criterio de decisión."
+
+  },
+
+
+  weak:
+    "La conversación sigue, pero esta pregunta no aprovecha del todo la información que acaba de darte.",
+
+  bad:
+    "Esto salta demasiado rápido a una conclusión o solución. El prospecto todavía no llegó ahí."
+
 };
+
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
 
 let state={
+
   block:null,
+
   scenario:null,
+
   turn:0,
+
   score:0,
+
   answers:[],
+
   streak:Number(localStorage.ce_streak||0),
+
   xp:Number(localStorage.ce_xp||0),
+
   lives:Number(localStorage.ce_lives||3)
+
 };
 
+
+/* ============================================================
+   RANGOS
+   ============================================================ */
+
 function getRank(xp){
-  if(xp>=4000)return"CLOSER ELITE";
-  if(xp>=2500)return"CLOSER AVANZADO";
-  if(xp>=1000)return"CLOSER PROFESIONAL";
-  if(xp>=400)return"SETTER INTERMEDIO";
+
+  if(xp>=4000)
+    return"CLOSER ELITE";
+
+  if(xp>=2500)
+    return"CLOSER AVANZADO";
+
+  if(xp>=1000)
+    return"CLOSER PROFESIONAL";
+
+  if(xp>=400)
+    return"SETTER INTERMEDIO";
+
   return"SETTER NOVATO";
+
 }
+
+
+/* ============================================================
+   GUARDAR PROGRESO
+   ============================================================ */
 
 function save(){
+
   localStorage.ce_xp=state.xp;
+
   localStorage.ce_streak=state.streak;
+
   localStorage.ce_lives=state.lives;
+
   document.getElementById("xp").textContent=state.xp;
+
   document.getElementById("streak").textContent=state.streak;
+
   document.getElementById("lives").textContent=state.lives;
+
   document.getElementById("rank").textContent=getRank(state.xp);
-  document.getElementById("xpbar").style.width=Math.min(100,(state.xp/4000)*100)+"%";
-  document.getElementById("xpleft").textContent=state.xp+" XP";
-  document.getElementById("xpright").textContent="4000 XP";
+
+  document.getElementById("xpbar").style.width=
+    Math.min(100,(state.xp/4000)*100)+"%";
+
+  document.getElementById("xpleft").textContent=
+    state.xp+" XP";
+
+  document.getElementById("xpright").textContent=
+    "4000 XP";
+
 }
+
+
+/* ============================================================
+   NIVELES
+   ============================================================ */
 
 function renderLevels(){
+
   const el=document.getElementById("levels");
-  if(!el) return;
+
+  if(!el)
+    return;
+
   el.innerHTML="";
+
   blockDefs.forEach((b,i)=>{
+
     const c=document.createElement("div");
+
     c.className="card level";
+
     const count=scenarios[b.id]?.length || 0;
-    c.innerHTML=`<div class="eyebrow">${b.name}</div><h3>${b.desc}</h3><p>${count} situaciones únicas de este bloque.</p><div class="bar"><i style="width:${Math.min(100,Math.round((state.xp/(1000+(i*500)))*100))}%"></i></div><button class="primary" type="button">ENTRENAR</button>`;
-    c.addEventListener("click",()=>startBlock(b.id));
+
+    c.innerHTML=`
+
+      <div class="eyebrow">
+        ${b.name}
+      </div>
+
+      <h3>
+        ${b.desc}
+      </h3>
+
+      <p>
+        ${count} situaciones únicas de este bloque.
+      </p>
+
+      <div class="bar">
+        <i style="width:${Math.min(
+          100,
+          Math.round(
+            (state.xp/(1000+(i*500)))*100
+          )
+        )}%"></i>
+      </div>
+
+      <button
+        class="primary"
+        type="button">
+        ENTRENAR
+      </button>
+
+    `;
+
+    c.addEventListener(
+      "click",
+      ()=>startBlock(b.id)
+    );
+
     el.appendChild(c);
+
   });
+
 }
 
-function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
-function goDashboard(){show("dashboard");renderLevels();}
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+
+function show(id){
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(x=>x.classList.remove("active"));
+
+  document
+    .getElementById(id)
+    .classList.add("active");
+
+  window.scrollTo(0,0);
+
+}
+
+
+function goDashboard(){
+
+  show("dashboard");
+
+  renderLevels();
+
+}
+
+
+/* ============================================================
+   INICIAR BLOQUE
+   ============================================================ */
 
 function startBlock(id){
+
   state.block=id;
+
   const pool=scenarios[id];
-  /* Mezcla sin repetir hasta recorrer el bloque completo. */
+
+  /*
+    Mezcla sin repetir hasta recorrer
+    el bloque completo.
+  */
+
   let key="ce_order_"+id;
-  let order=JSON.parse(localStorage.getItem(key)||"null");
-  if(!Array.isArray(order)||order.length!==50){order=Array.from({length:50},(_,i)=>i); for(let i=order.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];} localStorage.setItem(key,JSON.stringify(order));}
-  const idx=order.shift(); order.push(idx); localStorage.setItem(key,JSON.stringify(order));
-  state.scenario=pool[idx];state.turn=0;state.score=0;state.answers=[];
-  document.getElementById("blockEyebrow").textContent=blockDefs.find(x=>x.id===id).name;
-  document.getElementById("scenarioTitle").textContent="Situación "+(idx+1)+" / 50";
-  document.getElementById("coach").textContent=blockDefs.find(x=>x.id===id).coach;
-  show("game");renderTurn();
+
+  let order=
+    JSON.parse(
+      localStorage.getItem(key)||"null"
+    );
+
+  if(
+    !Array.isArray(order) ||
+    order.length!==50
+  ){
+
+    order=
+      Array.from(
+        {length:50},
+        (_,i)=>i
+      );
+
+    for(
+      let i=order.length-1;
+      i>0;
+      i--
+    ){
+
+      let j=
+        Math.floor(
+          Math.random()*(i+1)
+        );
+
+      [
+        order[i],
+        order[j]
+      ]=[
+        order[j],
+        order[i]
+      ];
+
+    }
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(order)
+    );
+
+  }
+
+  const idx=order.shift();
+
+  order.push(idx);
+
+  localStorage.setItem(
+    key,
+    JSON.stringify(order)
+  );
+
+  state.scenario=pool[idx];
+
+  state.turn=0;
+
+  state.score=0;
+
+  state.answers=[];
+
+  const block=
+    blockDefs.find(x=>x.id===id);
+
+  document
+    .getElementById("blockEyebrow")
+    .textContent=block.name;
+
+  document
+    .getElementById("scenarioTitle")
+    .textContent=
+      "Situación "+(idx+1)+" / 50";
+
+  document
+    .getElementById("coach")
+    .textContent=block.coach;
+
+  show("game");
+
+  renderTurn();
+
 }
+
+
+/* ============================================================
+   RENDER TURN
+   ============================================================ */
 
 function renderTurn(){
-  const s=state.scenario,b=state.block;
-  const openings=[s.opening];
-  document.getElementById("scenarioCounter").textContent=`Turno ${state.turn+1} / 4`;
-  document.getElementById("prog").style.width=(((state.turn+1)/4)*100)+"%";
-  document.getElementById("prospectText").textContent=state.turn===0?s.opening:(state.lastResponse||s.opening);
-  document.getElementById("feedback").style.display="none";
-  document.getElementById("nextBtn").style.display="none";
-  const intents=optionIntents[b].slice();
-  /* Cada turno cambia el orden, pero las respuestas siguen ligadas a la intención. */
-  const shift=state.turn%intents.length; const ordered=intents.slice(shift).concat(intents.slice(0,shift));
-  const options=document.getElementById("options");options.innerHTML="";
-  ordered.forEach((intent)=>{
-    const btn=document.createElement("button");btn.className="opt";btn.textContent=questionText[intent];btn.onclick=()=>choose(intent,btn);options.appendChild(btn);
+
+  const s=state.scenario;
+
+  const b=state.block;
+
+  document
+    .getElementById("scenarioCounter")
+    .textContent=
+      `Turno ${state.turn+1} / 4`;
+
+  document
+    .getElementById("prog")
+    .style.width=
+      (((state.turn+1)/4)*100)+"%";
+
+  document
+    .getElementById("prospectText")
+    .textContent=
+      state.turn===0
+        ? s.opening
+        : (state.lastResponse||s.opening);
+
+  document
+    .getElementById("feedback")
+    .style.display="none";
+
+  document
+    .getElementById("nextBtn")
+    .style.display="none";
+
+  const intents=
+    questionBanks[b]
+      .map(x=>x[0]);
+
+  /*
+    Cada turno cambia el orden,
+    pero las respuestas siguen ligadas
+    a la intención.
+  */
+
+  const shift=
+    state.turn%intents.length;
+
+  const ordered=
+    intents
+      .slice(shift)
+      .concat(
+        intents.slice(0,shift)
+      );
+
+  const options=
+    document.getElementById("options");
+
+  options.innerHTML="";
+
+  ordered.forEach(intent=>{
+
+    const btn=
+      document.createElement("button");
+
+    btn.className="opt";
+
+    btn.textContent=
+      questionText[intent];
+
+    btn.onclick=
+      ()=>choose(intent,btn);
+
+    options.appendChild(btn);
+
   });
+
 }
+
+
+/* ============================================================
+   CALIDAD DE LA PREGUNTA
+   ============================================================ */
 
 function quality(intent){
-  const b=state.block,t=state.turn;
-  const ideal = {
-    discovery:[["clarify","attempt","impact"],["attempt","evidence","impact"],["evidence","impact","attempt"],["impact","evidence","attempt"]],
-    gap:[["current","difference","goal"],["difference","goal","attempt"],["attempt","difference","goal"],["difference","goal","attempt"]],
-    dolor:[["impact","evidence","consequence"],["attempt","impact","consequence"],["consequence","impact","evidence"],["consequence","impact","evidence"]],
-    urgencia:[["whyNow","priority","deadline"],["deadline","whyNow","priority"],["priority","deadline","whyNow"],["deadline","priority","whyNow"]],
-    objeciones:[["meaning","risk","criteria"],["risk","meaning","criteria"],["criteria","risk","meaning"],["criteria","risk","meaning"]]
+
+  const b=state.block;
+
+  const t=state.turn;
+
+  const ideal={
+
+    discovery:[
+      ["clarify","attempt","impact"],
+      ["attempt","evidence","impact"],
+      ["evidence","impact","attempt"],
+      ["impact","evidence","attempt"]
+    ],
+
+    gap:[
+      ["current","difference","goal"],
+      ["difference","goal","attempt"],
+      ["attempt","difference","goal"],
+      ["difference","goal","attempt"]
+    ],
+
+    dolor:[
+      ["impact","evidence","consequence"],
+      ["attempt","impact","consequence"],
+      ["consequence","impact","evidence"],
+      ["consequence","impact","evidence"]
+    ],
+
+    urgencia:[
+      ["whyNow","priority","deadline"],
+      ["deadline","whyNow","priority"],
+      ["priority","deadline","whyNow"],
+      ["deadline","priority","whyNow"]
+    ],
+
+    objeciones:[
+      ["meaning","risk","criteria"],
+      ["risk","meaning","criteria"],
+      ["criteria","risk","meaning"],
+      ["criteria","risk","meaning"]
+    ]
+
   };
-  if(intent==="pitch") return "bad";
-  const rank=ideal[b][Math.min(t,3)].indexOf(intent);
-  if(rank===0)return"excellent"; if(rank===1)return"good"; return"weak";
+
+  if(intent==="pitch")
+    return"bad";
+
+  const rank=
+    ideal[b][Math.min(t,3)]
+      .indexOf(intent);
+
+  if(rank===0)
+    return"excellent";
+
+  if(rank===1)
+    return"good";
+
+  return"weak";
+
 }
+
+
+/* ============================================================
+   ELEGIR RESPUESTA
+   ============================================================ */
 
 function choose(intent,btn){
-  document.querySelectorAll(".opt").forEach(x=>x.disabled=true);
-  const q=questionText[intent], response=responseFor(state.scenario,intent,state.turn);
-  const ql=quality(intent);
-  state.answers.push({intent,q,quality:ql});
+
+  document
+    .querySelectorAll(".opt")
+    .forEach(x=>x.disabled=true);
+
+  const q=
+    questionText[intent];
+
+  const response=
+    responseFor(
+      state.scenario,
+      intent,
+      state.turn
+    );
+
+  const ql=
+    quality(intent);
+
+  state.answers.push({
+    intent,
+    q,
+    quality:ql
+  });
+
   state.lastResponse=response;
-  state.score += ql==="excellent"?100:ql==="good"?65:ql==="weak"?30:0;
-  if(ql==="excellent"){state.xp+=100;state.streak++;} else if(ql==="good"){state.xp+=60;state.streak=0;} else {state.xp+=20;state.streak=0;}
+
+  state.score +=
+    ql==="excellent"
+      ?100
+      :ql==="good"
+        ?65
+        :ql==="weak"
+          ?30
+          :0;
+
+  if(ql==="excellent"){
+
+    state.xp+=100;
+
+    state.streak++;
+
+  }else if(ql==="good"){
+
+    state.xp+=60;
+
+    state.streak=0;
+
+  }else{
+
+    state.xp+=20;
+
+    state.streak=0;
+
+  }
+
   save();
-  btn.style.borderColor=ql==="excellent"?"#22c55e":ql==="good"?"#f59e0b":"#ef4444";
-  const fb=document.getElementById("feedback");fb.className="feedback "+(ql==="excellent"?"good":ql==="good"?"ok":"bad");fb.style.display="block";
-  const title=ql==="excellent"?"✓ Excelente decisión":ql==="good"?"◐ Buena decisión":"✕ Oportunidad perdida";
-  let text=ql==="excellent"?feedbacks.excellent[state.block][state.turn%2]:ql==="good"?feedbacks.good[state.block]:feedbacks.weak;
-  if(ql==="bad")text=feedbacks.bad;
-  fb.innerHTML=`<strong>${title}</strong><div>${text}</div><div style="margin-top:12px;color:#aaa"><b>PROSPECTO:</b> ${response}</div>`;
-  document.getElementById("nextBtn").style.display="block";
-  document.getElementById("nextBtn").textContent=state.turn===3?"VER RESULTADO":"CONTINUAR";
+
+  btn.style.borderColor=
+    ql==="excellent"
+      ?"#22c55e"
+      :ql==="good"
+        ?"#f59e0b"
+        :"#ef4444";
+
+  const fb=
+    document.getElementById("feedback");
+
+  fb.className=
+    "feedback "+
+    (
+      ql==="excellent"
+        ?"good"
+        :ql==="good"
+          ?"ok"
+          :"bad"
+    );
+
+  fb.style.display="block";
+
+  const title=
+    ql==="excellent"
+      ?"✓ Excelente decisión"
+      :ql==="good"
+        ?"◐ Buena decisión"
+        :"✕ Oportunidad perdida";
+
+  let text=
+    ql==="excellent"
+      ?feedbacks.excellent[
+        state.block
+      ][state.turn%2]
+      :ql==="good"
+        ?feedbacks.good[state.block]
+        :feedbacks.weak;
+
+  if(ql==="bad")
+    text=feedbacks.bad;
+
+  fb.innerHTML=`
+
+    <strong>
+      ${title}
+    </strong>
+
+    <div>
+      ${text}
+    </div>
+
+    <div
+      style="
+        margin-top:12px;
+        color:#aaa
+      ">
+
+      <b>PROSPECTO:</b>
+      ${response}
+
+    </div>
+
+  `;
+
+  document
+    .getElementById("nextBtn")
+    .style.display="block";
+
+  document
+    .getElementById("nextBtn")
+    .textContent=
+      state.turn===3
+        ?"VER RESULTADO"
+        :"CONTINUAR";
+
 }
+
+
+/* ============================================================
+   SIGUIENTE TURNO
+   ============================================================ */
 
 function nextTurn(){
-  if(state.turn===3){finish();return}
+
+  if(state.turn===3){
+
+    finish();
+
+    return;
+
+  }
+
   state.turn++;
+
   renderTurn();
+
 }
+
+
+/* ============================================================
+   PORCENTAJES
+   ============================================================ */
 
 function percentageFor(intents){
-  const relevant=state.answers.filter(a=>intents.includes(a.intent));
-  if(!relevant.length)return 0;
-  const points={excellent:100,good:65,weak:30,bad:0};
-  return Math.round(relevant.reduce((sum,a)=>sum+points[a.quality],0)/relevant.length);
+
+  const relevant=
+    state.answers.filter(
+      a=>intents.includes(a.intent)
+    );
+
+  if(!relevant.length)
+    return 0;
+
+  const points={
+    excellent:100,
+    good:65,
+    weak:30,
+    bad:0
+  };
+
+  return Math.round(
+
+    relevant.reduce(
+      (sum,a)=>
+        sum+points[a.quality],
+      0
+    )
+    /
+    relevant.length
+
+  );
+
 }
+
+
+/* ============================================================
+   FINAL
+   ============================================================ */
 
 function finish(){
+
   const max=400;
-  const score=Math.min(100,Math.round(state.score/max*100));
 
-  document.getElementById("finalScore").textContent=score;
-  document.getElementById("resultBlock").textContent=blockDefs.find(x=>x.id===state.block).name;
+  const score=
+    Math.min(
+      100,
+      Math.round(
+        state.score/max*100
+      )
+    );
 
-  const discovery=percentageFor([
-    "clarify","current","attempt","evidence"
-  ]);
-  const depth=percentageFor([
-    "impact","difference","consequence","meaning","risk"
-  ]);
-  const control=percentageFor([
-    "goal","whyNow","deadline","priority"
-  ]);
-  const criteria=percentageFor([
-    "criteria"
-  ]);
+  document
+    .getElementById("finalScore")
+    .textContent=score;
 
-  document.getElementById("rDiscovery").textContent=discovery+"%";
-  document.getElementById("rDepth").textContent=depth+"%";
-  document.getElementById("rControl").textContent=control+"%";
-  document.getElementById("rCriteria").textContent=criteria+"%";
+  document
+    .getElementById("resultBlock")
+    .textContent=
+      blockDefs.find(
+        x=>x.id===state.block
+      ).name;
 
-  document.getElementById("evaluation").innerHTML =
+
+  const discovery=
+    percentageFor([
+      "clarify",
+      "current",
+      "attempt",
+      "evidence"
+    ]);
+
+
+  const depth=
+    percentageFor([
+      "impact",
+      "difference",
+      "consequence",
+      "meaning",
+      "risk"
+    ]);
+
+
+  const control=
+    percentageFor([
+      "goal",
+      "whyNow",
+      "deadline",
+      "priority"
+    ]);
+
+
+  const criteria=
+    percentageFor([
+      "criteria"
+    ]);
+
+
+  document
+    .getElementById("rDiscovery")
+    .textContent=
+      discovery+"%";
+
+  document
+    .getElementById("rDepth")
+    .textContent=
+      depth+"%";
+
+  document
+    .getElementById("rControl")
+    .textContent=
+      control+"%";
+
+  document
+    .getElementById("rCriteria")
+    .textContent=
+      criteria+"%";
+
+
+  document
+    .getElementById("evaluation")
+    .innerHTML=
+
     score>=85
-      ? "<b>Lectura de closer fuerte.</b><br>Estás siguiendo la información que aparece en la conversación, profundizando y evitando saltar a vender antes de tiempo."
-      : score>=65
-        ? "<b>Buen criterio.</b><br>Tenés una base sólida, pero todavía hay momentos donde podrías profundizar antes de avanzar."
-        : "<b>Hay trabajo por hacer.</b><br>Estás dejando información valiosa sin explorar o entrando demasiado rápido en soluciones.";
+
+      ?
+
+      "<b>Lectura de closer fuerte.</b><br>Estás siguiendo la información que aparece en la conversación, profundizando y evitando saltar a vender antes de tiempo."
+
+      :
+
+      score>=65
+
+        ?
+
+        "<b>Buen criterio.</b><br>Tenés una base sólida, pero todavía hay momentos donde podrías profundizar antes de avanzar."
+
+        :
+
+        "<b>Hay trabajo por hacer.</b><br>Estás dejando información valiosa sin explorar o entrando demasiado rápido en soluciones.";
+
 
   show("result");
+
 }
 
-function init(){save();renderLevels();}
+
+/* ============================================================
+   INICIO
+   ============================================================ */
+
+function init(){
+
+  save();
+
+  renderLevels();
+
+}
+
 init();
+
 </script>
+
 </body>
 </html>
