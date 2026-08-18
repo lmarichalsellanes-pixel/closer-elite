@@ -146,30 +146,80 @@ const banks = {
  ]
 };
 
-const variants = [
- {who:"una agencia de marketing",place:"mi equipo",money:"3.000",goal:"8.000"},
- {who:"un negocio de servicios",place:"mis colaboradores",money:"2.500",goal:"6.000"},
- {who:"mi empresa",place:"la operación",money:"5.000",goal:"12.000"},
- {who:"mi consultoría",place:"mis clientes",money:"4.000",goal:"10.000"},
- {who:"mi proyecto",place:"mi equipo comercial",money:"1.800",goal:"5.000"}
-];
+/* Variantes REALES por bloque.
+   No se usan para cambiar solo el nombre: cada variante agrega un contexto
+   distinto para que los 10 arquetipos generen 50 situaciones realmente diferentes. */
+const variantsByBlock = {
+ discovery:[
+  {context:"Estoy al frente de una agencia chica de marketing y todavía soy quien aprueba casi todo.",detail:"El equipo creció de golpe este año y ahora coordino a cuatro personas.",goal:"Quiero ordenar la operación antes de seguir sumando clientes."},
+  {context:"Trabajo como consultora independiente y la mayor parte de los clientes depende directamente de mí.",detail:"Cuando tengo varios proyectos simultáneos, soy yo quien termina destrabando cada entrega.",goal:"Quiero dejar de ser el punto de paso de cada decisión."},
+  {context:"Tengo un negocio de servicios que viene creciendo, pero la estructura interna quedó atrás.",detail:"Hace unos meses podía controlar todo; hoy ya no llego a revisar cada frente.",goal:"Quiero entender qué debería cambiar antes de crecer más."},
+  {context:"Lidero un pequeño equipo comercial y todavía intervengo demasiado en conversaciones y decisiones.",detail:"Aunque tengo personas capacitadas, me cuesta aceptar resultados diferentes a los que habría obtenido yo.",goal:"Quiero aprender a liderar sin convertirme en supervisor de cada detalle."},
+  {context:"Estoy construyendo un proyecto nuevo y todavía hago demasiadas funciones al mismo tiempo.",detail:"Hay tareas que sé que no deberían depender de mí, pero no encontré una forma simple de ordenarlas.",goal:"Quiero identificar qué me está frenando antes de contratar o invertir más."}
+ ],
+ gap:[
+  {context:"Tengo una agencia que factura de forma estable, pero el crecimiento se frenó.",detail:"Hoy genero unos 3.000 al mes y para el próximo año quiero acercarme a 8.000.",goal:"Quiero saber qué brecha concreta tengo que cerrar para que ese salto sea sostenible."},
+  {context:"Trabajo por mi cuenta y gano bien, pero sigo intercambiando demasiadas horas por dinero.",detail:"Podría facturar más, pero eso también significaría trabajar más horas.",goal:"Quiero construir una forma de crecer sin que mi agenda sea el límite."},
+  {context:"Tengo un equipo pequeño y ya no quiero seguir siendo quien ejecuta las tareas importantes.",detail:"Hay personas a las que podría dar más responsabilidad, pero todavía vuelven muchas decisiones a mí.",goal:"Quiero pasar de hacer a dirigir sin perder resultados."},
+  {context:"Tengo suficientes oportunidades comerciales, pero el porcentaje de cierre no acompaña.",detail:"Puedo generar más llamadas, pero eso no corrige necesariamente lo que pasa dentro de ellas.",goal:"Quiero identificar qué falta entre tener oportunidades y convertirlas."},
+  {context:"Mi negocio funciona, pero todavía no tiene un sistema que otra persona pueda repetir sin mí.",detail:"Cuando incorporo a alguien necesito explicarle demasiadas cosas personalmente.",goal:"Quiero construir una operación que no dependa de mi memoria."}
+ ],
+ dolor:[
+  {context:"Llevo varios meses trabajando muchas más horas de las que quiero.",detail:"No es una semana puntual: incluso cuando el negocio está tranquilo termino agotado.",goal:"Quiero dejar de aceptar que este ritmo sea el precio de que las cosas funcionen."},
+  {context:"Mi trabajo empezó a invadir espacios que antes reservaba para mi familia y mi vida personal.",detail:"Ya me pasó varias veces estar presente físicamente pero seguir resolviendo cosas del negocio desde el teléfono.",goal:"Quiero recuperar una separación real entre trabajo y vida."},
+  {context:"Tengo personas contratadas, pero sigo sintiendo que cada problema termina en mi escritorio.",detail:"Cuando algo sale diferente a lo esperado, mi primera reacción es intervenir.",goal:"Quiero dejar de ser imprescindible para que el equipo funcione."},
+  {context:"Estoy facturando más que hace un año, pero no siento que mi vida haya mejorado en la misma proporción.",detail:"Cuando miro las horas y el margen real, la diferencia me preocupa.",goal:"Quiero que crecer tenga un impacto real y no solamente aumente mi carga."},
+  {context:"Sé que mi nivel de exigencia está haciendo difícil delegar.",detail:"Muchas veces el trabajo ya está bien, pero encuentro algo que yo habría hecho distinto y vuelvo a intervenir.",goal:"Quiero mantener estándares altos sin necesitar controlar todo."}
+ ],
+ urgencia:[
+  {context:"Tengo una fecha concreta en la que necesito que la operación esté más ordenada.",detail:"En unas semanas empieza una etapa de mayor demanda y no quiero llegar igual que hoy.",goal:"Quiero corregir el problema antes de que el volumen lo convierta en una crisis."},
+  {context:"Estoy por lanzar un nuevo servicio y sé que va a aumentar la cantidad de trabajo.",detail:"El lanzamiento está cerca y todavía hay procesos que dependen demasiado de mí.",goal:"Quiero preparar la estructura antes de abrir la puerta a más clientes."},
+  {context:"Estoy entrando en una etapa de crecimiento comercial y ya veo señales de saturación.",detail:"Si las ventas aumentan como espero, la forma actual de operar no va a aguantar.",goal:"Quiero resolver el cuello de botella antes de que el crecimiento lo exponga."},
+  {context:"Tengo una oportunidad grande sobre la mesa y necesito decidir si puedo asumirla.",detail:"La oportunidad es atractiva, pero para aprovecharla tendría que operar de una manera que hoy todavía no domino.",goal:"Quiero tomar la decisión sin comprometer la estabilidad que ya construí."},
+  {context:"Una persona clave de mi equipo va a cambiar de rol en las próximas semanas.",detail:"Al revisar sus tareas descubrí que varias cosas dependen de conocimiento que solo tengo yo.",goal:"Quiero eliminar esa dependencia antes de que llegue el cambio."}
+ ],
+ objeciones:[
+  {context:"La propuesta me interesa, pero la inversión está por encima de lo que había presupuestado.",detail:"No estoy buscando necesariamente lo más barato; quiero entender si pagar más cambia realmente el resultado.",goal:"Quiero evaluar el retorno antes de comprometer el dinero."},
+  {context:"Me interesa, pero mi agenda está bastante cargada y eso me hace dudar.",detail:"Ya compré cosas antes que terminé dejando a medias porque no tuve tiempo de implementarlas.",goal:"Quiero saber qué nivel de tiempo y ejecución requiere realmente."},
+  {context:"Antes de decidir necesito conversarlo con mi pareja porque es una inversión que afecta nuestro presupuesto.",detail:"No quiero plantearlo como una compra impulsiva ni llegar con argumentos vagos.",goal:"Quiero entender qué tendría que explicar para tomar una decisión compartida."},
+  {context:"La propuesta me gusta, pero todavía no estoy seguro de que funcione para mi caso particular.",detail:"Mi situación tiene algunas características que no veo reflejadas en todos los casos que escuché.",goal:"Quiero reducir el riesgo de invertir en algo que no encaje conmigo."},
+  {context:"Estoy comparando esto con una alternativa más económica.",detail:"La otra opción parece suficiente a primera vista, aunque no sé si resuelve la parte que más me importa.",goal:"Quiero entender qué diferencia concreta justificaría elegir una opción sobre la otra."}
+ ]
+};
 
-/* Cada escenario tiene datos estables. Las respuestas NO se seleccionan de un
-   banco de frases al azar: se construyen según el intent de la pregunta. */
+/* Construye 50 escenarios REALES por bloque: 10 arquetipos x 5 contextos
+   específicos del bloque. */
 function makeScenarios(blockId){
-  return banks[blockId].flatMap((a,ai)=>variants.map((v,vi)=>{
-    const [tag,opening,attempt,impact,evidence,desired]=a;
-    const id = blockId+"-"+ai+"-"+vi;
-    return {
-      id,tag,opening,attempt,impact,evidence,desired,
-      context:`Estoy hablando de ${v.who}. Hoy estoy alrededor de ${v.money} al mes y mi objetivo es ${v.goal}, aunque no todo en mi caso es un tema de dinero.`,
-      variant:vi,
-      block:blockId
-    };
-  }));
+  return banks[blockId].flatMap((a,ai)=>
+    variantsByBlock[blockId].map((v,vi)=>{
+      const [tag,opening,attempt,impact,evidence,desired]=a;
+      const contextOpening = `${v.context} ${opening}`;
+      const contextAttempt = `${v.detail} ${attempt}`;
+      const contextImpact = `${impact} ${v.goal}`;
+      const contextEvidence = `${evidence} Eso me hizo ver que necesito moverme de otra manera.`;
+      const contextDesired = `${desired}`;
+      return {
+        id:`${blockId}-${ai}-${vi}`,
+        tag,
+        opening:contextOpening,
+        attempt:contextAttempt,
+        impact:contextImpact,
+        evidence:contextEvidence,
+        desired:contextDesired,
+        context:v.context,
+        detail:v.detail,
+        goal:v.goal,
+        variant:vi,
+        archetype:ai,
+        block:blockId
+      };
+    })
+  );
 }
 
-const scenarios = Object.fromEntries(blockDefs.map(b=>[b.id,makeScenarios(b.id)]));
+const scenarios = Object.fromEntries(
+  blockDefs.map(b=>[b.id,makeScenarios(b.id)])
+);
 
 const questionBanks = {
  discovery:[
@@ -230,24 +280,60 @@ const questionText = {
  pitch:"Eso es exactamente lo que solucionamos con nuestro programa."
 };
 
-/* La respuesta depende de la pregunta. Esta función es el blindaje principal. */
+/* La respuesta depende de la pregunta elegida Y del contexto de la situación.
+   No se recicla una respuesta genérica entre intenciones. */
 function responseFor(s,intent,turn){
-  if(intent==="clarify") return s.opening + (turn>0 ? " Y cuanto más lo miro, más veo que no es solamente una cuestión de hacer más." : "");
-  if(intent==="attempt") return s.attempt;
-  if(intent==="impact") return s.impact;
-  if(intent==="evidence") return s.evidence;
-  if(intent==="current") return s.context + " Esa es la situación que tengo hoy.";
-  if(intent==="goal") return s.desired;
-  if(intent==="difference") return "Creo que la distancia está en que " + s.desired.toLowerCase() + " pero hoy todavía " + s.opening.toLowerCase().replace(/^siento /,"siento ") + ".";
-  if(intent==="consequence") return "Si sigo igual, " + s.impact.toLowerCase().replace(/^me /,"me ") + " y además sé que " + s.desired.toLowerCase();
-  if(intent==="whyNow") return s.evidence + " Por eso siento que ya no puedo seguir dejándolo para después.";
-  if(intent==="deadline") return "Si no lo resuelvo, " + s.impact.toLowerCase() + " y voy a llegar a ese momento con el mismo problema encima.";
-  if(intent==="priority") return "Porque " + s.impact.toLowerCase() + " y ya probé cosas que no cambiaron el fondo. Necesito atacar esto antes de sumar otra cosa.";
-  if(intent==="meaning") return "Lo que más me preocupa es equivocarme con la decisión. " + s.opening;
-  if(intent==="risk") return "Quiero evitar invertir tiempo o dinero y terminar exactamente en el mismo lugar. " + s.attempt;
-  if(intent==="criteria") return s.desired + " Si entiendo cómo se llega a eso y qué depende de mí, puedo decidir.";
-  if(intent==="pitch") return "Puede ser, pero todavía no estoy en ese punto. Antes necesito entender si realmente encaja conmigo, porque " + s.opening.toLowerCase();
-  return s.opening;
+  switch(intent){
+    case "clarify":
+      return turn===0
+        ? s.opening
+        : `Lo que todavía no había ordenado es esto: ${s.opening.toLowerCase()}`;
+
+    case "attempt":
+      return s.attempt;
+
+    case "impact":
+      return s.impact;
+
+    case "evidence":
+      return s.evidence;
+
+    case "current":
+      return `${s.context} ${s.opening}`;
+
+    case "goal":
+      return s.desired;
+
+    case "difference":
+      return `La brecha que veo es que ${s.desired.charAt(0).toLowerCase()+s.desired.slice(1)}. Hoy todavía sigo en esta situación: ${s.opening.toLowerCase()}`;
+
+    case "consequence":
+      return `Si sigo igual, ${s.impact.charAt(0).toLowerCase()+s.impact.slice(1)}. Y no quiero que eso se convierta en mi forma normal de trabajar.`;
+
+    case "whyNow":
+      return `${s.evidence} Por eso siento que ya no tiene sentido seguir dejándolo para después.`;
+
+    case "deadline":
+      return `Si no lo resuelvo a tiempo, voy a llegar a ese momento con el mismo problema y con menos margen para reaccionar. ${s.impact}`;
+
+    case "priority":
+      return `Porque esto está afectando directamente lo que quiero conseguir. ${s.goal} Si no resuelvo esta parte, siento que todo lo demás va a seguir chocando con el mismo límite.`;
+
+    case "meaning":
+      return `Lo que más me preocupa es tomar una decisión equivocada. ${s.opening}`;
+
+    case "risk":
+      return `Quiero evitar invertir tiempo o dinero y terminar exactamente en el mismo lugar. ${s.attempt}`;
+
+    case "criteria":
+      return `${s.desired} Para decidir necesito entender qué tendría que pasar, qué depende de mí y qué tan realista es para mi situación.`;
+
+    case "pitch":
+      return `Puede ser, pero todavía no estoy listo para saltar a una solución. ${s.opening} Primero necesito saber si realmente encaja conmigo.`;
+
+    default:
+      return s.opening;
+  }
 }
 
 const feedbacks = {
@@ -269,17 +355,36 @@ const feedbacks = {
  bad:"Esto salta demasiado rápido a una conclusión o solución. El prospecto todavía no llegó ahí."
 };
 
-let state={block:null,scenario:null,turn:0,score:0,answers:[],streak:Number(localStorage.ce_streak||0),xp:Number(localStorage.ce_xp||0)};
+let state={
+  block:null,
+  scenario:null,
+  turn:0,
+  score:0,
+  answers:[],
+  streak:Number(localStorage.ce_streak||0),
+  xp:Number(localStorage.ce_xp||0),
+  lives:Number(localStorage.ce_lives||3)
+};
 
-function save(){localStorage.ce_xp=state.xp;localStorage.ce_streak=state.streak;document.getElementById("xp").textContent=state.xp;document.getElementById("streak").textContent=state.streak;document.getElementById("xpbar").style.width=Math.min(100,state.xp/10)+"%";document.getElementById("xpleft").textContent=state.xp+" XP";}
+function getRank(xp){
+  if(xp>=4000)return"CLOSER ELITE";
+  if(xp>=2500)return"CLOSER AVANZADO";
+  if(xp>=1000)return"CLOSER PROFESIONAL";
+  if(xp>=400)return"SETTER INTERMEDIO";
+  return"SETTER NOVATO";
+}
 
-function renderLevels(){
-  const el=document.getElementById("levels"); el.innerHTML="";
-  blockDefs.forEach((b,i)=>{
-    const c=document.createElement("div"); c.className="card level";
-    c.innerHTML=`<div class="eyebrow">${b.name}</div><h3>${b.desc}</h3><p>${scenarios[b.id].length} situaciones distintas. Ninguna comparte el banco con otro bloque.</p><div class="bar"><i style="width:${Math.min(100,Math.round((state.xp/(1000+(i*500)))*100))}%"></i></div><button class="primary">ENTRENAR</button>`;
-    c.onclick=()=>startBlock(b.id); el.appendChild(c);
-  });
+function save(){
+  localStorage.ce_xp=state.xp;
+  localStorage.ce_streak=state.streak;
+  localStorage.ce_lives=state.lives;
+  document.getElementById("xp").textContent=state.xp;
+  document.getElementById("streak").textContent=state.streak;
+  document.getElementById("lives").textContent=state.lives;
+  document.getElementById("rank").textContent=getRank(state.xp);
+  document.getElementById("xpbar").style.width=Math.min(100,(state.xp/4000)*100)+"%";
+  document.getElementById("xpleft").textContent=state.xp+" XP";
+  document.getElementById("xpright").textContent="4000 XP";
 }
 
 function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
@@ -304,7 +409,7 @@ function renderTurn(){
   const s=state.scenario,b=state.block;
   const openings=[s.opening];
   document.getElementById("scenarioCounter").textContent=`Turno ${state.turn+1} / 4`;
-  document.getElementById("prog").style.width=((state.turn)/4*100)+"%";
+  document.getElementById("prog").style.width=(((state.turn+1)/4)*100)+"%";
   document.getElementById("prospectText").textContent=state.turn===0?s.opening:(state.lastResponse||s.opening);
   document.getElementById("feedback").style.display="none";
   document.getElementById("nextBtn").style.display="none";
@@ -356,18 +461,45 @@ function nextTurn(){
   renderTurn();
 }
 
+function percentageFor(intents){
+  const relevant=state.answers.filter(a=>intents.includes(a.intent));
+  if(!relevant.length)return 0;
+  const points={excellent:100,good:65,weak:30,bad:0};
+  return Math.round(relevant.reduce((sum,a)=>sum+points[a.quality],0)/relevant.length);
+}
+
 function finish(){
-  const max=400;const score=Math.round(state.score/max*100);
-  document.getElementById("finalScore").textContent=Math.min(100,score);
+  const max=400;
+  const score=Math.min(100,Math.round(state.score/max*100));
+
+  document.getElementById("finalScore").textContent=score;
   document.getElementById("resultBlock").textContent=blockDefs.find(x=>x.id===state.block).name;
-  const ex=state.answers.filter(a=>a.quality==="excellent").length;
-  const go=state.answers.filter(a=>a.quality==="good").length;
-  const weak=state.answers.filter(a=>a.quality==="weak").length;
-  document.getElementById("rDiscovery").textContent=Math.round((ex+go)*25)+"%";
-  document.getElementById("rDepth").textContent=Math.round(ex/4*100)+"%";
-  document.getElementById("rControl").textContent=Math.round((4-weak)/4*100)+"%";
-  document.getElementById("rCriteria").textContent=Math.min(100,Math.round(score*0.9+ex*2))+"%";
-  document.getElementById("evaluation").innerHTML = score>=85 ? "<b>Lectura de closer fuerte.</b><br>Estás siguiendo la información que aparece en la conversación y no saltando a vender." : score>=65 ? "<b>Buen criterio.</b><br>Hay buenas decisiones, pero todavía tenés oportunidades para profundizar antes de avanzar." : "<b>Hay trabajo por hacer.</b><br>Estás entrando demasiado rápido en soluciones o dejando información valiosa sin explorar.";
+
+  const discovery=percentageFor([
+    "clarify","current","attempt","evidence"
+  ]);
+  const depth=percentageFor([
+    "impact","difference","consequence","meaning","risk"
+  ]);
+  const control=percentageFor([
+    "goal","whyNow","deadline","priority"
+  ]);
+  const criteria=percentageFor([
+    "criteria"
+  ]);
+
+  document.getElementById("rDiscovery").textContent=discovery+"%";
+  document.getElementById("rDepth").textContent=depth+"%";
+  document.getElementById("rControl").textContent=control+"%";
+  document.getElementById("rCriteria").textContent=criteria+"%";
+
+  document.getElementById("evaluation").innerHTML =
+    score>=85
+      ? "<b>Lectura de closer fuerte.</b><br>Estás siguiendo la información que aparece en la conversación, profundizando y evitando saltar a vender antes de tiempo."
+      : score>=65
+        ? "<b>Buen criterio.</b><br>Tenés una base sólida, pero todavía hay momentos donde podrías profundizar antes de avanzar."
+        : "<b>Hay trabajo por hacer.</b><br>Estás dejando información valiosa sin explorar o entrando demasiado rápido en soluciones.";
+
   show("result");
 }
 
