@@ -2903,18 +2903,9 @@ function loadNode(){
     const chat = document.getElementById("chat");
     chat.innerHTML = "";
 
-    /* Mostrar toda la conversación anterior */
+    /* Mostrar la conversación anterior en orden cronológico:
+       primero habla el prospecto, después respondés vos. */
     callHistory.forEach(item => {
-
-        const you = document.createElement("div");
-        you.className = "chat-message you";
-
-        you.innerHTML = `
-            <div class="speaker">VOS</div>
-            <div class="bubble">${escapeHTML(item.text)}</div>
-        `;
-
-        chat.appendChild(you);
 
         const prospect = document.createElement("div");
         prospect.className = "chat-message prospect";
@@ -2925,6 +2916,16 @@ function loadNode(){
         `;
 
         chat.appendChild(prospect);
+
+        const you = document.createElement("div");
+        you.className = "chat-message you";
+
+        you.innerHTML = `
+            <div class="speaker">VOS</div>
+            <div class="bubble">${escapeHTML(item.text)}</div>
+        `;
+
+        chat.appendChild(you);
     });
 
     /* Mostrar la respuesta actual del prospecto */
@@ -2983,7 +2984,9 @@ function loadNode(){
 
             options.appendChild(button);
         }
-   );
+    );
+}
+
 function chooseOption(index){
 
     if(answered){
@@ -3104,7 +3107,7 @@ function continueConversation(){
         return;
     }
 
-    currentNode = option.next;
+    currentNode = selectedOption.next;
 
     loadNode();
 }
