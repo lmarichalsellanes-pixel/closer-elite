@@ -1,2160 +1,378 @@
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Closer Elite</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Closer Elite — Motor de Conversaciones</title>
 <style>
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:#08090d;
-    color:#f5f5f5;
-    min-height:100vh;
-}
-
-button{
-    font-family:inherit;
-}
-
-.app{
-    min-height:100vh;
-}
-
-header{
-    height:72px;
-    border-bottom:1px solid #242630;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 40px;
-    background:#0c0d12;
-    position:sticky;
-    top:0;
-    z-index:10;
-}
-
-.logo{
-    font-size:22px;
-    font-weight:900;
-    letter-spacing:1px;
-}
-
-.logo span{
-    color:#8b5cf6;
-}
-
-.header-stats{
-    display:flex;
-    gap:24px;
-    align-items:center;
-    font-size:14px;
-    color:#b7b9c5;
-}
-
-main{
-    max-width:1100px;
-    margin:0 auto;
-    padding:50px 24px;
-}
-
-.screen{
-    display:none;
-}
-
-.screen.active{
-    display:block;
-}
-
-/* DASHBOARD */
-
-.hero{
-    margin-bottom:35px;
-}
-
-.eyebrow{
-    color:#8b5cf6;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:2px;
-    font-size:12px;
-    margin-bottom:10px;
-}
-
-h1{
-    font-size:clamp(40px,6vw,70px);
-    line-height:.95;
-    margin-bottom:18px;
-}
-
-.hero p{
-    color:#9da0ad;
-    font-size:18px;
-    max-width:650px;
-    line-height:1.6;
-}
-
-.dashboard-grid{
-    display:grid;
-    grid-template-columns:1.5fr 1fr;
-    gap:20px;
-    margin-top:35px;
-}
-
-.card{
-    background:#11131a;
-    border:1px solid #262936;
-    border-radius:18px;
-    padding:25px;
-}
-
-.rank-label{
-    color:#8f92a0;
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    margin-bottom:7px;
-}
-
-.rank{
-    font-size:30px;
-    font-weight:800;
-    margin-bottom:20px;
-}
-
-.progress-container{
-    background:#242631;
-    height:10px;
-    border-radius:100px;
-    overflow:hidden;
-}
-
-.progress{
-    height:100%;
-    width:0%;
-    background:#8b5cf6;
-    border-radius:100px;
-    transition:width .4s ease;
-}
-
-.progress-info{
-    display:flex;
-    justify-content:space-between;
-    margin-top:10px;
-    color:#9295a2;
-    font-size:13px;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-top:18px;
-}
-
-.mini-stat{
-    background:#181a22;
-    border-radius:12px;
-    padding:15px;
-}
-
-.mini-stat .number{
-    font-size:23px;
-    font-weight:800;
-    margin-bottom:4px;
-}
-
-.mini-stat .label{
-    color:#8f92a0;
-    font-size:12px;
-}
-
-.main-button{
-    width:100%;
-    border:none;
-    background:#8b5cf6;
-    color:white;
-    padding:17px;
-    border-radius:12px;
-    font-size:16px;
-    font-weight:800;
-    cursor:pointer;
-    margin-top:20px;
-    transition:.2s;
-}
-
-.main-button:hover{
-    transform:translateY(-2px);
-    background:#9b73f7;
-}
-
-.secondary-button{
-    width:100%;
-    border:1px solid #343744;
-    background:#171922;
-    color:white;
-    padding:15px;
-    border-radius:12px;
-    font-weight:700;
-    cursor:pointer;
-    margin-top:12px;
-}
-
-.secondary-button:hover{
-    border-color:#8b5cf6;
-}
-
-/* LEVELS */
-
-.section-title{
-    margin-bottom:30px;
-}
-
-.section-title h2{
-    font-size:34px;
-    margin-bottom:8px;
-}
-
-.section-title p{
-    color:#8f92a0;
-}
-
-.level-list{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-}
-
-.level{
-    display:flex;
-    align-items:center;
-    gap:18px;
-    padding:20px;
-    border:1px solid #292c38;
-    background:#11131a;
-    border-radius:16px;
-}
-
-.level.unlocked{
-    cursor:pointer;
-}
-
-.level.unlocked:hover{
-    border-color:#8b5cf6;
-    transform:translateX(4px);
-}
-
-.level-number{
-    width:48px;
-    height:48px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:50%;
-    background:#242631;
-    font-weight:900;
-    flex-shrink:0;
-}
-
-.level.unlocked .level-number{
-    background:#8b5cf6;
-}
-
-.level-info{
-    flex:1;
-}
-
-.level-name{
-    font-weight:800;
-    font-size:17px;
-    margin-bottom:4px;
-}
-
-.level-description{
-    color:#858896;
-    font-size:13px;
-}
-
-.level-status{
-    color:#8b5cf6;
-    font-size:12px;
-    font-weight:700;
-}
-
-.locked{
-    opacity:.45;
-}
-
-/* TRAINING */
-
-.training-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:25px;
-}
-
-.back-button{
-    background:transparent;
-    border:none;
-    color:#aaaebb;
-    cursor:pointer;
-    font-size:14px;
-}
-
-.question-number{
-    color:#8f92a0;
-    font-size:13px;
-}
-
-.training-container{
-    max-width:800px;
-    margin:0 auto;
-}
-
-.training-header{
-    margin-bottom:25px;
-}
-
-.training-header h2{
-    font-size:28px;
-    margin-bottom:8px;
-}
-
-.training-header p{
-    color:#858896;
-}
-
-.call-progress{
-    background:#242631;
-    height:7px;
-    border-radius:50px;
-    overflow:hidden;
-    margin-top:15px;
-}
-
-.call-progress-fill{
-    height:100%;
-    background:#8b5cf6;
-    width:0%;
-    transition:.4s;
-}
-
-/* CONTEXT */
-
-.context{
-    background:#151720;
-    border-left:3px solid #8b5cf6;
-    padding:18px;
-    border-radius:10px;
-    color:#aeb1bd;
-    font-size:14px;
-    line-height:1.6;
-    margin-bottom:25px;
-}
-
-/* CHAT */
-
-.chat{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-    margin-bottom:30px;
-}
-
-.chat-message{
-    max-width:80%;
-}
-
-.chat-message.prospect{
-    align-self:flex-start;
-}
-
-.chat-message.you{
-    align-self:flex-end;
-}
-
-.speaker{
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    color:#8b5cf6;
-    font-weight:800;
-    margin-bottom:7px;
-}
-
-.bubble{
-    padding:18px;
-    border-radius:16px;
-    line-height:1.55;
-    font-size:17px;
-}
-
-.prospect .bubble{
-    background:#191b24;
-    border:1px solid #292c38;
-}
-
-.you .bubble{
-    background:#2b2050;
-    border:1px solid #6545a7;
-}
-
-/* OPTIONS */
-
-.question{
-    font-size:16px;
-    font-weight:800;
-    margin-bottom:15px;
-}
-
-.options{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-}
-
-.option{
-    border:1px solid #30333f;
-    background:#11131a;
-    color:#eee;
-    border-radius:13px;
-    padding:18px;
-    text-align:left;
-    cursor:pointer;
-    font-size:15px;
-    line-height:1.5;
-    transition:.2s;
-}
-
-.option:hover{
-    border-color:#8b5cf6;
-    background:#171923;
-}
-
-.option:disabled{
-    cursor:default;
-}
-
-/* FEEDBACK */
-
-.feedback{
-    margin-top:20px;
-    padding:20px;
-    border-radius:14px;
-    display:none;
-}
-
-.feedback.show{
-    display:block;
-}
-
-.feedback.good{
-    border:1px solid #22c55e;
-    background:rgba(34,197,94,.08);
-}
-
-.feedback.ok{
-    border:1px solid #eab308;
-    background:rgba(234,179,8,.08);
-}
-
-.feedback.bad{
-    border:1px solid #ef4444;
-    background:rgba(239,68,68,.08);
-}
-
-.feedback-title{
-    font-size:17px;
-    font-weight:900;
-    margin-bottom:8px;
-}
-
-.feedback-text{
-    color:#b5b7c2;
-    line-height:1.6;
-    font-size:14px;
-}
-
-.next-button{
-    width:100%;
-    margin-top:15px;
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    background:white;
-    color:#111;
-    font-weight:800;
-    cursor:pointer;
-}
-
-/* RESULT */
-
-.result{
-    max-width:800px;
-    margin:0 auto;
-    text-align:center;
-}
-
-.result-score{
-    font-size:90px;
-    font-weight:900;
-    margin:20px 0;
-}
-
-.result-label{
-    color:#8f92a0;
-    text-transform:uppercase;
-    letter-spacing:2px;
-}
-
-.result-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:14px;
-    margin-top:30px;
-    text-align:left;
-}
-
-.result-item{
-    background:#151720;
-    border:1px solid #292c38;
-    border-radius:14px;
-    padding:18px;
-}
-
-.result-item strong{
-    display:block;
-    margin-bottom:5px;
-}
-
-.result-item span{
-    color:#8f92a0;
-    font-size:13px;
-}
-
-/* STATS */
-
-.skill{
-    margin-bottom:22px;
-}
-
-.skill-header{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:8px;
-    font-size:14px;
-}
-
-.skill-bar{
-    height:8px;
-    background:#252732;
-    border-radius:100px;
-    overflow:hidden;
-}
-
-.skill-fill{
-    height:100%;
-    background:#8b5cf6;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:750px){
-
-    header{
-        padding:0 18px;
-    }
-
-    .header-stats{
-        gap:10px;
-    }
-
-    .dashboard-grid{
-        grid-template-columns:1fr;
-    }
-
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    main{
-        padding:35px 18px;
-    }
-
-    .chat-message{
-        max-width:92%;
-    }
-
-    .result-grid{
-        grid-template-columns:1fr;
-    }
-
-}
-
+:root{--bg:#090a0e;--panel:#151720;--panel2:#1b1e29;--line:#2b2f3d;--text:#f5f5f7;--muted:#9a9daa;--purple:#8b5cf6;--purple2:#a78bfa;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit}.top{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;background:#0b0c10;z-index:5}.logo{font-weight:900;font-size:25px}.logo span{color:var(--purple)}.stats{display:flex;gap:24px;color:#ddd}.app{max-width:1120px;margin:0 auto;padding:34px 24px 70px}.eyebrow{color:var(--purple2);font-weight:800;letter-spacing:3px;font-size:12px}.hero h1{font-size:54px;line-height:.98;margin:12px 0}.hero p{color:var(--muted);font-size:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;margin-top:22px}.levels{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.level{cursor:pointer;transition:.15s}.level:hover{transform:translateY(-2px);border-color:var(--purple)}.level h3{margin:0 0 8px}.level p{color:var(--muted);margin:0}.bar{height:8px;background:#262936;border-radius:99px;overflow:hidden;margin:18px 0}.bar i{display:block;height:100%;background:var(--purple);width:0}.primary{width:100%;border:0;background:var(--purple);color:white;padding:16px;border-radius:12px;font-weight:800;cursor:pointer}.primary:hover{background:#7c4ff0}.screen{display:none}.screen.active{display:block}.back{background:none;border:1px solid var(--line);color:white;border-radius:10px;padding:10px 14px;cursor:pointer}.scenarioHead{display:flex;justify-content:space-between;align-items:center;gap:20px}.scenarioTitle{font-size:30px;margin:8px 0}.progress{height:6px;background:#252834;border-radius:99px;margin:18px 0 24px}.progress i{display:block;height:100%;background:var(--purple);border-radius:99px}.coach{border-left:3px solid var(--purple);background:#171923;padding:17px 18px;border-radius:0 12px 12px 0;color:#c8c9d0;margin-bottom:18px}.speaker{color:var(--purple2);font-size:12px;letter-spacing:2px;font-weight:900;margin:18px 0 8px}.prospect{background:#20232d;border:1px solid #303442;padding:22px;border-radius:15px;font-size:18px;line-height:1.55}.question{font-size:16px;font-weight:800;margin:24px 0 12px}.options{display:grid;gap:12px}.opt{background:#151720;border:1px solid #303442;color:#eee;text-align:left;padding:17px;border-radius:13px;cursor:pointer}.opt:hover{border-color:var(--purple2)}.feedback{margin-top:18px;border-radius:15px;padding:18px;display:none}.feedback.good{display:block;background:#102318;border:1px solid #245b37}.feedback.ok{display:block;background:#221e10;border:1px solid #66501d}.feedback.bad{display:block;background:#251416;border:1px solid #673036}.feedback strong{display:block;margin-bottom:7px}.next{margin-top:14px}.result{text-align:center}.score{font-size:92px;font-weight:900}.chips{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.chip{background:var(--panel);border:1px solid var(--line);padding:18px;border-radius:14px;text-align:left}.chip b{display:block;font-size:20px}.small{color:var(--muted);font-size:14px}.notice{background:#151720;border:1px solid var(--line);padding:15px;border-radius:12px;color:#bfc0c8;margin-top:14px}.footerNote{color:#777b89;font-size:13px;margin-top:20px}
+@media(max-width:700px){.levels,.chips{grid-template-columns:1fr}.hero h1{font-size:42px}.top{padding:0 18px}.stats{gap:10px;font-size:12px}}
 </style>
 </head>
-
 <body>
-
-<div class="app">
-
-<header>
-
-    <div class="logo">
-        CLOSER <span>ELITE</span>
-    </div>
-
-    <div class="header-stats">
-
-        <div>🔥 <span id="streak">0</span></div>
-
-        <div>❤️ <span id="lives">3</span></div>
-
-        <div>⭐ <span id="xp">0</span></div>
-
-    </div>
-
+<header class="top">
+  <div class="logo">CLOSER <span>ELITE</span></div>
+  <div class="stats"><span>🔥 <b id="streak">0</b></span><span>❤️ <b id="lives">3</b></span><span>⭐ <b id="xp">0</b></span></div>
 </header>
 
-<main>
-
-<!-- DASHBOARD -->
-
-<section id="dashboard" class="screen active">
-
+<main class="app">
+  <section id="dashboard" class="screen active">
     <div class="hero">
-
-        <div class="eyebrow">
-            Entrenamiento de ventas
-        </div>
-
-        <h1>
-            Entrená.<br>
-            Decidí.<br>
-            Cerrá.
-        </h1>
-
-        <p>
-            No aprendas qué decir.
-            Aprendé qué pensar cuando estás frente a un prospecto.
-        </p>
-
+      <div class="eyebrow">ENTRENAMIENTO DE CLOSING</div>
+      <h1>Entrená.<br>Decidí.<br>Cerrá.</h1>
+      <p>No memorices respuestas. Aprendé a leer qué está pasando en una conversación.</p>
     </div>
-
-    <div class="dashboard-grid">
-
-        <div class="card">
-
-            <div class="rank-label">
-                Tu rango actual
-            </div>
-
-            <div class="rank" id="rank">
-                SETTER NOVATO
-            </div>
-
-            <div class="progress-container">
-
-                <div
-                    class="progress"
-                    id="progress">
-                </div>
-
-            </div>
-
-            <div class="progress-info">
-
-                <span id="xpProgress">
-                    0 XP
-                </span>
-
-                <span>
-                    1000 XP
-                </span>
-
-            </div>
-
-            <div class="stats">
-
-                <div class="mini-stat">
-
-                    <div
-                        class="number"
-                        id="completed">
-                        0
-                    </div>
-
-                    <div class="label">
-                        Decisiones
-                    </div>
-
-                </div>
-
-                <div class="mini-stat">
-
-                    <div
-                        class="number"
-                        id="accuracy">
-                        0%
-                    </div>
-
-                    <div class="label">
-                        Precisión
-                    </div>
-
-                </div>
-
-                <div class="mini-stat">
-
-                    <div
-                        class="number"
-                        id="bestStreak">
-                        0
-                    </div>
-
-                    <div class="label">
-                        Mejor racha
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button
-                class="main-button"
-                onclick="startLevel()">
-
-                CONTINUAR ENTRENAMIENTO
-
-            </button>
-
-        </div>
-
-        <div class="card">
-
-            <div class="rank-label">
-                Tu progreso
-            </div>
-
-            <h3
-                style="font-size:25px;margin-bottom:10px;">
-                Convertite en Elite.
-            </h3>
-
-            <p
-                style="color:#8f92a0;line-height:1.6;font-size:14px;">
-
-                Entrená conversaciones reales,
-                aprendé a detectar lo que realmente
-                está pasando y desarrollá criterio comercial.
-
-            </p>
-
-            <button
-                class="secondary-button"
-                onclick="showScreen('levels')">
-
-                🏆 VER NIVELES
-
-            </button>
-
-            <button
-                class="secondary-button"
-                onclick="showScreen('statistics')">
-
-                📊 ESTADÍSTICAS
-
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-<!-- LEVELS -->
-
-<section id="levels" class="screen">
-
-    <button
-        class="back-button"
-        onclick="showScreen('dashboard')">
-
-        ← Volver
-
-    </button>
-
-    <div
-        class="section-title"
-        style="margin-top:25px;">
-
-        <h2>
-            Mapa de entrenamiento
-        </h2>
-
-        <p>
-            Subí de nivel hasta convertirte en Closer Elite.
-        </p>
-
-    </div>
-
-    <div class="level-list">
-
-        <div
-            class="level unlocked"
-            data-level="1">
-
-            <div class="level-number">
-                1
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    DISCOVERY
-                </div>
-
-                <div class="level-description">
-                    Aprendé a escuchar,
-                    preguntar y profundizar.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                JUGAR
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="2">
-
-            <div class="level-number">
-                2
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    EL GAP
-                </div>
-
-                <div class="level-description">
-                    Descubrí la distancia entre
-                    su realidad y su objetivo.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                🔒
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="3">
-
-            <div class="level-number">
-                3
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    DOLOR
-                </div>
-
-                <div class="level-description">
-                    Profundizá sin manipular.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                🔒
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="4">
-
-            <div class="level-number">
-                4
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    URGENCIA
-                </div>
-
-                <div class="level-description">
-                    Descubrí por qué cambiar ahora.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                🔒
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="5">
-
-            <div class="level-number">
-                5
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    OBJECIONES
-                </div>
-
-                <div class="level-description">
-                    Descubrí qué existe detrás
-                    de una objeción.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                🔒
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="6">
-
-            <div class="level-number">
-                6
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    AISLAMIENTO
-                </div>
-
-                <div class="level-description">
-                    Aislá la verdadera razón
-                    de la indecisión.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                🔒
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="7">
-
-            <div class="level-number">
-                7
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    CONTROL
-                </div>
-
-                <div class="level-description">
-                    Dirigí la conversación
-                    sin perseguir.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                🔒
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="8">
-
-            <div class="level-number">
-                8
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    CIERRE
-                </div>
-
-                <div class="level-description">
-                    Convertí claridad en decisión.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                🔒
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="9">
-
-            <div class="level-number">
-                9
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    CLOSER AVANZADO
-                </div>
-
-                <div class="level-description">
-                    Situaciones complejas.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                🔒
-            </div>
-
-        </div>
-
-
-        <div class="level locked" data-level="10">
-
-            <div class="level-number">
-                10
-            </div>
-
-            <div class="level-info">
-
-                <div class="level-name">
-                    BOSS FIGHT
-                </div>
-
-                <div class="level-description">
-                    Una llamada completa.
-                </div>
-
-            </div>
-
-            <div class="level-status">
-                👑
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- TRAINING -->
-
-<section id="training" class="screen">
-
-    <div class="training-top">
-
-        <button
-            class="back-button"
-            onclick="showScreen('dashboard')">
-
-            ← Salir
-
-        </button>
-
-        <div
-            class="question-number"
-            id="questionNumber">
-
-            Decisión 1 de 6
-
-        </div>
-
-    </div>
-
-
-    <div class="training-container">
-
-
-        <div class="training-header">
-
-            <h2>
-                LEVEL 1 — DISCOVERY
-            </h2>
-
-            <p>
-                No busques la respuesta perfecta.
-                Buscá entender qué está pasando.
-            </p>
-
-            <div class="call-progress">
-
-                <div
-                    class="call-progress-fill"
-                    id="callProgress">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div
-            class="context"
-            id="context">
-        </div>
-
-
-        <div
-            class="chat"
-            id="chat">
-        </div>
-
-
-        <div class="question">
-
-            ¿Qué hacés?
-
-        </div>
-
-
-        <div
-            class="options"
-            id="options">
-        </div>
-
-
-        <div
-            class="feedback"
-            id="feedback">
-
-            <div
-                class="feedback-title"
-                id="feedbackTitle">
-            </div>
-
-            <div
-                class="feedback-text"
-                id="feedbackText">
-            </div>
-
-            <button
-                class="next-button"
-                onclick="continueConversation()">
-
-                CONTINUAR
-
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- RESULT -->
-
-<section id="result" class="screen">
-
-    <div class="result">
-
-        <div class="eyebrow">
-            Entrenamiento completado
-        </div>
-
-        <h2
-            id="resultTitle"
-            style="font-size:40px;margin-top:10px;">
-
-            DECISIÓN BAJO PRESIÓN
-
-        </h2>
-
-
-        <div
-            class="result-score"
-            id="finalScore">
-
-            0
-
-        </div>
-
-
-        <div class="result-label">
-
-            Score de closer
-
-        </div>
-
-
-        <div
-            class="result-grid">
-
-            <div class="result-item">
-
-                <strong>
-                    Discovery
-                </strong>
-
-                <span id="discoveryScore">
-                    0%
-                </span>
-
-            </div>
-
-
-            <div class="result-item">
-
-                <strong>
-                    Profundidad
-                </strong>
-
-                <span id="depthScore">
-                    0%
-                </span>
-
-            </div>
-
-
-            <div class="result-item">
-
-                <strong>
-                    Control
-                </strong>
-
-                <span id="controlScore">
-                    0%
-                </span>
-
-            </div>
-
-
-            <div class="result-item">
-
-                <strong>
-                    Criterio
-                </strong>
-
-                <span id="criteriaScore">
-                    0%
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div
-            class="card"
-            style="margin-top:20px;text-align:left;">
-
-            <div class="rank-label">
-                Evaluación
-            </div>
-
-            <p
-                id="resultMessage"
-                style="color:#b5b7c2;line-height:1.7;margin-top:10px;">
-
-            </p>
-
-        </div>
-
-
-        <button
-            class="main-button"
-            onclick="showScreen('dashboard')">
-
-            VOLVER AL DASHBOARD
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- STATISTICS -->
-
-<section id="statistics" class="screen">
-
-    <button
-        class="back-button"
-        onclick="showScreen('dashboard')">
-
-        ← Volver
-
-    </button>
-
-
-    <div
-        class="section-title"
-        style="margin-top:25px;">
-
-        <h2>
-            Tus estadísticas
-        </h2>
-
-        <p>
-            Descubrí qué tipo de closer estás construyendo.
-        </p>
-
-    </div>
-
-
     <div class="card">
-
-        <div class="rank-label">
-            Precisión general
-        </div>
-
-        <div
-            class="stat-large"
-            id="statsAccuracy"
-            style="font-size:40px;font-weight:900;margin:10px 0;">
-
-            0%
-
-        </div>
-
-
-        <div class="skill">
-
-            <div class="skill-header">
-
-                <span>
-                    Discovery
-                </span>
-
-                <span id="statDiscovery">
-                    0%
-                </span>
-
-            </div>
-
-            <div class="skill-bar">
-
-                <div
-                    class="skill-fill"
-                    id="barDiscovery"
-                    style="width:0%">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="skill">
-
-            <div class="skill-header">
-
-                <span>
-                    Profundidad
-                </span>
-
-                <span id="statDepth">
-                    0%
-                </span>
-
-            </div>
-
-            <div class="skill-bar">
-
-                <div
-                    class="skill-fill"
-                    id="barDepth"
-                    style="width:0%">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="skill">
-
-            <div class="skill-header">
-
-                <span>
-                    Control
-                </span>
-
-                <span id="statControl">
-                    0%
-                </span>
-
-            </div>
-
-            <div class="skill-bar">
-
-                <div
-                    class="skill-fill"
-                    id="barControl"
-                    style="width:0%">
-                </div>
-
-            </div>
-
-        </div>
-
+      <div class="small">TU RANGO ACTUAL</div>
+      <h2 id="rank">SETTER NOVATO</h2>
+      <div class="bar"><i id="xpbar"></i></div>
+      <div class="small"><span id="xpleft">0 XP</span> · <span id="xpright">1000 XP</span></div>
     </div>
+    <div class="levels" id="levels"></div>
+    <div class="notice"><b>Regla del motor:</b> cada respuesta del prospecto está ligada a la pregunta exacta que elegís. El prospecto mantiene memoria, habla en primera persona y no revela su “problema real” de forma artificial.</div>
+  </section>
 
-</section>
+  <section id="game" class="screen">
+    <div class="scenarioHead">
+      <div><button class="back" onclick="goDashboard()">← Dashboard</button><div class="eyebrow" id="blockEyebrow"></div><div class="scenarioTitle" id="scenarioTitle"></div></div>
+      <div class="small" id="scenarioCounter"></div>
+    </div>
+    <div class="progress"><i id="prog"></i></div>
+    <div class="coach" id="coach"></div>
+    <div class="speaker">PROSPECTO</div>
+    <div class="prospect" id="prospectText"></div>
+    <div class="question">¿Qué hacés?</div>
+    <div class="options" id="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="nextBtn" class="primary next" style="display:none" onclick="nextTurn()">CONTINUAR</button>
+  </section>
 
-
+  <section id="result" class="screen result">
+    <div class="eyebrow" id="resultBlock"></div>
+    <h1>ENTRENAMIENTO COMPLETADO</h1>
+    <div class="score" id="finalScore">0</div>
+    <div class="small">SCORE DE CLOSER</div>
+    <div class="chips" style="margin-top:25px">
+      <div class="chip"><b id="rDiscovery">0%</b><span class="small">Discovery</span></div>
+      <div class="chip"><b id="rDepth">0%</b><span class="small">Profundidad</span></div>
+      <div class="chip"><b id="rControl">0%</b><span class="small">Control</span></div>
+      <div class="chip"><b id="rCriteria">0%</b><span class="small">Criterio</span></div>
+    </div>
+    <div class="card" id="evaluation"></div>
+    <button class="primary" onclick="goDashboard()">VOLVER AL DASHBOARD</button>
+  </section>
 </main>
 
-</div>
 <script>
+/* ============================================================
+   CLOSER ELITE — MOTOR DE CONVERSACIÓN COHERENTE
+   La regla estructural es:
+   pregunta elegida -> intent -> respuesta específica -> nuevo estado.
+   Nunca se reutiliza una respuesta genérica para otra pregunta.
+   ============================================================ */
 
+const blockDefs = [
+ {id:"discovery",name:"LEVEL 1 — DISCOVERY",desc:"Entendé qué está pasando antes de intentar vender.",coach:"Escuchá al prospecto. Tu objetivo es entender, no solucionar."},
+ {id:"gap",name:"LEVEL 2 — GAP",desc:"Conectá situación actual con lo que necesita cambiar.",coach:"El GAP no es preguntar por preguntar: encontrá la distancia entre hoy y lo que quiere conseguir."},
+ {id:"dolor",name:"LEVEL 3 — DOLOR",desc:"Profundizá consecuencias sin fabricar dolor.",coach:"No empujes. Descubrí qué le cuesta realmente seguir igual."},
+ {id:"urgencia",name:"LEVEL 4 — URGENCIA",desc:"Entendé por qué esto importa ahora.",coach:"Urgencia real = consecuencia + momento + decisión. No presión artificial."},
+ {id:"objeciones",name:"LEVEL 5 — OBJECIONES",desc:"Aprendé a pensar cuando aparece resistencia.",coach:"No rebatas automáticamente. Primero descubrí qué significa la objeción."}
+];
 
-/* =====================================
-   ESTADO DEL JUGADOR
-===================================== */
-
-let player =
-JSON.parse(
-    localStorage.getItem("closerElitePlayer")
-) || {
-
-    xp:0,
-    lives:3,
-    streak:0,
-    bestStreak:0,
-    decisions:0,
-    goodDecisions:0,
-    discovery:0,
-    depth:0,
-    control:0,
-    criteria:0,
-    unlockedLevel:1
-
+/* 10 arquetipos por bloque x 5 variantes = 50 situaciones.
+   Los bloques tienen bancos distintos: no se reciclan situaciones. */
+const banks = {
+ discovery:[
+  ["equipo","Siento que termino revisando todo lo que hace mi equipo.","Probé delegar algunas tareas, pero después vuelvo a meterme.","Cada revisión me termina comiendo horas que podría usar para crecer.","Me di cuenta una tarde en que terminé trabajando hasta después de cenar.","Quiero poder confiar en el equipo sin sentir que pierdo el control."],
+  ["tiempo","Últimamente siento que mi agenda no me deja avanzar.","Intenté organizarme por bloques y también usar una lista de prioridades.","Aun así, termino reaccionando a lo urgente y dejo lo importante para después.","Lo noté porque varias semanas terminaron igual aunque cambiara mi planificación.","Necesito recuperar tiempo sin bajar el nivel de lo que hago."],
+  ["ventas","Tengo meses donde vendo bien y otros donde parece que todo se frena.","Probé cambiar el guion y también hacer más seguimiento.","El problema es que no sé qué parte está fallando cuando baja la conversión.","Me di cuenta al comparar dos meses con la misma cantidad de oportunidades.","Quiero entender qué está pasando en mis conversaciones."],
+  ["clientes","Siento que algunos clientes me consumen muchísimo más de lo que deberían.","Intenté poner límites y ordenar mejor las entregas.","A veces termino haciendo excepciones y después todo se desordena.","Lo vi cuando un proyecto pequeño terminó ocupando casi el mismo tiempo que uno grande.","Quiero tener una forma más clara de trabajar con ellos."],
+  ["delegacion","Sé que debería delegar más, pero me cuesta soltar ciertas cosas.","Probé contratar ayuda para tareas operativas.","Terminé revisando o corrigiendo casi todo antes de dejarlo salir.","Me di cuenta de que la persona estaba avanzando, pero yo igual intervenía.","Quiero dejar de ser el cuello de botella."],
+  ["prioridades","Tengo muchas cosas abiertas y me cuesta decidir qué debería ir primero.","Probé usar prioridades y objetivos semanales.","Cuando aparece algo urgente, termino cambiando todo el orden.","Lo noté porque mis semanas están llenas pero siento poco avance real.","Quiero tomar decisiones con más criterio."],
+  ["estructura","Siento que el negocio funciona, pero depende demasiado de mí.","Probé documentar procesos y ordenar responsabilidades.","El problema es que cuando algo se sale del proceso vuelvo a resolverlo yo.","Lo vi cuando me fui unos días y varias decisiones terminaron esperándome.","Quiero que funcione sin estar encima de todo."],
+  ["confianza","Me cuesta confiar en que las cosas van a salir bien si no las controlo.","Intenté soltar algunas decisiones importantes.","Después termino preguntando, revisando y corrigiendo.","Me di cuenta de que incluso cuando no había errores yo igual necesitaba comprobarlo.","Quiero entender de dónde viene esa necesidad de control."],
+  ["crecimiento","Quiero crecer, pero siento que la operación actual me frena.","Intenté aumentar ventas antes de ordenar la parte interna.","Eso hizo que tuviera más movimiento pero también más problemas.","Lo vi cuando entraron más clientes y yo terminé más saturado.","Quiero crecer sin multiplicar el caos."],
+  ["decisiones","Me cuesta saber qué decisión tomar cuando tengo varias opciones.","Intenté buscar más información antes de decidir.","A veces termino acumulando información y postergando la decisión.","Me pasó con una inversión que llevo meses evaluando.","Quiero tener un criterio más claro para decidir."]
+ ],
+ gap:[
+  ["ingresos","Hoy estoy alrededor de 3.000 al mes, pero quiero llegar a 8.000.","Probé aumentar precios y también buscar más clientes.","Lo que todavía no tengo claro es qué tendría que cambiar para que ese salto sea sostenible.","Comparé mis meses y vi que vender más no siempre significó ganar más.","Quiero una ruta concreta entre mi situación actual y ese objetivo."],
+  ["libertad","Tengo ingresos relativamente buenos, pero sigo trabajando prácticamente todo el día.","Intenté contratar ayuda y también reducir algunas tareas.","El problema es que el negocio sigue necesitando demasiada atención mía.","Cuando me tomo un día libre, siento que tengo que volver y ponerme al día.","Quiero que el resultado económico no dependa de estar conectado todo el tiempo."],
+  ["liderazgo","Hoy tengo un equipo, pero todavía siento que yo tomo demasiadas decisiones.","Probé asignar responsables y hacer reuniones de seguimiento.","Aun así, muchas decisiones vuelven a mi mesa.","Cuando intento apartarme, aparecen preguntas que esperaba que resolvieran solos.","Quiero pasar de ejecutar a liderar de verdad."],
+  ["conversion","Tengo suficientes oportunidades, pero convierto menos de lo que esperaba.","Probé aumentar el volumen de llamadas y cambiar algunas preguntas.","Eso me dio más actividad, pero no solucionó la diferencia entre oportunidades y cierres.","Lo confirmé cuando comparé meses con más llamadas y casi la misma facturación.","Quiero entender qué falta entre una conversación y una decisión."],
+  ["sistema","Sé hacer el trabajo, pero no tengo un sistema que me permita repetirlo bien.","Intenté documentar lo que hago y usar herramientas.","Termino volviendo a mi forma manual porque me parece más rápido.","Cuando alguien nuevo entra, necesita demasiada explicación mía.","Quiero construir algo que otra persona pueda ejecutar."],
+  ["margen","Estoy facturando más que antes, pero el margen no mejora.","Intenté bajar costos y también vender servicios de mayor valor.","Parte del problema es que sigo poniendo demasiadas horas por cada cliente.","Lo vi cuando calculé cuánto realmente me queda después del tiempo invertido.","Quiero que crecer también signifique ganar mejor."],
+  ["foco","Tengo varias oportunidades, pero siento que ninguna recibe suficiente foco.","Intenté elegir una prioridad por trimestre.","Cuando aparece una oportunidad atractiva vuelvo a abrir frentes nuevos.","Terminé con más proyectos y menos claridad.","Quiero decidir qué merece realmente mi atención."],
+  ["capacidad","La demanda está, pero mi capacidad para atenderla es limitada.","Intenté sumar personas cuando aparecía más trabajo.","La incorporación siempre me genera más supervisión de la que esperaba.","Lo noté cuando crecer la demanda hizo crecer también mi carga.","Quiero aumentar capacidad sin convertirme en gerente de emergencias."],
+  ["previsibilidad","Hay meses buenos, pero no sé cuánto voy a cerrar el mes siguiente.","Intenté mejorar seguimiento y generar más oportunidades.","Todavía siento que el resultado depende demasiado de lo que ocurra esa semana.","Me di cuenta al mirar seis meses y ver una variación enorme.","Quiero una operación comercial más previsible."],
+  ["objetivo","Tengo claro que quiero crecer, pero no tengo claro qué debería cambiar primero.","Probé atacar varias áreas al mismo tiempo.","Eso hizo que avanzara un poco en todas y realmente no resolviera ninguna.","Lo noté porque después de meses sigo haciendo muchas de las mismas cosas.","Quiero saber cuál es la brecha principal que tengo que cerrar."]
+ ],
+ dolor:[
+  ["agotamiento","Estoy cansado de terminar el día sintiendo que hice muchísimo y no avancé.","Probé trabajar más temprano y organizar mejor la agenda.","Aun así, sigo cerrando el día con cosas importantes pendientes.","Me está pasando incluso en semanas donde no tengo problemas extraordinarios.","No quiero seguir sosteniendo este ritmo indefinidamente."],
+  ["familia","Mi trabajo está empezando a afectar el tiempo que tengo para mi familia.","Intenté poner horarios y dejar el teléfono después de cierta hora.","Cuando aparece un problema vuelvo a conectarme igual.","Ya hubo momentos en que estaba físicamente con mi familia pero pensando en el negocio.","No quiero que esto se convierta en la normalidad."],
+  ["equipo","Lo que más me frustra es tener gente y sentir que igual todo termina en mí.","Intenté explicar mejor y dar más autonomía.","Cuando algo sale distinto a como lo imaginaba, vuelvo a tomarlo.","Eso me hace sentir que contratar ayuda no solucionó el problema.","Quiero dejar de ser imprescindible para cada detalle."],
+  ["dinero","Me molesta que facture bien y aun así no sienta que estoy progresando.","Intenté vender más para compensarlo.","Terminé trabajando más y la mejora no fue proporcional.","Lo vi cuando comparé facturación con horas trabajadas.","Quiero que el esfuerzo tenga una relación más lógica con el resultado."],
+  ["autoexigencia","Sé que soy parte del problema porque me cuesta aceptar algo que no esté como yo lo haría.","Intenté bajar el nivel de control.","Me dura poco: encuentro algo para corregir y vuelvo a intervenir.","Me di cuenta de que muchas veces el resultado ya era suficiente.","Quiero poder exigir calidad sin necesitar hacerlo todo yo."],
+  ["frustracion","Siento que llevo tiempo intentando solucionar lo mismo.","Probé varias herramientas, cursos y cambios de proceso.","Cada cosa ayuda un poco, pero vuelvo al mismo patrón.","Lo frustrante es que ya invertí tiempo y dinero y no quiero repetirlo.","Necesito entender qué estoy haciendo distinto a lo que realmente necesito."],
+  ["estancamiento","No estoy mal, pero tampoco siento que esté avanzando.","Intenté aumentar actividad y sumar nuevos objetivos.","Eso me mantiene ocupado, pero no cambia demasiado el resultado.","Me di cuenta de que llevo varios meses con números parecidos.","Quiero salir de este punto sin simplemente trabajar más."],
+  ["caos","Cuando hay muchas cosas pasando siento que todo se vuelve urgente.","Intenté hacer listas y priorizar.","En la práctica, la urgencia de otros termina dominando mi día.","Hay semanas donde termino resolviendo problemas que ni siquiera deberían llegar a mí.","Quiero dejar de vivir apagando incendios."],
+  ["miedo","Hay decisiones que sé que debería tomar pero sigo postergando.","Intenté buscar más datos para sentirme seguro.","Cuanto más información tengo, más escenarios encuentro para dudar.","Me pasó con una contratación que sigo evaluando.","Quiero poder decidir sin necesitar certeza absoluta."],
+  ["control","Lo que más me cuesta reconocer es cuánto necesito controlar.","Intenté delegar para comprobar si podía soltar.","Cuando no tengo visibilidad, empiezo a imaginar problemas y vuelvo a revisar.","Eso termina afectando incluso mi descanso.","Quiero tener control del negocio sin controlar cada tarea."]
+ ],
+ urgencia:[
+  ["plazo","Hay una fecha concreta en la que necesito que esto esté funcionando mejor.","Intenté avanzar por mi cuenta durante las últimas semanas.","El problema es que el tiempo se está achicando y sigo con la misma dificultad.","Si llego a esa fecha igual, voy a tener que tomar decisiones más drásticas.","Necesito resolverlo antes de que llegue ese punto."],
+  ["cambio","Estoy por hacer un cambio importante en el negocio y no quiero llevar el mismo problema conmigo.","Intenté solucionarlo antes de dar el siguiente paso.","No conseguí resolverlo del todo y el cambio ya se acerca.","Si hago el cambio sin resolverlo, probablemente amplifique el problema.","Quiero llegar preparado."],
+  ["crecimiento","Estoy entrando en una etapa donde van a aumentar las ventas.","Intenté preparar al equipo con algunas tareas nuevas.","Todavía hay demasiadas cosas que dependen de mí.","Si el volumen sube como espero, eso puede convertirse en un cuello de botella serio.","Necesito corregirlo antes de que el crecimiento lo haga evidente."],
+  ["oportunidad","Tengo una oportunidad importante que podría cambiar mis números.","Intenté evaluar si puedo asumirla con la estructura actual.","La duda es que para aprovecharla tendría que funcionar de una manera que hoy todavía no funciona.","Si digo que sí sin ordenar esto, puedo ganar la oportunidad y perder el control.","Necesito decidir pronto."],
+  ["equipo","Una persona clave del equipo va a cambiar de rol o dejar de hacer una parte importante.","Intenté redistribuir sus tareas.","Me encontré con que varias cosas solo las sé hacer yo o sé yo dónde están.","Eso me mostró una dependencia que antes no veía.","Necesito solucionarlo antes del cambio."],
+  ["finanzas","Tengo una meta financiera para los próximos meses y no puedo seguir improvisando.","Intenté recortar gastos y aumentar actividad.","Eso no ataca el problema de fondo de cómo estoy generando y entregando valor.","Si sigo igual, la meta se vuelve cada vez menos probable.","Necesito cambiar algo ahora."],
+  ["saturacion","La cantidad de trabajo está aumentando y mi forma actual de operar ya no alcanza.","Intenté aguantar un poco más para ver si era algo temporal.","Cada semana termina siendo igual o peor.","Si sigue creciendo, la calidad va a empezar a caer.","No quiero esperar a que el problema explote."],
+  ["decision","Tengo que tomar una decisión importante en las próximas semanas.","Intenté posponerla hasta tener más claridad.","La espera no está haciendo que aparezca información nueva.","Cada semana que pasa también tiene un costo.","Necesito encontrar qué dato realmente me falta."],
+  ["competencia","Estoy viendo que otros se están moviendo más rápido que yo.","Intenté responder aumentando mi actividad.","Eso me hizo correr más, pero no necesariamente mejorar mi posición.","Si mantengo el mismo sistema, temo quedarme atrás.","Quiero saber qué tendría que cambiar primero."],
+  ["personal","Hay una razón personal por la que ya no quiero sostener esta situación.","Intenté aguantar y resolverlo gradualmente.","Pero cada vez me pesa más seguir igual.","Si no hago un cambio ahora, sé que voy a seguir postergándolo.","Necesito tomar una decisión distinta."]
+ ],
+ objeciones:[
+  ["precio","La inversión me parece alta para lo que tenía pensado gastar.","Intenté comparar alternativas más económicas antes de decidir.","El problema es que todavía no sé si la diferencia de precio realmente se justifica para mí.","Si no entiendo el retorno, me cuesta comprometerme.","Quiero tener claridad antes de decidir."],
+  ["tiempo","No sé si este es el momento porque tengo demasiadas cosas encima.","Intenté pensar cómo podría hacerlo encajar en mi agenda.","Si para hacerlo tengo que agregar otra cosa más, me preocupa abandonar a mitad de camino.","Necesito saber qué implicaría realmente en tiempo y ejecución.","No quiero comprar algo que después no pueda implementar."],
+  ["pareja","Necesito hablarlo con mi pareja antes de tomar una decisión.","Intenté explicarle por qué estoy considerando hacerlo.","La conversación depende de que yo pueda explicar qué cambia concretamente para nosotros.","No quiero llegar a casa diciendo simplemente que quiero gastar dinero.","Necesito poder justificar la decisión."],
+  ["confianza","Me interesa, pero todavía tengo dudas de si esto realmente funcionaría para mi situación.","Intenté mirar experiencias de otras personas.","Eso me ayuda, pero mi caso tiene algunas particularidades.","Necesito entender qué pasaría específicamente si esas particularidades aparecen en mi proceso.","Quiero reducir el riesgo de equivocarme."],
+  ["alternativa","Estoy considerando otra opción que cuesta menos.","Intenté comparar ambas y no quiero decidir solo por precio.","La alternativa parece más simple, aunque no sé si resuelve la parte que más me importa.","Necesito entender qué diferencia concreta habría en mi resultado.","No quiero pagar más por algo que no necesite."],
+  ["momento","Quizás debería esperar un par de meses.","Intenté imaginar qué tendría que cambiar para que entonces sí fuera el momento.","No estoy seguro de que esperar cambie la situación por sí solo.","Si sigo igual dos meses, probablemente tenga el mismo problema.","Necesito entender qué ganaría realmente esperando."],
+  ["experiencia","Ya hice cursos antes y algunos no me sirvieron demasiado.","Intenté aplicar lo aprendido, pero después de un tiempo volví a mis hábitos anteriores.","Por eso ahora soy más cuidadoso antes de invertir en otra cosa.","Necesito saber qué sería diferente esta vez.","No quiero repetir la misma experiencia."],
+  ["resultado","Me cuesta comprometerme sin saber qué resultado puedo esperar.","Intenté mirar números y casos anteriores.","Sé que nadie puede garantizarme un resultado, pero necesito entender qué variables sí puedo controlar.","Si eso está claro, puedo evaluar el riesgo de otra manera.","Quiero saber qué depende de mí."],
+  ["prioridad","No sé si esto es realmente mi prioridad número uno ahora.","Intenté ordenar todos los problemas que tengo.","Hay varias cosas importantes, pero esta aparece repetidamente cuando miro lo que me está frenando.","Necesito entender si resolver esto desbloquearía las demás cosas.","No quiero atacar el problema equivocado."],
+  ["decision","Siento que estoy cerca de decidir, pero todavía hay algo que me frena.","Intenté identificar qué es y fui descartando algunas dudas.","La parte que todavía no tengo clara es si la decisión encaja con lo que realmente necesito.","Si pudiera aclarar eso, probablemente podría decidir.","Quiero tomar una decisión con criterio, no por presión."]
+ ]
 };
 
-player.unlockedLevel = Math.max(1, Number(player.unlockedLevel || 1));
-if(player.decisions >= 6){ player.unlockedLevel = Math.max(player.unlockedLevel, 2); }
+const variants = [
+ {who:"una agencia de marketing",place:"mi equipo",money:"3.000",goal:"8.000"},
+ {who:"un negocio de servicios",place:"mis colaboradores",money:"2.500",goal:"6.000"},
+ {who:"mi empresa",place:"la operación",money:"5.000",goal:"12.000"},
+ {who:"mi consultoría",place:"mis clientes",money:"4.000",goal:"10.000"},
+ {who:"mi proyecto",place:"mi equipo comercial",money:"1.800",goal:"5.000"}
+];
 
-
-/* =====================================
-   ESTADO DE LA LLAMADA
-===================================== */
-
-let currentNode = "start";
-
-let callHistory = [];
-
-let callScore = {
-
-    discovery:0,
-    depth:0,
-    control:0,
-    criteria:0,
-    total:0
-
-};
-
-let answered = false;
-
-
-/* =====================================
-   CONVERSACIÓN RAMIFICADA
-===================================== */
-
-const levelData = {
-
-    1: {
-        title: "LEVEL 1 — DISCOVERY",
-        context: "Estás en una llamada de discovery. Escuchá antes de intentar solucionar.",
-        scenarios: [
-            {
-                name: "Falta de estructura",
-                nodes: [
-                    "Estoy trabajando muchísimo, pero siento que no avanzo. Es como que estoy todo el día ocupado y al final del mes sigo igual.",
-                    "Creo que me falta estructura. Tengo mil cosas abiertas y termino apagando incendios todo el día.",
-                    "Arranco el día con una lista enorme. Después aparece un cliente con un problema, tengo que resolverlo yo, después aparece otra cosa y cuando me quiero dar cuenta pasaron ocho horas.",
-                    "Lo peor es que sé perfectamente qué tendría que hacer, pero siempre termino atendiendo lo urgente antes que lo importante.",
-                    "Y esto ya me está afectando. Estoy cansado y siento que si sigo así voy a terminar trabajando todavía más para conseguir los mismos resultados.",
-                    "Quiero recuperar control sobre mi tiempo y dejar de sentir que todo depende de mí."
-                ],
-                prompts: [
-                    "¿Qué es lo que más sentís que te está impidiendo avanzar?",
-                    "Cuando decís que te falta estructura, ¿qué termina pasando en tu día a día?",
-                    "¿Qué suele pasar cuando aparece algo urgente?",
-                    "¿Qué costo tiene para vos seguir trabajando de esta manera?",
-                    "¿Desde cuándo sentís que esto ya no es sostenible?",
-                    "Si pudieras cambiar una sola cosa de esta situación, ¿qué tendría que cambiar?"
-                ]
-            },
-            {
-                name: "Equipo que depende del dueño",
-                nodes: [
-                    "Tengo un equipo, pero paradójicamente siento que cuanto más crece la empresa, más cosas terminan pasando por mí.",
-                    "Si alguien tiene una duda, me consulta. Si hay un cliente complicado, me llaman. Si algo sale mal, termino resolviéndolo yo.",
-                    "El problema es que ya no tengo tiempo para pensar en crecimiento. Estoy metido en la operación casi todo el día.",
-                    "Intenté delegar, pero después reviso todo porque tengo miedo de que algo salga mal y terminamos volviendo al mismo punto.",
-                    "Sé que así no puedo escalar, pero tampoco quiero soltar cosas importantes y que el negocio se descontrole.",
-                    "Necesito que el equipo pueda funcionar sin que yo tenga que estar encima de cada decisión."
-                ],
-                prompts: [
-                    "¿Qué cosas siguen dependiendo directamente de vos?",
-                    "¿Qué suele pasar cuando delegás una tarea?",
-                    "¿Qué te hace sentir que necesitás revisar todo?",
-                    "¿Cómo impacta esto en el tiempo que tenés para hacer crecer el negocio?",
-                    "¿Qué pasaría si dentro de seis meses todo siguiera funcionando exactamente igual?",
-                    "¿Qué tendría que pasar para que pudieras confiar realmente en tu equipo?"
-                ]
-            },
-            {
-                name: "Mucho esfuerzo, poco crecimiento",
-                nodes: [
-                    "Estoy facturando, tengo clientes y trabajo muchísimo, pero siento que económicamente estoy prácticamente en el mismo lugar.",
-                    "Cada vez hago más cosas para generar un poco más, pero no veo que el resultado crezca en la misma proporción.",
-                    "El mes pasado, por ejemplo, trabajé muchísimo más que el anterior y la diferencia de ingresos fue mínima.",
-                    "Entonces empiezo a preguntarme si el problema es que estoy haciendo las cosas mal o simplemente estoy llegando a un techo.",
-                    "Y me preocupa porque no quiero pasar los próximos dos años trabajando el doble para ganar un poco más.",
-                    "Quiero encontrar una forma de crecer sin que la única solución sea trabajar más horas."
-                ],
-                prompts: [
-                    "¿Dónde sentís concretamente que está el freno?",
-                    "¿Qué cambió entre el mes que más trabajaste y el resultado que obtuviste?",
-                    "¿Qué creés que está generando ese techo?",
-                    "¿Qué costo tendría para vos seguir creciendo solamente a fuerza de más horas?",
-                    "¿Por qué esto se volvió importante para vos ahora?",
-                    "¿Cómo sabrías que realmente encontraste una forma diferente de crecer?"
-                ]
-            },
-            {
-                name: "Objetivo claro, ejecución trabada",
-                nodes: [
-                    "Sé exactamente lo que quiero conseguir, pero por alguna razón no logro avanzar al ritmo que debería.",
-                    "Tengo objetivos claros, incluso hice planes varias veces, pero a los pocos días vuelvo a la misma dinámica.",
-                    "Cuando tengo que elegir entre hacer algo estratégico o resolver algo que acaba de aparecer, casi siempre termino resolviendo lo urgente.",
-                    "Después llega el final de la semana y siento que trabajé muchísimo, pero no hice lo que realmente iba a mover el negocio.",
-                    "Eso me frustra porque no siento que me falte capacidad. Siento que estoy atrapado en una forma de trabajar.",
-                    "Necesito dejar de reaccionar todo el tiempo y empezar a ejecutar de una manera más consistente."
-                ],
-                prompts: [
-                    "Si tenés claro el objetivo, ¿qué sentís que te impide avanzar?",
-                    "¿Qué suele hacer que abandones el plan durante la semana?",
-                    "¿Qué diferencia hay entre lo urgente que resolvés y lo importante que postergás?",
-                    "¿Qué te genera terminar la semana sin haber avanzado en lo importante?",
-                    "¿Qué probaste hasta ahora para cambiar esa dinámica?",
-                    "¿Qué tendría que ser diferente esta vez para que realmente sostengas el cambio?"
-                ]
-            }
-        ]
-    },
-
-    2: {
-        title: "LEVEL 2 — EL GAP",
-        context: "Ahora no alcanza con detectar el problema. Tenés que hacer visible la distancia entre su situación actual y lo que quiere conseguir.",
-        scenarios: [
-            {
-                name: "Ingresos estancados",
-                nodes: [
-                    "Hoy estoy alrededor de los 3.000 dólares por mes y quiero llegar a 6.000, pero siento que no encuentro el camino.",
-                    "No es que no esté trabajando. De hecho, estoy bastante ocupado, pero los ingresos siguen más o menos iguales.",
-                    "Si sigo haciendo exactamente lo mismo, probablemente dentro de seis meses esté en el mismo lugar.",
-                    "Y eso es lo que más me preocupa: sé a dónde quiero llegar, pero mi forma actual de trabajar no parece llevarme hasta ahí.",
-                    "Quiero crecer sin simplemente duplicar mis horas de trabajo.",
-                    "Para mí el cambio sería poder llegar a esos 6.000 sin sentir que mi vida gira alrededor del trabajo."
-                ],
-                prompts: [
-                    "¿Qué tendría que cambiar para pasar de 3.000 a 6.000?",
-                    "¿Qué te hace pensar que haciendo lo mismo vas a seguir en el mismo lugar?",
-                    "¿Qué diferencia ves entre cómo trabajás hoy y cómo tendrías que trabajar para llegar a 6.000?",
-                    "¿Qué parte de esa distancia sentís que depende directamente de vos?",
-                    "¿Qué costo tendría mantenerte en 3.000 durante otro año?",
-                    "¿Qué significaría para vos llegar a 6.000 de una manera sostenible?"
-                ]
-            },
-            {
-                name: "Tiempo y libertad",
-                nodes: [
-                    "Mi objetivo no es solamente ganar más. Quiero dejar de sentir que no tengo tiempo para nada.",
-                    "Hoy puedo generar dinero, pero prácticamente todo depende de que yo esté trabajando.",
-                    "Cuando me tomo un día libre, siento que todo se frena.",
-                    "Entonces hay una contradicción: conseguí algo de estabilidad económica, pero no tengo la libertad que esperaba tener.",
-                    "Si sigo así, puedo ganar más, pero probablemente también termine trabajando más.",
-                    "Lo que quiero es que el negocio me dé libertad, no que se convierta en otra jaula."
-                ],
-                prompts: [
-                    "¿Qué sería para vos tener realmente libertad?",
-                    "¿Qué diferencia hay entre la libertad que buscabas y la realidad que tenés hoy?",
-                    "¿Qué tendría que cambiar para que puedas desconectarte sin que todo dependa de vos?",
-                    "¿Qué te está costando hoy no tener esa libertad?",
-                    "Si nada cambia durante los próximos doce meses, ¿cómo te imaginás?",
-                    "¿Qué sería una señal concreta de que finalmente estás construyendo esa libertad?"
-                ]
-            },
-            {
-                name: "Escalar sin perder control",
-                nodes: [
-                    "Quiero hacer crecer mi empresa, pero cada vez que pienso en escalar también pienso en perder el control.",
-                    "Hoy conozco cada detalle del negocio y sé que muchas cosas funcionan porque estoy encima.",
-                    "El problema es que justamente eso me impide crecer más.",
-                    "Si sigo controlando todo, me convierto en el cuello de botella. Si suelto todo de golpe, tengo miedo de que la calidad caiga.",
-                    "Entonces estoy en un punto medio que no me sirve: ni escalo ni logro salir de la operación.",
-                    "Quiero crecer sin tener que elegir entre control y libertad."
-                ],
-                prompts: [
-                    "¿Qué significa para vos escalar hoy?",
-                    "¿Dónde ves la mayor distancia entre tu empresa actual y la que querés construir?",
-                    "¿Qué te impide soltar esas responsabilidades?",
-                    "¿Qué te está costando quedarte en este punto medio?",
-                    "¿Qué pasaría si dentro de un año seguís siendo el cuello de botella?",
-                    "¿Cómo debería funcionar la empresa para que puedas crecer sin perder el control que necesitás?"
-                ]
-            }
-        ]
-    }
-};
-
-let conversation = {};
-let currentLevel = 1;
-let currentScenario = null;
-
-function buildConversation(scenario){
-    const nodes = {};
-
-    scenario.nodes.forEach((prospect, i) => {
-        const next = i < scenario.nodes.length - 1 ? `q${i + 1}` : "end";
-        const prompt = scenario.prompts[i];
-
-        nodes[i === 0 ? "start" : `q${i}`] = {
-            prospect,
-            options: [
-                {
-                    text: prompt,
-                    quality: "excellent",
-                    feedback: "Excelente. Estás profundizando sobre lo que el prospecto acaba de decir, sin adelantarte a vender.",
-                    next
-                },
-                {
-                    text: "¿Cuánto querés ganar con esto?",
-                    quality: "ok",
-                    feedback: "La pregunta puede ser útil, pero estás dejando de lado la información que el prospecto acaba de darte.",
-                    next
-                },
-                {
-                    text: "Eso es exactamente lo que solucionamos con nuestro programa.",
-                    quality: "bad",
-                    feedback: "Te adelantaste a vender. Todavía necesitás entender mejor la situación.",
-                    next
-                },
-                {
-                    text: "¿Y por qué no lo resolviste todavía?",
-                    quality: "ok",
-                    feedback: "Puede abrir información, pero la formulación es más acusatoria de lo necesario.",
-                    next
-                }
-            ]
-        };
-    });
-
-    nodes.end = {end:true};
-    return nodes;
-}
-
-function chooseRandomScenario(){
-    const scenarios = levelData[currentLevel].scenarios;
-    currentScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
-    conversation = buildConversation(currentScenario);
-}
-
-/* =====================================
-   NAVEGACIÓN
-===================================== */
-
-function showScreen(id){
-    document.querySelectorAll(".screen").forEach(
-        screen => screen.classList.remove("active")
-    );
-
-    const screen = document.getElementById(id);
-
-    if(screen){
-        screen.classList.add("active");
-    }
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-}
-
-function startLevel(level = 1){
-    currentLevel = Number(level);
-
-    if(currentLevel > player.unlockedLevel){
-        return;
-    }
-
-    chooseRandomScenario();
-    currentNode = "start";
-    callHistory = [];
-    callScore = {
-        discovery:0,
-        depth:0,
-        control:0,
-        criteria:0,
-        total:0
+/* Cada escenario tiene datos estables. Las respuestas NO se seleccionan de un
+   banco de frases al azar: se construyen según el intent de la pregunta. */
+function makeScenarios(blockId){
+  return banks[blockId].flatMap((a,ai)=>variants.map((v,vi)=>{
+    const [tag,opening,attempt,impact,evidence,desired]=a;
+    const id = blockId+"-"+ai+"-"+vi;
+    return {
+      id,tag,opening,attempt,impact,evidence,desired,
+      context:`Estoy hablando de ${v.who}. Hoy estoy alrededor de ${v.money} al mes y mi objetivo es ${v.goal}, aunque no todo en mi caso es un tema de dinero.`,
+      variant:vi,
+      block:blockId
     };
-    answered = false;
-
-    showScreen("training");
-    loadNode();
+  }));
 }
 
-function loadNode(){
+const scenarios = Object.fromEntries(blockDefs.map(b=>[b.id,makeScenarios(b.id)]));
 
-    answered = false;
+const questionBanks = {
+ discovery:[
+  ["clarify","¿Qué es exactamente lo que está pasando?"],
+  ["attempt","¿Qué intentaste hasta ahora para resolverlo?"],
+  ["evidence","¿Cuándo te diste cuenta de que esto era un problema?"],
+  ["impact","¿Cómo te está afectando hoy?"]
+ ],
+ gap:[
+  ["current","¿Dónde estás hoy exactamente?"],
+  ["goal","¿Qué tendría que cambiar para que sientas que llegaste a donde querés?"],
+  ["attempt","¿Qué hiciste hasta ahora para acercarte a eso?"],
+  ["difference","¿Qué sentís que falta entre tu situación actual y ese objetivo?"]
+ ],
+ dolor:[
+  ["impact","¿Qué es lo que más te está costando de seguir así?"],
+  ["attempt","¿Qué intentaste hacer para cambiarlo?"],
+  ["evidence","¿Qué pasó concretamente que te hizo verlo así?"],
+  ["consequence","¿Qué termina pasando si esto sigue igual?"]
+ ],
+ urgencia:[
+  ["whyNow","¿Por qué esto se volvió importante ahora?"],
+  ["deadline","¿Qué cambia si no lo resolvés en ese plazo?"],
+  ["attempt","¿Qué hiciste hasta ahora para evitar llegar a ese punto?"],
+  ["priority","¿Por qué esto merece atención antes que las otras cosas que tenés?"]
+ ],
+ objeciones:[
+  ["meaning","Cuando decís eso, ¿qué es lo que más te preocupa exactamente?"],
+  ["attempt","¿Qué necesitás comprobar antes de sentirte cómodo tomando la decisión?"],
+  ["risk","¿Qué riesgo querés evitar si avanzás?"],
+  ["criteria","¿Qué tendría que quedar claro para que puedas decidir con tranquilidad?"]
+ ]
+};
 
-    const node = conversation[currentNode];
+const optionIntents = {
+ discovery:["clarify","attempt","impact","pitch"],
+ gap:["current","goal","difference","pitch"],
+ dolor:["impact","attempt","consequence","pitch"],
+ urgencia:["whyNow","deadline","priority","pitch"],
+ objeciones:["meaning","risk","criteria","pitch"]
+};
 
-    if(!node){
-        finishLevel();
-        return;
-    }
+const questionText = {
+ clarify:"¿Qué es exactamente lo que está pasando?",
+ attempt:"¿Qué intentaste hasta ahora para resolverlo?",
+ impact:"¿Cómo te está afectando hoy?",
+ evidence:"¿Cuándo te diste cuenta de que esto era un problema?",
+ current:"¿Dónde estás hoy exactamente?",
+ goal:"¿Qué tendría que cambiar para que sientas que llegaste a donde querés?",
+ difference:"¿Qué sentís que falta entre tu situación actual y ese objetivo?",
+ consequence:"¿Qué termina pasando si esto sigue igual?",
+ whyNow:"¿Por qué esto se volvió importante ahora?",
+ deadline:"¿Qué cambia si no lo resolvés en ese plazo?",
+ priority:"¿Por qué esto merece atención antes que las otras cosas que tenés?",
+ meaning:"Cuando decís eso, ¿qué es lo que más te preocupa exactamente?",
+ risk:"¿Qué riesgo querés evitar si avanzás?",
+ criteria:"¿Qué tendría que quedar claro para que puedas decidir con tranquilidad?",
+ pitch:"Eso es exactamente lo que solucionamos con nuestro programa."
+};
 
-    if(node.end){
-        finishLevel();
-        return;
-    }
-
-    const decisionNumber = callHistory.length + 1;
-
-    document.getElementById("questionNumber").textContent =
-        "Decisión " + decisionNumber + " de 6";
-
-    const progress = Math.min(
-        callHistory.length / 6 * 100,
-        100
-    );
-
-    document.getElementById("callProgress").style.width =
-        progress + "%";
-
-    document.querySelector(".training-header h2").textContent =
-        levelData[currentLevel].title;
-
-    document.getElementById("context").textContent =
-        levelData[currentLevel].context;
-
-    const chat = document.getElementById("chat");
-    chat.innerHTML = "";
-
-    /* Mostrar la conversación anterior en orden cronológico:
-       primero habla el prospecto, después respondés vos. */
-    callHistory.forEach(item => {
-
-        const prospect = document.createElement("div");
-        prospect.className = "chat-message prospect";
-
-        prospect.innerHTML = `
-            <div class="speaker">PROSPECTO</div>
-            <div class="bubble">${escapeHTML(item.response)}</div>
-        `;
-
-        chat.appendChild(prospect);
-
-        const you = document.createElement("div");
-        you.className = "chat-message you";
-
-        you.innerHTML = `
-            <div class="speaker">VOS</div>
-            <div class="bubble">${escapeHTML(item.text)}</div>
-        `;
-
-        chat.appendChild(you);
-    });
-
-    /* Mostrar la respuesta actual del prospecto */
-    const currentProspect = document.createElement("div");
-    currentProspect.className = "chat-message prospect";
-
-    currentProspect.innerHTML = `
-        <div class="speaker">PROSPECTO</div>
-        <div class="bubble">${escapeHTML(node.prospect)}</div>
-    `;
-
-    chat.appendChild(currentProspect);
-
-    const options = document.getElementById("options");
-    options.innerHTML = "";
-
-    const feedback = document.getElementById("feedback");
-    feedback.className = "feedback";
-    feedback.innerHTML = `
-        <div class="feedback-title" id="feedbackTitle"></div>
-        <div class="feedback-text" id="feedbackText"></div>
-        <button class="next-button" onclick="continueConversation()">
-            CONTINUAR
-        </button>
-    `;
-
-    let shuffledOptions = node.options.map(
-        (option,index) => ({
-            option,
-            originalIndex:index
-        })
-    );
-
-    for(let i = shuffledOptions.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-
-        [shuffledOptions[i], shuffledOptions[j]] =
-        [shuffledOptions[j], shuffledOptions[i]];
-    }
-
-    shuffledOptions.forEach(
-        (item,displayIndex) => {
-
-            const button =
-                document.createElement("button");
-
-            button.className = "option";
-
-            button.innerHTML = `
-                ${String.fromCharCode(65 + displayIndex)}.
-                ${escapeHTML(item.option.text)}
-            `;
-
-            button.onclick =
-                () => chooseOption(item.originalIndex);
-
-            options.appendChild(button);
-        }
-    );
+/* La respuesta depende de la pregunta. Esta función es el blindaje principal. */
+function responseFor(s,intent,turn){
+  if(intent==="clarify") return s.opening + (turn>0 ? " Y cuanto más lo miro, más veo que no es solamente una cuestión de hacer más." : "");
+  if(intent==="attempt") return s.attempt;
+  if(intent==="impact") return s.impact;
+  if(intent==="evidence") return s.evidence;
+  if(intent==="current") return s.context + " Esa es la situación que tengo hoy.";
+  if(intent==="goal") return s.desired;
+  if(intent==="difference") return "Creo que la distancia está en que " + s.desired.toLowerCase() + " pero hoy todavía " + s.opening.toLowerCase().replace(/^siento /,"siento ") + ".";
+  if(intent==="consequence") return "Si sigo igual, " + s.impact.toLowerCase().replace(/^me /,"me ") + " y además sé que " + s.desired.toLowerCase();
+  if(intent==="whyNow") return s.evidence + " Por eso siento que ya no puedo seguir dejándolo para después.";
+  if(intent==="deadline") return "Si no lo resuelvo, " + s.impact.toLowerCase() + " y voy a llegar a ese momento con el mismo problema encima.";
+  if(intent==="priority") return "Porque " + s.impact.toLowerCase() + " y ya probé cosas que no cambiaron el fondo. Necesito atacar esto antes de sumar otra cosa.";
+  if(intent==="meaning") return "Lo que más me preocupa es equivocarme con la decisión. " + s.opening;
+  if(intent==="risk") return "Quiero evitar invertir tiempo o dinero y terminar exactamente en el mismo lugar. " + s.attempt;
+  if(intent==="criteria") return s.desired + " Si entiendo cómo se llega a eso y qué depende de mí, puedo decidir.";
+  if(intent==="pitch") return "Puede ser, pero todavía no estoy en ese punto. Antes necesito entender si realmente encaja conmigo, porque " + s.opening.toLowerCase();
+  return s.opening;
 }
 
-function chooseOption(index){
+const feedbacks = {
+ excellent:{
+  discovery:["Excelente decisión. Estás descubriendo antes de intentar vender.","Muy buena lectura. La pregunta abre información en vez de cerrar la conversación."],
+  gap:["Bien. Estás buscando la distancia real entre hoy y el objetivo.","Excelente: estás construyendo el GAP con información del prospecto."],
+  dolor:["Bien. Profundizaste sin inventar dolor ni poner palabras en su boca.","Excelente. Estás llevando al prospecto a describir la consecuencia por sí mismo."],
+  urgencia:["Muy bien. Estás descubriendo por qué ahora, no fabricando urgencia.","Excelente. La urgencia aparece desde la realidad del prospecto."],
+  objeciones:["Muy bien. No discutiste la objeción; descubriste qué significa.","Excelente. Antes de resolver una objeción, entendiste qué hay detrás."]
+ },
+ good:{
+  discovery:"Buena dirección, aunque todavía podrías profundizar un nivel más.",
+  gap:"Tiene sentido, pero todavía falta conectar mejor la situación actual con el objetivo.",
+  dolor:"La pregunta es válida. Ahora necesitás conseguir una consecuencia más concreta.",
+  urgencia:"Bien, pero todavía falta precisar qué cambia si no actúa.",
+  objeciones:"Bien. Estás explorando la objeción, aunque todavía falta aislar el criterio de decisión."
+ },
+ weak:"La conversación sigue, pero esta pregunta no aprovecha del todo la información que acaba de darte.",
+ bad:"Esto salta demasiado rápido a una conclusión o solución. El prospecto todavía no llegó ahí."
+};
 
-    if(answered){
-        return;
-    }
+let state={block:null,scenario:null,turn:0,score:0,answers:[],streak:Number(localStorage.ce_streak||0),xp:Number(localStorage.ce_xp||0)};
 
-    const node = conversation[currentNode];
+function save(){localStorage.ce_xp=state.xp;localStorage.ce_streak=state.streak;document.getElementById("xp").textContent=state.xp;document.getElementById("streak").textContent=state.streak;document.getElementById("xpbar").style.width=Math.min(100,state.xp/10)+"%";document.getElementById("xpleft").textContent=state.xp+" XP";}
 
-    if(!node || !node.options || !node.options[index]){
-        return;
-    }
-
-    answered = true;
-
-    const option = node.options[index];
-
-    callHistory.push({
-        text: option.text,
-        response: node.prospect
-    });
-
-    player.decisions++;
-
-    if(option.quality === "excellent"){
-
-        player.goodDecisions++;
-        player.xp += 100;
-        player.streak++;
-
-        if(player.streak > player.bestStreak){
-            player.bestStreak = player.streak;
-        }
-
-        callScore.total += 100;
-
-        callScore.discovery += 25;
-        callScore.depth += 25;
-        callScore.control += 25;
-        callScore.criteria += 25;
-
-    } else if(option.quality === "ok"){
-
-        player.xp += 50;
-        player.streak = 0;
-        callScore.total += 50;
-
-        callScore.discovery += 12.5;
-        callScore.depth += 12.5;
-        callScore.control += 12.5;
-        callScore.criteria += 12.5;
-
-    } else {
-
-        player.lives = Math.max(
-            0,
-            player.lives - 1
-        );
-
-        player.streak = 0;
-    }
-
-    savePlayer();
-    updateUI();
-
-    const feedback = document.getElementById("feedback");
-    const title = document.getElementById("feedbackTitle");
-    const text = document.getElementById("feedbackText");
-
-    feedback.className =
-        "feedback show " +
-        (
-            option.quality === "excellent"
-                ? "good"
-                : option.quality === "ok"
-                    ? "ok"
-                    : "bad"
-        );
-
-    title.textContent =
-        option.quality === "excellent"
-            ? "✓ Excelente decisión"
-            : option.quality === "ok"
-                ? "△ Decisión aceptable"
-                : "✕ Cuidado";
-
-    text.textContent = option.feedback;
-
-    document.querySelectorAll(".option").forEach(
-        button => button.disabled = true
-    );
+function renderLevels(){
+  const el=document.getElementById("levels"); el.innerHTML="";
+  blockDefs.forEach((b,i)=>{
+    const c=document.createElement("div"); c.className="card level";
+    c.innerHTML=`<div class="eyebrow">${b.name}</div><h3>${b.desc}</h3><p>${scenarios[b.id].length} situaciones distintas. Ninguna comparte el banco con otro bloque.</p><div class="bar"><i style="width:${Math.min(100,Math.round((state.xp/(1000+(i*500)))*100))}%"></i></div><button class="primary">ENTRENAR</button>`;
+    c.onclick=()=>startBlock(b.id); el.appendChild(c);
+  });
 }
 
-function continueConversation(){
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
+function goDashboard(){show("dashboard");renderLevels();}
 
-    if(callHistory.length >= 6){
-        finishLevel();
-        return;
-    }
-
-    const lastNode = conversation[currentNode];
-
-    if(!lastNode || !lastNode.options){
-        finishLevel();
-        return;
-    }
-
-    /* La última opción elegida determina el siguiente nodo */
-    const lastAnswer =
-        callHistory[callHistory.length - 1];
-
-    const selectedOption =
-        lastNode.options.find(
-            option => option.text === lastAnswer.text
-        );
-
-    if(!selectedOption || !selectedOption.next){
-        finishLevel();
-        return;
-    }
-
-    currentNode = selectedOption.next;
-
-    loadNode();
+function startBlock(id){
+  state.block=id;
+  const pool=scenarios[id];
+  /* Mezcla sin repetir hasta recorrer el bloque completo. */
+  let key="ce_order_"+id;
+  let order=JSON.parse(localStorage.getItem(key)||"null");
+  if(!Array.isArray(order)||order.length!==50){order=Array.from({length:50},(_,i)=>i); for(let i=order.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];} localStorage.setItem(key,JSON.stringify(order));}
+  const idx=order.shift(); order.push(idx); localStorage.setItem(key,JSON.stringify(order));
+  state.scenario=pool[idx];state.turn=0;state.score=0;state.answers=[];
+  document.getElementById("blockEyebrow").textContent=blockDefs.find(x=>x.id===id).name;
+  document.getElementById("scenarioTitle").textContent="Situación "+(idx+1)+" / 50";
+  document.getElementById("coach").textContent=blockDefs.find(x=>x.id===id).coach;
+  show("game");renderTurn();
 }
 
-function finishLevel(){
-
-    const total = 6 * 100;
-
-    const score =
-        Math.round(
-            Math.min(
-                callScore.total / total * 100,
-                100
-            )
-        );
-
-    document.getElementById("finalScore").textContent =
-        score;
-
-    document.getElementById("resultTitle").textContent =
-        `LEVEL ${currentLevel} — ${currentScenario ? currentScenario.name.toUpperCase() : "ENTRENAMIENTO"}`;
-
-    document.getElementById("discoveryScore").textContent =
-        Math.round(callScore.discovery / 6) + "%";
-
-    document.getElementById("depthScore").textContent =
-        Math.round(callScore.depth / 6) + "%";
-
-    document.getElementById("controlScore").textContent =
-        Math.round(callScore.control / 6) + "%";
-
-    document.getElementById("criteriaScore").textContent =
-        Math.round(callScore.criteria / 6) + "%";
-
-    let message =
-        "Buen trabajo. La clave es escuchar, profundizar y evitar solucionar antes de entender.";
-
-    if(score >= 80){
-        message =
-            "Muy buen criterio comercial. Estás escuchando antes de vender y haciendo preguntas que profundizan.";
-    } else if(score < 50){
-        message =
-            "Necesitás trabajar el discovery. Estás tendiendo a diagnosticar o solucionar demasiado rápido.";
-    }
-
-    document.getElementById("resultMessage").textContent =
-        message;
-
-    if(score >= 70 && currentLevel < 10){
-        player.unlockedLevel = Math.max(
-            player.unlockedLevel,
-            currentLevel + 1
-        );
-    }
-
-    savePlayer();
-    updateUI();
-    updateLevelMap();
-    showScreen("result");
+function renderTurn(){
+  const s=state.scenario,b=state.block;
+  const openings=[s.opening];
+  document.getElementById("scenarioCounter").textContent=`Turno ${state.turn+1} / 4`;
+  document.getElementById("prog").style.width=((state.turn)/4*100)+"%";
+  document.getElementById("prospectText").textContent=state.turn===0?s.opening:(state.lastResponse||s.opening);
+  document.getElementById("feedback").style.display="none";
+  document.getElementById("nextBtn").style.display="none";
+  const intents=optionIntents[b].slice();
+  /* Cada turno cambia el orden, pero las respuestas siguen ligadas a la intención. */
+  const shift=state.turn%intents.length; const ordered=intents.slice(shift).concat(intents.slice(0,shift));
+  const options=document.getElementById("options");options.innerHTML="";
+  ordered.forEach((intent)=>{
+    const btn=document.createElement("button");btn.className="opt";btn.textContent=questionText[intent];btn.onclick=()=>choose(intent,btn);options.appendChild(btn);
+  });
 }
 
-function updateUI(){
-
-    document.getElementById("streak").textContent =
-        player.streak;
-
-    document.getElementById("lives").textContent =
-        player.lives;
-
-    document.getElementById("xp").textContent =
-        player.xp;
-
-    document.getElementById("completed").textContent =
-        player.decisions;
-
-    const accuracy =
-        player.decisions > 0
-            ? Math.round(
-                player.goodDecisions /
-                player.decisions *
-                100
-            )
-            : 0;
-
-    document.getElementById("accuracy").textContent =
-        accuracy + "%";
-
-    document.getElementById("bestStreak").textContent =
-        player.bestStreak;
-
-    document.getElementById("xpProgress").textContent =
-        player.xp + " XP";
-
-    document.getElementById("progress").style.width =
-        Math.min(player.xp / 1000 * 100,100) + "%";
-
-    document.getElementById("statsAccuracy").textContent =
-        accuracy + "%";
-
-    document.getElementById("statDiscovery").textContent =
-        accuracy + "%";
-
-    document.getElementById("statDepth").textContent =
-        accuracy + "%";
-
-    document.getElementById("statControl").textContent =
-        accuracy + "%";
-
-    document.getElementById("barDiscovery").style.width =
-        accuracy + "%";
-
-    document.getElementById("barDepth").style.width =
-        accuracy + "%";
-
-    document.getElementById("barControl").style.width =
-        accuracy + "%";
-
-    const rank =
-        document.getElementById("rank");
-
-    if(player.xp >= 1000){
-        rank.textContent = "CLOSER ELITE";
-    } else if(player.xp >= 700){
-        rank.textContent = "CLOSER AVANZADO";
-    } else if(player.xp >= 400){
-        rank.textContent = "SETTER INTERMEDIO";
-    } else {
-        rank.textContent = "SETTER NOVATO";
-    }
+function quality(intent){
+  const b=state.block,t=state.turn;
+  const ideal = {
+    discovery:[["clarify","attempt","impact"],["attempt","evidence","impact"],["evidence","impact","attempt"],["impact","evidence","attempt"]],
+    gap:[["current","difference","goal"],["difference","goal","attempt"],["attempt","difference","goal"],["difference","goal","attempt"]],
+    dolor:[["impact","evidence","consequence"],["attempt","impact","consequence"],["consequence","impact","evidence"],["consequence","impact","evidence"]],
+    urgencia:[["whyNow","priority","deadline"],["deadline","whyNow","priority"],["priority","deadline","whyNow"],["deadline","priority","whyNow"]],
+    objeciones:[["meaning","risk","criteria"],["risk","meaning","criteria"],["criteria","risk","meaning"],["criteria","risk","meaning"]]
+  };
+  if(intent==="pitch") return "bad";
+  const rank=ideal[b][Math.min(t,3)].indexOf(intent);
+  if(rank===0)return"excellent"; if(rank===1)return"good"; return"weak";
 }
 
-function updateLevelMap(){
-    document.querySelectorAll(".level[data-level]").forEach(card => {
-        const level = Number(card.dataset.level);
-        const unlocked = level <= player.unlockedLevel;
-
-        card.classList.toggle("locked", !unlocked);
-        card.classList.toggle("unlocked", unlocked);
-
-        const status = card.querySelector(".level-status");
-        if(status){
-            if(unlocked){
-                status.textContent = level === 1 ? "JUGAR" : "JUGAR";
-            } else {
-                status.textContent = "🔒";
-            }
-        }
-
-        card.onclick = unlocked
-            ? () => startLevel(level)
-            : null;
-    });
+function choose(intent,btn){
+  document.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+  const q=questionText[intent], response=responseFor(state.scenario,intent,state.turn);
+  const ql=quality(intent);
+  state.answers.push({intent,q,quality:ql});
+  state.lastResponse=response;
+  state.score += ql==="excellent"?100:ql==="good"?65:ql==="weak"?30:0;
+  if(ql==="excellent"){state.xp+=100;state.streak++;} else if(ql==="good"){state.xp+=60;state.streak=0;} else {state.xp+=20;state.streak=0;}
+  save();
+  btn.style.borderColor=ql==="excellent"?"#22c55e":ql==="good"?"#f59e0b":"#ef4444";
+  const fb=document.getElementById("feedback");fb.className="feedback "+(ql==="excellent"?"good":ql==="good"?"ok":"bad");fb.style.display="block";
+  const title=ql==="excellent"?"✓ Excelente decisión":ql==="good"?"◐ Buena decisión":"✕ Oportunidad perdida";
+  let text=ql==="excellent"?feedbacks.excellent[state.block][state.turn%2]:ql==="good"?feedbacks.good[state.block]:feedbacks.weak;
+  if(ql==="bad")text=feedbacks.bad;
+  fb.innerHTML=`<strong>${title}</strong><div>${text}</div><div style="margin-top:12px;color:#aaa"><b>PROSPECTO:</b> ${response}</div>`;
+  document.getElementById("nextBtn").style.display="block";
+  document.getElementById("nextBtn").textContent=state.turn===3?"VER RESULTADO":"CONTINUAR";
 }
 
-function savePlayer(){
-
-    localStorage.setItem(
-        "closerElitePlayer",
-        JSON.stringify(player)
-    );
+function nextTurn(){
+  if(state.turn===3){finish();return}
+  state.turn++;
+  renderTurn();
 }
 
-function escapeHTML(value){
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+function finish(){
+  const max=400;const score=Math.round(state.score/max*100);
+  document.getElementById("finalScore").textContent=Math.min(100,score);
+  document.getElementById("resultBlock").textContent=blockDefs.find(x=>x.id===state.block).name;
+  const ex=state.answers.filter(a=>a.quality==="excellent").length;
+  const go=state.answers.filter(a=>a.quality==="good").length;
+  const weak=state.answers.filter(a=>a.quality==="weak").length;
+  document.getElementById("rDiscovery").textContent=Math.round((ex+go)*25)+"%";
+  document.getElementById("rDepth").textContent=Math.round(ex/4*100)+"%";
+  document.getElementById("rControl").textContent=Math.round((4-weak)/4*100)+"%";
+  document.getElementById("rCriteria").textContent=Math.min(100,Math.round(score*0.9+ex*2))+"%";
+  document.getElementById("evaluation").innerHTML = score>=85 ? "<b>Lectura de closer fuerte.</b><br>Estás siguiendo la información que aparece en la conversación y no saltando a vender." : score>=65 ? "<b>Buen criterio.</b><br>Hay buenas decisiones, pero todavía tenés oportunidades para profundizar antes de avanzar." : "<b>Hay trabajo por hacer.</b><br>Estás entrando demasiado rápido en soluciones o dejando información valiosa sin explorar.";
+  show("result");
 }
 
-/* =====================================
-   INICIO
-===================================== */
-
-updateUI();
-updateLevelMap();
-showScreen("dashboard");
-
+function init(){save();renderLevels();}
+init();
 </script>
 </body>
 </html>
