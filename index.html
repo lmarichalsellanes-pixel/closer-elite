@@ -813,7 +813,7 @@ h1{
 
         <div
             class="level unlocked"
-            onclick="startLevel()">
+            data-level="1">
 
             <div class="level-number">
                 1
@@ -839,7 +839,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="2">
 
             <div class="level-number">
                 2
@@ -865,7 +865,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="3">
 
             <div class="level-number">
                 3
@@ -890,7 +890,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="4">
 
             <div class="level-number">
                 4
@@ -915,7 +915,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="5">
 
             <div class="level-number">
                 5
@@ -941,7 +941,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="6">
 
             <div class="level-number">
                 6
@@ -967,7 +967,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="7">
 
             <div class="level-number">
                 7
@@ -993,7 +993,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="8">
 
             <div class="level-number">
                 8
@@ -1018,7 +1018,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="9">
 
             <div class="level-number">
                 9
@@ -1043,7 +1043,7 @@ h1{
         </div>
 
 
-        <div class="level locked">
+        <div class="level locked" data-level="10">
 
             <div class="level-number">
                 10
@@ -1188,6 +1188,7 @@ h1{
         </div>
 
         <h2
+            id="resultTitle"
             style="font-size:40px;margin-top:10px;">
 
             DECISIÓN BAJO PRESIÓN
@@ -1451,9 +1452,13 @@ JSON.parse(
     discovery:0,
     depth:0,
     control:0,
-    criteria:0
+    criteria:0,
+    unlockedLevel:1
 
 };
+
+player.unlockedLevel = Math.max(1, Number(player.unlockedLevel || 1));
+if(player.decisions >= 6){ player.unlockedLevel = Math.max(player.unlockedLevel, 2); }
 
 
 /* =====================================
@@ -1481,1355 +1486,207 @@ let answered = false;
    CONVERSACIÓN RAMIFICADA
 ===================================== */
 
-const conversation = {
-
-start:{
-
-    prospect:
-    "Estoy trabajando muchísimo, pero siento que no avanzo. Es como que estoy todo el día ocupado y al final del mes sigo igual.",
-
-    options:[
-
-        {
-            text:
-            "¿Cuántas horas trabajás por día?",
-
-            quality:"ok",
-
-            feedback:
-            "Es una pregunta válida, pero todavía es superficial. Saber cuántas horas trabaja no te muestra necesariamente qué está generando el problema.",
-
-            next:"hours"
-        },
-
-        {
-            text:
-            "¿Qué es lo que más sentís que te está impidiendo avanzar?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. No asumís cuál es el problema. Le das espacio para definir qué considera realmente que lo está frenando.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "Justamente eso es lo que podemos solucionar con nuestro programa.",
-
-            quality:"bad",
-
-            feedback:
-            "Te adelantaste a vender. Todavía no sabés cuál es el problema real.",
-
-            next:"pitch"
-        },
-
-        {
-            text:
-            "¿Cuánto querés ganar?",
-
-            quality:"ok",
-
-            feedback:
-            "El objetivo económico puede ser importante, pero acabás de recibir información sobre un problema. Primero conviene entenderlo.",
-
-            next:"money"
-        }
-
-    ]
-
-},
-
-
-/* ==============================
-   RAMA EXCELENTE
-============================== */
-
-structure:{
-
-    prospect:
-    "Creo que me falta estructura. Tengo mil cosas abiertas y termino apagando incendios todo el día.",
-
-    options:[
-
-        {
-            text:
-            "¿Y por qué no delegás esas cosas?",
-
-            quality:"ok",
-
-            feedback:
-            "Es una línea interesante, pero estás proponiendo una explicación antes de entender qué sucede cuando intenta organizarse.",
-
-            next:"delegate"
-        },
-
-        {
-            text:
-            "Cuando decís que te falta estructura, ¿qué es lo que termina pasando en tu día a día?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena. Tomás exactamente sus palabras y profundizás sobre ellas sin imponerle tu diagnóstico.",
-
-            next:"daily"
-        },
-
-        {
-            text:
-            "Entonces necesitás aprender a organizar mejor tu negocio.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás diagnosticando demasiado rápido. Todavía no sabés si el problema es organización, delegación, prioridades o capacidad.",
-
-            next:"diagnosis"
-        },
-
-        {
-            text:
-            "¿Cuánto estás facturando actualmente?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede ser relevante, pero todavía tenés una oportunidad de profundizar en el problema que acaba de revelar.",
-
-            next:"revenue"
-        }
-
-    ]
-
-},
-
-
-daily:{
-
-    prospect:
-    "Arranco el día con una lista enorme. Después aparece un cliente con un problema, tengo que resolverlo yo, después aparece otra cosa y cuando me quiero dar cuenta pasaron ocho horas.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué pasa si no sos vos quien resuelve esos problemas?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás entrando en el mecanismo del problema: por qué todo termina dependiendo de él.",
-
-            next:"dependency"
-        },
-
-        {
-            text:
-            "¿Y cuántas personas trabajan con vos?",
-
-            quality:"ok",
-
-            feedback:
-            "Es información útil, pero todavía podés profundizar en el comportamiento que mantiene el problema.",
-
-            next:"team"
-        },
-
-        {
-            text:
-            "Tenés que aprender a delegar.",
-
-            quality:"bad",
-
-            feedback:
-            "Eso es una solución, no una pregunta. Todavía no sabés por qué no delega.",
-
-            next:"delegate"
-        },
-
-        {
-            text:
-            "Eso debe ser agotador.",
-
-            quality:"ok",
-
-            feedback:
-            "Mostrar empatía está bien, pero si solamente empatizás sin profundizar, la conversación no avanza.",
-
-            next:"emotion"
-        }
-
-    ]
-
-},
-
-
-dependency:{
-
-    prospect:
-    "Ese es el problema. Si yo no estoy encima, siento que las cosas no salen como deberían. Entonces termino haciéndolas yo.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué sentís que podría pasar si dejás de estar encima?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Acabás de encontrar una creencia detrás del comportamiento. Ahora podés descubrir qué está sosteniendo realmente el problema.",
-
-            next:"fear"
-        },
-
-        {
-            text:
-            "Entonces el problema es que no confiás en tu equipo.",
-
-            quality:"ok",
-
-            feedback:
-            "Podría ser cierto, pero lo estás afirmando vos. Es mejor hacer que el prospecto llegue a esa conclusión.",
-
-            next:"trust"
-        },
-
-        {
-            text:
-            "Necesitás contratar mejores empleados.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás buscando solucionar antes de comprender.",
-
-            next:"team"
-        },
-
-        {
-            text:
-            "¿Cuánto te gustaría delegar?",
-
-            quality:"ok",
-
-            feedback:
-            "Es una pregunta posible, pero todavía falta entender por qué delegar resulta difícil.",
-
-            next:"delegate"
-        }
-
-    ]
-
-},
-
-
-fear:{
-
-    prospect:
-    "Que algo salga mal y después sea yo el que tenga que arreglarlo. Ya me pasó varias veces.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué pasó las últimas veces que intentaste delegar?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena. Estás buscando evidencia concreta de la experiencia que construyó esa creencia.",
-
-            next:"history"
-        },
-
-        {
-            text:
-            "Entonces claramente necesitás un mejor equipo.",
-
-            quality:"bad",
-
-            feedback:
-            "No necesariamente. Todavía no sabés qué falló cuando delegó.",
-
-            next:"team"
-        },
-
-        {
-            text:
-            "¿Y cuánto tiempo perdés por hacer todo vos?",
-
-            quality:"ok",
-
-            feedback:
-            "Es una buena línea, pero todavía podés descubrir la causa antes de cuantificar la consecuencia.",
-
-            next:"time"
-        },
-
-        {
-            text:
-            "Entiendo perfectamente.",
-
-            quality:"ok",
-
-            feedback:
-            "La empatía ayuda, pero no alcanza. Acá acabás de recibir una pista importante y conviene profundizar.",
-
-            next:"history"
-        }
-
-    ]
-
-},
-
-
-history:{
-
-    prospect:
-    "Una vez delegué la parte comercial. La persona empezó a cometer errores con clientes y terminé teniendo que recuperar yo las cuentas.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué fue lo que pasó exactamente con esas cuentas?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. No te quedás con una historia superficial. Buscás entender qué pasó realmente.",
-
-            next:"accounts"
-        },
-
-        {
-            text:
-            "Por eso no hay que delegar la parte comercial.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás convirtiendo una experiencia puntual en una conclusión general.",
-
-            next:"conclusion"
-        },
-
-        {
-            text:
-            "¿Y cuánto perdiste?",
-
-            quality:"ok",
-
-            feedback:
-            "Podría ser relevante, pero todavía falta comprender el episodio.",
-
-            next:"accounts"
-        },
-
-        {
-            text:
-            "Eso es justamente lo que nosotros podemos evitar.",
-
-            quality:"bad",
-
-            feedback:
-            "Te adelantaste a presentar la solución.",
-
-            next:"pitch"
-        }
-
-    ]
-
-},
-
-
-accounts:{
-
-    prospect:
-    "Dos clientes se fueron porque la persona no hizo seguimiento. Yo me enteré tarde y tuve que volver a contactar a los clientes personalmente.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué impacto tuvo eso en vos además de perder esos clientes?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Ahora estás pasando del hecho concreto a la consecuencia personal y empresarial.",
-
-            next:"impact"
-        },
-
-        {
-            text:
-            "Entonces necesitás un CRM.",
-
-            quality:"bad",
-
-            feedback:
-            "Otra vez solucionaste antes de entender. El CRM podría no ser el problema.",
-
-            next:"solution"
-        },
-
-        {
-            text:
-            "¿Cuánto valían esos clientes?",
-
-            quality:"ok",
-
-            feedback:
-            "Podés cuantificar el impacto, pero todavía hay una consecuencia más profunda que podés explorar.",
-
-            next:"impact"
-        },
-
-        {
-            text:
-            "¿Y ahora seguís haciendo vos el seguimiento?",
-
-            quality:"ok",
-
-            feedback:
-            "Es una pregunta útil y puede llevarte a entender el estado actual.",
-
-            next:"current"
-        }
-
-    ]
-
-},
-
-
-impact:{
-
-    prospect:
-    "Más que la plata, me consume. Siento que si quiero que el negocio funcione tengo que estar yo atrás de todo. Y eso me está agotando.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué pasa si esto sigue igual durante los próximos seis meses?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás conectando el problema actual con su futuro y ayudándolo a visualizar el costo de no cambiar.",
-
-            next:"future"
-        },
-
-        {
-            text:
-            "Por eso necesitás nuestro programa.",
-
-            quality:"bad",
-
-            feedback:
-            "Todavía no es momento de presentar la solución. El prospecto acaba de mostrar una consecuencia importante.",
-
-            next:"pitch"
-        },
-
-        {
-            text:
-            "¿Cuánto querés ganar?",
-
-            quality:"ok",
-
-            feedback:
-            "El dinero puede importar, pero ahora mismo el problema emocional y operativo está mucho más presente.",
-
-            next:"money"
-        },
-
-        {
-            text:
-            "Bueno, entonces tenés que delegar.",
-
-            quality:"bad",
-
-            feedback:
-            "Convertiste una conversación de discovery en un consejo.",
-
-            next:"delegate"
-        }
-
-    ]
-
-},
-
-
-future:{
-
-    prospect:
-    "Si sigo así, probablemente voy a seguir trabajando igual o más. Y sinceramente no quiero pasar otro año viviendo pendiente del negocio.",
-
-    options:[
-
-        {
-            text:
-            "¿Y qué tendría que cambiar para que eso no pase?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena. Le devolvés la responsabilidad de definir qué tendría que cambiar.",
-
-            next:"goal"
-        },
-
-        {
-            text:
-            "Entonces tenés que tomar una decisión ahora.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás creando urgencia vos en lugar de descubrirla en el prospecto.",
-
-            next:"pressure"
-        },
-
-        {
-            text:
-            "¿Cuánto dinero te gustaría ganar?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede ser relevante, pero el prospecto acaba de expresar una motivación mucho más profunda.",
-
-            next:"money"
-        },
-
-        {
-            text:
-            "Entiendo. A nadie le gusta trabajar así.",
-
-            quality:"ok",
-
-            feedback:
-            "La empatía está bien, pero podrías aprovechar esta respuesta para profundizar todavía más.",
-
-            next:"goal"
-        }
-
-    ]
-
-},
-
-goal:{
-
-    prospect:
-    "Quiero que el negocio funcione sin que yo tenga que estar pendiente de cada cosa. Quiero recuperar tiempo y poder crecer sin sentir que todo depende de mí.",
-
-    options:[
-
-        {
-            text:
-            "Si consiguieras eso, ¿qué cambiaría concretamente en tu vida?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás conectando el resultado empresarial con el resultado personal.",
-
-            next:"personal"
-        },
-
-        {
-            text:
-            "Perfecto, nosotros hacemos exactamente eso.",
-
-            quality:"bad",
-
-            feedback:
-            "Todavía estás vendiendo antes de completar el discovery.",
-
-            next:"pitch"
-        },
-
-        {
-            text:
-            "¿Cuánto estás facturando?",
-
-            quality:"ok",
-
-            feedback:
-            "Es una pregunta útil, pero hay una oportunidad más poderosa en lo que acaba de decir.",
-
-            next:"revenue"
-        },
-
-        {
-            text:
-            "¿Y por qué no lo hiciste hasta ahora?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena. Estás entrando en el gap entre lo que quiere y lo que ya intentó hacer.",
-
-            next:"gap"
-        }
-
-    ]
-
-},
-
-
-personal:{
-
-    prospect:
-    "Tendría más tiempo para mí, podría dejar de trabajar hasta tarde y probablemente estaría mucho menos estresado.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué te está costando hoy seguir funcionando de esta manera?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena. Estás profundizando en el costo actual de no cambiar.",
-
-            next:"finish"
-        },
-
-        {
-            text:
-            "Entonces nuestro programa te va a ayudar muchísimo.",
-
-            quality:"bad",
-
-            feedback:
-            "Todavía estás presentando solución antes de entender completamente el gap.",
-
-            next:"pitch"
-        },
-
-        {
-            text:
-            "¿Cuánto pagarías por recuperar ese tiempo?",
-
-            quality:"bad",
-
-            feedback:
-            "Estás monetizando demasiado pronto una emoción. Primero necesitás comprenderla.",
-
-            next:"finish"
-        },
-
-        {
-            text:
-            "¿Hace cuánto estás así?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Te permite dimensionar cuánto tiempo lleva existiendo el problema.",
-
-            next:"finish"
-        }
-
-    ]
-
-},
-
-
-gap:{
-
-    prospect:
-    "Intenté contratar gente y también probé organizarme mejor, pero termino volviendo a hacer las cosas yo.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué creés que hace que vuelvas a tomar todo vos?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás buscando el patrón que hace que las soluciones anteriores no hayan funcionado.",
-
-            next:"finish"
-        },
-
-        {
-            text:
-            "Entonces necesitás aprender a delegar.",
-
-            quality:"bad",
-
-            feedback:
-            "Eso es una conclusión, no una investigación.",
-
-            next:"finish"
-        },
-
-        {
-            text:
-            "¿Cuántas personas contrataste?",
-
-            quality:"ok",
-
-            feedback:
-            "Es información útil, aunque todavía no estás explorando por qué el patrón se repite.",
-
-            next:"finish"
-        },
-
-        {
-            text:
-            "Eso demuestra que nuestro método es diferente.",
-
-            quality:"bad",
-
-            feedback:
-            "No sabés todavía si tu método resolvería el problema.",
-
-            next:"finish"
-        }
-
-    ]
-
-},
-
-
-finish:{
-
-    prospect:
-    "La verdad es que nunca había pensado el problema de esa manera. Sé que quiero cambiarlo, pero también sé que seguir haciendo lo mismo no me va a llevar a un resultado diferente.",
-
-    options:[
-
-        {
-            text:
-            "¿Te parece si vemos qué tendría que pasar para que puedas llegar a ese resultado?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente transición. Ya existe claridad sobre el problema y ahora podés avanzar hacia una posible solución sin forzarla.",
-
-            next:"end"
-        },
-
-        {
-            text:
-            "Perfecto, entonces te explico nuestro programa.",
-
-            quality:"ok",
-
-            feedback:
-            "Ahora sí estás mucho más cerca de poder presentar la solución, aunque todavía podés obtener permiso y contexto antes.",
-
-            next:"end"
-        },
-
-        {
-            text:
-            "Entonces tenés que decidir si querés cambiar.",
-
-            quality:"bad",
-
-            feedback:
-            "Convertiste claridad en presión. No necesitás empujar al prospecto.",
-
-            next:"end"
-        },
-
-        {
-            text:
-            "¿Querés comprar?",
-
-            quality:"bad",
-
-            feedback:
-            "Demasiado brusco. El objetivo del discovery es generar claridad, no saltar directamente a una pregunta de compra.",
-
-            next:"end"
-        }
-
-    ]
-
-},
-
-
-/* =====================================
-   RAMAS DE RESPUESTAS MÁS DÉBILES
-===================================== */
-
-hours:{
-
-    prospect:
-    "Entre diez y doce horas algunos días. El problema es que termino el día agotado y siento que hice de todo menos lo importante.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué es lo importante que sentís que no estás haciendo?",
-
-            quality:"excellent",
-
-            feedback:
-            "Bien. Recuperaste el foco y volviste al problema real.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "Eso es demasiado. Tenés que trabajar menos.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás dando consejo sin entender por qué trabaja tantas horas.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "¿Cuánto querés ganar?",
-
-            quality:"ok",
-
-            feedback:
-            "No es la prioridad todavía.",
-
-            next:"money"
-        },
-
-        {
-            text:
-            "Nosotros podemos ayudarte con eso.",
-
-            quality:"bad",
-
-            feedback:
-            "Venta prematura.",
-
-            next:"pitch"
-        }
-
-    ]
-
-},
-
-
-pitch:{
-
-    prospect:
-    "Puede ser, pero todavía no entiendo si realmente esto es para mí.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué necesitarías entender para saber si tiene sentido para vos?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena recuperación. Dejaste de vender y volviste a descubrir.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "Te puedo contar cómo funciona.",
-
-            quality:"ok",
-
-            feedback:
-            "Podés hacerlo, pero todavía no entendiste qué duda tiene.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "¿Por qué no confiás en nosotros?",
-
-            quality:"bad",
-
-            feedback:
-            "Confrontaste una duda que todavía no entendiste.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "Entonces quizás no sea para vos.",
-
-            quality:"bad",
-
-            feedback:
-            "Abandonaste demasiado pronto.",
-
-            next:"structure"
-        }
-
-    ]
-
-},
-
-
-money:{
-
-    prospect:
-    "Quiero llegar a unos cinco mil dólares al mes. Hoy estoy bastante lejos de eso.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué tendría que cambiar para pasar de donde estás hoy a esos cinco mil?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás descubriendo el gap.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "Nuestro programa te puede llevar a cinco mil.",
-
-            quality:"bad",
-
-            feedback:
-            "No prometas resultados antes de entender la situación.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "¿Cuánto ganás hoy?",
-
-            quality:"ok",
-
-            feedback:
-            "Es relevante, pero todavía podés explorar qué tendría que cambiar.",
-
-            next:"structure"
-        },
-
-        {
-            text:
-            "¿Y por qué no ganás cinco mil?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede funcionar, aunque es una formulación más confrontativa.",
-
-            next:"structure"
-        }
-
-    ]
-
-},
-
-
-delegate:{
-
-    prospect:
-    "Porque cuando delego tengo que explicar todo, revisar todo y al final siento que me lleva más tiempo que hacerlo yo.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué sentís que tendría que cambiar para que delegar realmente te ahorre tiempo?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Estás buscando qué tendría que ser diferente para que la delegación funcione.",
-
-            next:"daily"
-        },
-
-        {
-            text:
-            "Entonces contrataste mal.",
-
-            quality:"bad",
-
-            feedback:
-            "Es una conclusión demasiado rápida.",
-
-            next:"daily"
-        },
-
-        {
-            text:
-            "¿Cuántas personas tenés?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede ser útil, pero todavía no estás profundizando en el mecanismo del problema.",
-
-            next:"daily"
-        },
-
-        {
-            text:
-            "Eso es porque no sabés delegar.",
-
-            quality:"bad",
-
-            feedback:
-            "Estás diagnosticando al prospecto.",
-
-            next:"daily"
-        }
-
-    ]
-
-},
-
-
-team:{
-
-    prospect:
-    "Tengo tres personas, pero igual muchas cosas terminan pasando por mí.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué tipo de cosas siguen dependiendo de vos?",
-
-            quality:"excellent",
-
-            feedback:
-            "Muy buena. Estás concretando el problema.",
-
-            next:"daily"
-        },
-
-        {
-            text:
-            "Entonces necesitás contratar más gente.",
-
-            quality:"bad",
-
-            feedback:
-            "Más personas no necesariamente resuelven el problema.",
-
-            next:"daily"
-        },
-
-        {
-            text:
-            "¿Cuánto les pagás?",
-
-            quality:"ok",
-
-            feedback:
-            "Información secundaria en este momento.",
-
-            next:"daily"
-        },
-
-        {
-            text:
-            "Perfecto, nosotros podemos solucionar eso.",
-
-            quality:"bad",
-
-            feedback:
-            "Venta prematura.",
-
-            next:"daily"
-        }
-
-    ]
-
-},
-
-
-emotion:{
-
-    prospect:
-    "Sí. Estoy cansado de sentir que nunca termino realmente de trabajar.",
-
-    options:[
-
-        {
-            text:
-            "¿Qué es lo que más te pesa de estar siempre pendiente?",
-
-            quality:"excellent",
-
-            feedback:
-            "Excelente. Convertiste una emoción general en algo concreto.",
-
-            next:"dependency"
-        },
-
-        {
-            text:
-            "Tenés que descansar más.",
-
-            quality:"bad",
-
-            feedback:
-            "Consejo prematuro.",
-
-            next:"dependency"
-        },
-
-        {
-            text:
-            "¿Cuántas vacaciones tomaste este año?",
-
-            quality:"ok",
-
-            feedback:
-            "Puede ser interesante, pero no es la pregunta más profunda en este momento.",
-
-            next:"dependency"
-        },
-
-        {
-            text:
-            "¿Hace cuánto te sentís así?",
-
-            quality:"excellent",
-
-            feedback:
-            "Buena pregunta. Te permite dimensionar cuánto tiempo lleva presente el problema.",
-
-            next:"dependency"
-        }
-
-    ]
-
-},
-
-/* =====================================
-   CIERRE DE LA CONVERSACIÓN
-===================================== */
-
-    trust:{
-        prospect:
-        "Puede ser que no confíe del todo, porque ya tuve experiencias en las que tuve que volver a revisar todo.",
-
-        options:[
+const levelData = {
+
+    1: {
+        title: "LEVEL 1 — DISCOVERY",
+        context: "Estás en una llamada de discovery. Escuchá antes de intentar solucionar.",
+        scenarios: [
             {
-                text:"¿Qué tendría que pasar para que pudieras confiar en que otra persona lo haga bien?",
-                quality:"excellent",
-                feedback:"Muy buena. En lugar de discutir si confía o no, descubrís qué condición necesita para delegar.",
-                next:"finish"
+                name: "Falta de estructura",
+                nodes: [
+                    "Estoy trabajando muchísimo, pero siento que no avanzo. Es como que estoy todo el día ocupado y al final del mes sigo igual.",
+                    "Creo que me falta estructura. Tengo mil cosas abiertas y termino apagando incendios todo el día.",
+                    "Arranco el día con una lista enorme. Después aparece un cliente con un problema, tengo que resolverlo yo, después aparece otra cosa y cuando me quiero dar cuenta pasaron ocho horas.",
+                    "Lo peor es que sé perfectamente qué tendría que hacer, pero siempre termino atendiendo lo urgente antes que lo importante.",
+                    "Y esto ya me está afectando. Estoy cansado y siento que si sigo así voy a terminar trabajando todavía más para conseguir los mismos resultados.",
+                    "Quiero recuperar control sobre mi tiempo y dejar de sentir que todo depende de mí."
+                ],
+                prompts: [
+                    "¿Qué es lo que más sentís que te está impidiendo avanzar?",
+                    "Cuando decís que te falta estructura, ¿qué termina pasando en tu día a día?",
+                    "¿Qué suele pasar cuando aparece algo urgente?",
+                    "¿Qué costo tiene para vos seguir trabajando de esta manera?",
+                    "¿Desde cuándo sentís que esto ya no es sostenible?",
+                    "Si pudieras cambiar una sola cosa de esta situación, ¿qué tendría que cambiar?"
+                ]
             },
             {
-                text:"Entonces necesitás confiar más en tu equipo.",
-                quality:"bad",
-                feedback:"Estás diagnosticando al prospecto en lugar de investigar qué necesitaría para confiar.",
-                next:"finish"
+                name: "Equipo que depende del dueño",
+                nodes: [
+                    "Tengo un equipo, pero paradójicamente siento que cuanto más crece la empresa, más cosas terminan pasando por mí.",
+                    "Si alguien tiene una duda, me consulta. Si hay un cliente complicado, me llaman. Si algo sale mal, termino resolviéndolo yo.",
+                    "El problema es que ya no tengo tiempo para pensar en crecimiento. Estoy metido en la operación casi todo el día.",
+                    "Intenté delegar, pero después reviso todo porque tengo miedo de que algo salga mal y terminamos volviendo al mismo punto.",
+                    "Sé que así no puedo escalar, pero tampoco quiero soltar cosas importantes y que el negocio se descontrole.",
+                    "Necesito que el equipo pueda funcionar sin que yo tenga que estar encima de cada decisión."
+                ],
+                prompts: [
+                    "¿Qué cosas siguen dependiendo directamente de vos?",
+                    "¿Qué suele pasar cuando delegás una tarea?",
+                    "¿Qué te hace sentir que necesitás revisar todo?",
+                    "¿Cómo impacta esto en el tiempo que tenés para hacer crecer el negocio?",
+                    "¿Qué pasaría si dentro de seis meses todo siguiera funcionando exactamente igual?",
+                    "¿Qué tendría que pasar para que pudieras confiar realmente en tu equipo?"
+                ]
             },
             {
-                text:"¿Cuántas personas tenés en tu equipo?",
-                quality:"ok",
-                feedback:"Es información útil, pero todavía no profundiza en qué tendría que cambiar.",
-                next:"finish"
+                name: "Mucho esfuerzo, poco crecimiento",
+                nodes: [
+                    "Estoy facturando, tengo clientes y trabajo muchísimo, pero siento que económicamente estoy prácticamente en el mismo lugar.",
+                    "Cada vez hago más cosas para generar un poco más, pero no veo que el resultado crezca en la misma proporción.",
+                    "El mes pasado, por ejemplo, trabajé muchísimo más que el anterior y la diferencia de ingresos fue mínima.",
+                    "Entonces empiezo a preguntarme si el problema es que estoy haciendo las cosas mal o simplemente estoy llegando a un techo.",
+                    "Y me preocupa porque no quiero pasar los próximos dos años trabajando el doble para ganar un poco más.",
+                    "Quiero encontrar una forma de crecer sin que la única solución sea trabajar más horas."
+                ],
+                prompts: [
+                    "¿Dónde sentís concretamente que está el freno?",
+                    "¿Qué cambió entre el mes que más trabajaste y el resultado que obtuviste?",
+                    "¿Qué creés que está generando ese techo?",
+                    "¿Qué costo tendría para vos seguir creciendo solamente a fuerza de más horas?",
+                    "¿Por qué esto se volvió importante para vos ahora?",
+                    "¿Cómo sabrías que realmente encontraste una forma diferente de crecer?"
+                ]
             },
             {
-                text:"Nuestro programa te va a enseñar a delegar.",
-                quality:"bad",
-                feedback:"Te adelantaste a vender antes de entender la necesidad.",
-                next:"finish"
+                name: "Objetivo claro, ejecución trabada",
+                nodes: [
+                    "Sé exactamente lo que quiero conseguir, pero por alguna razón no logro avanzar al ritmo que debería.",
+                    "Tengo objetivos claros, incluso hice planes varias veces, pero a los pocos días vuelvo a la misma dinámica.",
+                    "Cuando tengo que elegir entre hacer algo estratégico o resolver algo que acaba de aparecer, casi siempre termino resolviendo lo urgente.",
+                    "Después llega el final de la semana y siento que trabajé muchísimo, pero no hice lo que realmente iba a mover el negocio.",
+                    "Eso me frustra porque no siento que me falte capacidad. Siento que estoy atrapado en una forma de trabajar.",
+                    "Necesito dejar de reaccionar todo el tiempo y empezar a ejecutar de una manera más consistente."
+                ],
+                prompts: [
+                    "Si tenés claro el objetivo, ¿qué sentís que te impide avanzar?",
+                    "¿Qué suele hacer que abandones el plan durante la semana?",
+                    "¿Qué diferencia hay entre lo urgente que resolvés y lo importante que postergás?",
+                    "¿Qué te genera terminar la semana sin haber avanzado en lo importante?",
+                    "¿Qué probaste hasta ahora para cambiar esa dinámica?",
+                    "¿Qué tendría que ser diferente esta vez para que realmente sostengas el cambio?"
+                ]
             }
         ]
     },
 
-    diagnosis:{
-        prospect:
-        "No sé exactamente. A veces siento que es organización y otras veces que simplemente tengo demasiadas cosas encima.",
-
-        options:[
+    2: {
+        title: "LEVEL 2 — EL GAP",
+        context: "Ahora no alcanza con detectar el problema. Tenés que hacer visible la distancia entre su situación actual y lo que quiere conseguir.",
+        scenarios: [
             {
-                text:"¿En qué momentos sentís más fuerte esa falta de organización?",
-                quality:"excellent",
-                feedback:"Bien. En vez de aceptar tu propio diagnóstico, buscás ejemplos concretos.",
-                next:"daily"
+                name: "Ingresos estancados",
+                nodes: [
+                    "Hoy estoy alrededor de los 3.000 dólares por mes y quiero llegar a 6.000, pero siento que no encuentro el camino.",
+                    "No es que no esté trabajando. De hecho, estoy bastante ocupado, pero los ingresos siguen más o menos iguales.",
+                    "Si sigo haciendo exactamente lo mismo, probablemente dentro de seis meses esté en el mismo lugar.",
+                    "Y eso es lo que más me preocupa: sé a dónde quiero llegar, pero mi forma actual de trabajar no parece llevarme hasta ahí.",
+                    "Quiero crecer sin simplemente duplicar mis horas de trabajo.",
+                    "Para mí el cambio sería poder llegar a esos 6.000 sin sentir que mi vida gira alrededor del trabajo."
+                ],
+                prompts: [
+                    "¿Qué tendría que cambiar para pasar de 3.000 a 6.000?",
+                    "¿Qué te hace pensar que haciendo lo mismo vas a seguir en el mismo lugar?",
+                    "¿Qué diferencia ves entre cómo trabajás hoy y cómo tendrías que trabajar para llegar a 6.000?",
+                    "¿Qué parte de esa distancia sentís que depende directamente de vos?",
+                    "¿Qué costo tendría mantenerte en 3.000 durante otro año?",
+                    "¿Qué significaría para vos llegar a 6.000 de una manera sostenible?"
+                ]
             },
             {
-                text:"Entonces el problema es la organización.",
-                quality:"bad",
-                feedback:"No podés convertir una hipótesis en diagnóstico todavía.",
-                next:"daily"
+                name: "Tiempo y libertad",
+                nodes: [
+                    "Mi objetivo no es solamente ganar más. Quiero dejar de sentir que no tengo tiempo para nada.",
+                    "Hoy puedo generar dinero, pero prácticamente todo depende de que yo esté trabajando.",
+                    "Cuando me tomo un día libre, siento que todo se frena.",
+                    "Entonces hay una contradicción: conseguí algo de estabilidad económica, pero no tengo la libertad que esperaba tener.",
+                    "Si sigo así, puedo ganar más, pero probablemente también termine trabajando más.",
+                    "Lo que quiero es que el negocio me dé libertad, no que se convierta en otra jaula."
+                ],
+                prompts: [
+                    "¿Qué sería para vos tener realmente libertad?",
+                    "¿Qué diferencia hay entre la libertad que buscabas y la realidad que tenés hoy?",
+                    "¿Qué tendría que cambiar para que puedas desconectarte sin que todo dependa de vos?",
+                    "¿Qué te está costando hoy no tener esa libertad?",
+                    "Si nada cambia durante los próximos doce meses, ¿cómo te imaginás?",
+                    "¿Qué sería una señal concreta de que finalmente estás construyendo esa libertad?"
+                ]
             },
             {
-                text:"¿Cuánto facturás?",
-                quality:"ok",
-                feedback:"Es un dato relevante, pero no responde qué está pasando en la operación.",
-                next:"revenue"
-            },
-            {
-                text:"Podemos ayudarte a organizarte.",
-                quality:"bad",
-                feedback:"Venta prematura.",
-                next:"daily"
+                name: "Escalar sin perder control",
+                nodes: [
+                    "Quiero hacer crecer mi empresa, pero cada vez que pienso en escalar también pienso en perder el control.",
+                    "Hoy conozco cada detalle del negocio y sé que muchas cosas funcionan porque estoy encima.",
+                    "El problema es que justamente eso me impide crecer más.",
+                    "Si sigo controlando todo, me convierto en el cuello de botella. Si suelto todo de golpe, tengo miedo de que la calidad caiga.",
+                    "Entonces estoy en un punto medio que no me sirve: ni escalo ni logro salir de la operación.",
+                    "Quiero crecer sin tener que elegir entre control y libertad."
+                ],
+                prompts: [
+                    "¿Qué significa para vos escalar hoy?",
+                    "¿Dónde ves la mayor distancia entre tu empresa actual y la que querés construir?",
+                    "¿Qué te impide soltar esas responsabilidades?",
+                    "¿Qué te está costando quedarte en este punto medio?",
+                    "¿Qué pasaría si dentro de un año seguís siendo el cuello de botella?",
+                    "¿Cómo debería funcionar la empresa para que puedas crecer sin perder el control que necesitás?"
+                ]
             }
         ]
-    },
-
-    revenue:{
-        prospect:
-        "Estoy alrededor de tres mil dólares al mes, pero siento que podría estar mucho más arriba si no estuviera apagando incendios todo el tiempo.",
-
-        options:[
-            {
-                text:"¿Qué tendría que cambiar para que puedas crecer sin que todo siga dependiendo de vos?",
-                quality:"excellent",
-                feedback:"Excelente. Volvés del número al mecanismo que está frenando el crecimiento.",
-                next:"gap"
-            },
-            {
-                text:"Entonces nuestro programa te puede llevar más arriba.",
-                quality:"bad",
-                feedback:"No prometas un resultado sin entender primero la situación.",
-                next:"gap"
-            },
-            {
-                text:"¿Hace cuánto facturás tres mil?",
-                quality:"ok",
-                feedback:"Es una pregunta válida, pero todavía podés explorar el cuello de botella.",
-                next:"gap"
-            },
-            {
-                text:"¿Por qué no facturás más?",
-                quality:"ok",
-                feedback:"Puede funcionar, aunque es una formulación más confrontativa.",
-                next:"gap"
-            }
-        ]
-    },
-
-    solution:{
-        prospect:
-        "No sé. Capaz necesito ordenar mejor los procesos, pero tampoco quiero sumar herramientas por sumar.",
-
-        options:[
-            {
-                text:"¿Qué tendría que estar resuelto para que sintieras que el problema realmente desapareció?",
-                quality:"excellent",
-                feedback:"Muy buena. Definís el resultado deseado antes de hablar de herramientas.",
-                next:"finish"
-            },
-            {
-                text:"Entonces necesitás un CRM.",
-                quality:"bad",
-                feedback:"Estás asumiendo la solución antes de entender el problema.",
-                next:"finish"
-            },
-            {
-                text:"¿Qué herramientas usás hoy?",
-                quality:"ok",
-                feedback:"Puede aportar contexto, pero todavía falta entender qué resultado necesita.",
-                next:"finish"
-            },
-            {
-                text:"Nosotros tenemos una herramienta para eso.",
-                quality:"bad",
-                feedback:"Venta prematura.",
-                next:"finish"
-            }
-        ]
-    },
-
-    current:{
-        prospect:
-        "Sí. Sigo haciendo yo gran parte del seguimiento porque no quiero que vuelva a pasar lo mismo.",
-
-        options:[
-            {
-                text:"¿Qué tendría que pasar para que pudieras dejar ese seguimiento en manos de otra persona?",
-                quality:"excellent",
-                feedback:"Excelente. Estás descubriendo la condición necesaria para cambiar el comportamiento actual.",
-                next:"finish"
-            },
-            {
-                text:"Entonces claramente no confiás en tu equipo.",
-                quality:"ok",
-                feedback:"Puede ser, pero es mejor que el prospecto explique qué le impide delegarlo.",
-                next:"finish"
-            },
-            {
-                text:"¿Cuánto tiempo te lleva por semana?",
-                quality:"ok",
-                feedback:"Cuantificar ayuda, pero todavía podés descubrir la causa.",
-                next:"finish"
-            },
-            {
-                text:"Necesitás contratar a alguien para seguimiento.",
-                quality:"bad",
-                feedback:"Estás solucionando antes de comprender.",
-                next:"finish"
-            }
-        ]
-    },
-
-    pressure:{
-        prospect:
-        "Sí, sé que tengo que cambiar algo, pero no quiero tomar una decisión apurado y equivocarme otra vez.",
-
-        options:[
-            {
-                text:"¿Qué necesitarías tener claro para poder tomar una decisión con tranquilidad?",
-                quality:"excellent",
-                feedback:"Excelente. No presionás: descubrís qué necesita para decidir.",
-                next:"finish"
-            },
-            {
-                text:"Si no decidís ahora, vas a seguir igual.",
-                quality:"bad",
-                feedback:"Estás creando presión en lugar de comprender la indecisión.",
-                next:"finish"
-            },
-            {
-                text:"¿Cuánto cuesta tu problema hoy?",
-                quality:"ok",
-                feedback:"Puede ser útil, aunque primero conviene entender qué necesita para sentirse seguro.",
-                next:"finish"
-            },
-            {
-                text:"Entonces te explico por qué deberías hacerlo.",
-                quality:"bad",
-                feedback:"Entraste en modo persuasión antes de aislar la duda.",
-                next:"finish"
-            }
-        ]
-    },
-
-    end:{
-        end:true
     }
-
 };
+
+let conversation = {};
+let currentLevel = 1;
+let currentScenario = null;
+
+function buildConversation(scenario){
+    const nodes = {};
+
+    scenario.nodes.forEach((prospect, i) => {
+        const next = i < scenario.nodes.length - 1 ? `q${i + 1}` : "end";
+        const prompt = scenario.prompts[i];
+
+        nodes[i === 0 ? "start" : `q${i}`] = {
+            prospect,
+            options: [
+                {
+                    text: prompt,
+                    quality: "excellent",
+                    feedback: "Excelente. Estás profundizando sobre lo que el prospecto acaba de decir, sin adelantarte a vender.",
+                    next
+                },
+                {
+                    text: "¿Cuánto querés ganar con esto?",
+                    quality: "ok",
+                    feedback: "La pregunta puede ser útil, pero estás dejando de lado la información que el prospecto acaba de darte.",
+                    next
+                },
+                {
+                    text: "Eso es exactamente lo que solucionamos con nuestro programa.",
+                    quality: "bad",
+                    feedback: "Te adelantaste a vender. Todavía necesitás entender mejor la situación.",
+                    next
+                },
+                {
+                    text: "¿Y por qué no lo resolviste todavía?",
+                    quality: "ok",
+                    feedback: "Puede abrir información, pero la formulación es más acusatoria de lo necesario.",
+                    next
+                }
+            ]
+        };
+    });
+
+    nodes.end = {end:true};
+    return nodes;
+}
+
+function chooseRandomScenario(){
+    const scenarios = levelData[currentLevel].scenarios;
+    currentScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+    conversation = buildConversation(currentScenario);
+}
 
 /* =====================================
    NAVEGACIÓN
@@ -2852,7 +1709,14 @@ function showScreen(id){
     });
 }
 
-function startLevel(){
+function startLevel(level = 1){
+    currentLevel = Number(level);
+
+    if(currentLevel > player.unlockedLevel){
+        return;
+    }
+
+    chooseRandomScenario();
     currentNode = "start";
     callHistory = [];
     callScore = {
@@ -2897,8 +1761,11 @@ function loadNode(){
     document.getElementById("callProgress").style.width =
         progress + "%";
 
+    document.querySelector(".training-header h2").textContent =
+        levelData[currentLevel].title;
+
     document.getElementById("context").textContent =
-        "Estás en una llamada de discovery. Escuchá antes de intentar solucionar.";
+        levelData[currentLevel].context;
 
     const chat = document.getElementById("chat");
     chat.innerHTML = "";
@@ -3127,6 +1994,9 @@ function finishLevel(){
     document.getElementById("finalScore").textContent =
         score;
 
+    document.getElementById("resultTitle").textContent =
+        `LEVEL ${currentLevel} — ${currentScenario ? currentScenario.name.toUpperCase() : "ENTRENAMIENTO"}`;
+
     document.getElementById("discoveryScore").textContent =
         Math.round(callScore.discovery / 6) + "%";
 
@@ -3153,8 +2023,16 @@ function finishLevel(){
     document.getElementById("resultMessage").textContent =
         message;
 
+    if(score >= 70 && currentLevel < 10){
+        player.unlockedLevel = Math.max(
+            player.unlockedLevel,
+            currentLevel + 1
+        );
+    }
+
     savePlayer();
     updateUI();
+    updateLevelMap();
     showScreen("result");
 }
 
@@ -3228,6 +2106,29 @@ function updateUI(){
     }
 }
 
+function updateLevelMap(){
+    document.querySelectorAll(".level[data-level]").forEach(card => {
+        const level = Number(card.dataset.level);
+        const unlocked = level <= player.unlockedLevel;
+
+        card.classList.toggle("locked", !unlocked);
+        card.classList.toggle("unlocked", unlocked);
+
+        const status = card.querySelector(".level-status");
+        if(status){
+            if(unlocked){
+                status.textContent = level === 1 ? "JUGAR" : "JUGAR";
+            } else {
+                status.textContent = "🔒";
+            }
+        }
+
+        card.onclick = unlocked
+            ? () => startLevel(level)
+            : null;
+    });
+}
+
 function savePlayer(){
 
     localStorage.setItem(
@@ -3251,6 +2152,7 @@ function escapeHTML(value){
 ===================================== */
 
 updateUI();
+updateLevelMap();
 showScreen("dashboard");
 
 </script>
