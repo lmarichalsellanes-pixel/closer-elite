@@ -387,6 +387,20 @@ function save(){
   document.getElementById("xpright").textContent="4000 XP";
 }
 
+function renderLevels(){
+  const el=document.getElementById("levels");
+  if(!el) return;
+  el.innerHTML="";
+  blockDefs.forEach((b,i)=>{
+    const c=document.createElement("div");
+    c.className="card level";
+    const count=scenarios[b.id]?.length || 0;
+    c.innerHTML=`<div class="eyebrow">${b.name}</div><h3>${b.desc}</h3><p>${count} situaciones únicas de este bloque.</p><div class="bar"><i style="width:${Math.min(100,Math.round((state.xp/(1000+(i*500)))*100))}%"></i></div><button class="primary" type="button">ENTRENAR</button>`;
+    c.addEventListener("click",()=>startBlock(b.id));
+    el.appendChild(c);
+  });
+}
+
 function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
 function goDashboard(){show("dashboard");renderLevels();}
 
